@@ -6,12 +6,10 @@ import { AppComponent } from './app.component';
 import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {BrowserAnimationsModule} from "@angular/platform-browser/animations";
 import {AuthInterceptorService} from "./services/auth/auth-interceptor.service";
-import { DashboardComponent } from './admin/components/dashboard/dashboard.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    DashboardComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,

@@ -4,22 +4,33 @@ import {AdminRoutingModule} from "./admin-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
 import {RippleModule} from "primeng/ripple";
-import {BtnLoadingDirective} from "../directives/btn-loading.directive";
 import {MessagesModule} from "primeng/messages";
 import {ToastModule} from "primeng/toast";
 import {InputTextModule} from "primeng/inputtext";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
+import {MegaMenuModule} from "primeng/megamenu";
+import {MenuModule} from "primeng/menu";
+import {DashboardComponent} from "./components/dashboard/dashboard.component";
+import {SharedModule} from "../shared/shared.module";
+import { SettingsComponent } from './components/settings/settings.component';
+import { UsersComponent } from './components/users/users.component';
+import { FacultiesComponent } from './components/faculties/faculties.component';
+import {CardModule} from "primeng/card";
 
 @NgModule({
   providers: [
     MessageService
   ],
   declarations: [
-    BtnLoadingDirective
+    DashboardComponent,
+    SettingsComponent,
+    UsersComponent,
+    FacultiesComponent
   ],
   imports: [
     CommonModule,
+    SharedModule,
     AdminRoutingModule,
     ReactiveFormsModule,
     FormsModule,
@@ -28,7 +39,9 @@ import {MessageService} from "primeng/api";
     MessagesModule,
     ToastModule,
     InputTextModule,
-    AutoFocusModule
+    AutoFocusModule,
+    MegaMenuModule,
+    CardModule
   ]
 })
 export class AdminModule { }

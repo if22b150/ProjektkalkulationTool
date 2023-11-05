@@ -1,1 +1,13 @@
-<p>Admin dashboard</p>
+<div class="flex">
+  <p-megaMenu [model]="items" orientation="vertical" styleClass="admin-menu">
+    <ng-template pTemplate="start">
+      <img src="assets/images/logo-transparent.png" height="100" />
+    </ng-template>
+  </p-megaMenu>
+
+  <div class="page-content p-4">
+<!--    <p-card>-->
+      <router-outlet></router-outlet>
+<!--    </p-card>-->
+  </div>
+</div>
