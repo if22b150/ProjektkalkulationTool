@@ -52,11 +52,9 @@ export class ProjectLecturersComponent implements OnInit {
   }
 
   addProjectLecturer() {
-    this.projectLecturers.push(this.newProjectLecturerFormGroup());
-  }
-
-  change(lecturer, index) {
-    this.projectLecturers.at(index).get('lecturer').setValue(lecturer);
+    setTimeout(() => {
+      this.projectLecturers.push(this.newProjectLecturerFormGroup());
+    });
   }
 
   removeProjectLecturer(i: number) {
