@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Project} from "../../../../../models/project.model";
 import {LecturerService} from "../../../../../services/lecturer.service";
+import {filter, take} from "rxjs";
 
 @Component({
   selector: 'app-project-lecturers',
@@ -23,7 +24,13 @@ export class ProjectLecturersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.initializeLecturers();
+    this.lecturerService.lecturers$
+      .pipe(filter(l => l != null), take(1))
+      .subscribe({
+      next: () => {
+        this.initializeLecturers();
+      }
+    })
   }
 
   initializeLecturers() {
@@ -46,7 +53,7 @@ export class ProjectLecturersComponent implements OnInit {
   newProjectLecturerFormGroup(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      lecturer: [null, [Validators.required]],
+      lecturer: [this.lecturerService.lecturers[0], [Validators.required]],
       hours: [null, [Validators.required]]
     })
   }
