@@ -13,7 +13,6 @@ export class BtnLoadingDirective {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    console.log(changes, this.initialInnerHTML)
     if (changes && this.initialInnerHTML) {
 
       if (this.appBtnLoading) {

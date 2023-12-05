@@ -1,0 +1,35 @@
+<form [formGroup]="newProjectForm">
+
+  <div class="p-fluid">
+
+    <div class="field mb-2">
+      <label for="title" class="mb-1">Titel</label>
+      <input id="title" type="text" class="w-full" pInputText formControlName="title">
+      <small *ngIf="title?.errors?.required && submitted" class="p-error">
+        Ein Titel ist erforderlich.
+      </small>
+    </div>
+
+    <div class="field mb-2">
+      <label for="text" class="mb-1">Frage</label>
+      <input id="text" type="text" class="w-full" pInputText formControlName="text">
+      <small *ngIf="text?.errors?.required && submitted" class="p-error">
+        Ein Text ist erforderlich.
+      </small>
+    </div>
+
+    <div class="field mb-2">
+      <label for="helptext" class="mb-1">Hinweistext</label>
+      <input id="helptext" type="text" class="w-full" pInputText
+             formControlName="helptext">
+    </div>
+
+  </div>
+
+  <app-project-lecturers [newProject]="true" [projectForm]="newProjectForm"></app-project-lecturers>
+
+  <div class="flex justify-content-end mt-2">
+    <p-button pRipple label="Projekt speichern" [loading]="loading" (click)="create()"></p-button>
+  </div>
+
+</form>

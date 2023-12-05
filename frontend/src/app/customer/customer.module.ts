@@ -10,13 +10,23 @@ import {InputTextModule} from "primeng/inputtext";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
+import { ProjectsComponent } from './components/projects/projects.component';
+import { NewProjectComponent } from './components/projects/new-project/new-project.component';
+import { ProjectLecturersComponent } from './components/projects/new-project/project-lecturers/project-lecturers.component';
+import {DropdownModule} from "primeng/dropdown";
+import {InputNumberModule} from "primeng/inputnumber";
+import {MegaMenuModule} from "primeng/megamenu";
+import {SharedModule} from "../shared/shared.module";
 
 @NgModule({
   providers: [
     MessageService
   ],
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    ProjectsComponent,
+    NewProjectComponent,
+    ProjectLecturersComponent
   ],
   imports: [
     CommonModule,
@@ -28,7 +38,11 @@ import {DashboardComponent} from "./components/dashboard/dashboard.component";
     MessagesModule,
     ToastModule,
     InputTextModule,
-    AutoFocusModule
+    AutoFocusModule,
+    DropdownModule,
+    InputNumberModule,
+    MegaMenuModule,
+    SharedModule
   ]
 })
 export class CustomerModule { }

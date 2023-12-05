@@ -1,0 +1,40 @@
+<div [formGroup]="projectForm">
+  <div formArrayName="projectLecturers">
+
+    <div *ngFor="let projectLecturer of projectLecturers.controls; let i=index" class="flex align-items-start mb-2" [formGroupName]="i">
+
+      <div class="flex align-items-center flex-wrap gap-4 mb-1 w-full">
+
+        <input type="hidden" [value]="i" formControlName="id">
+
+        <div class="flex align-items-center gap-2">
+          <label [for]="newProject ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i">
+            Vortragende/r
+          </label>
+
+          <p-dropdown [id]="newProject ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
+                      formControlName="lecturer" [options]="lecturerService.lecturers$|async" optionLabel="name" (onChange)="change($event, i)" placeholder="Auswählen"></p-dropdown>
+
+        </div>
+
+        <div class="flex align-items-center gap-2 flex-grow-1">
+          <label [for]="newProject ? 'new-project-hours-' + i : 'question-' + project.id + '-' + 'hours-' + i">
+            Stunden
+          </label>
+          <p-inputNumber [inputId]="newProject ? 'new-project-hours-' + i : 'question-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1"></p-inputNumber>
+        </div>
+
+        <button pButton pRipple type="button" icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-outlined" (click)="removeProjectLecturer(i)"></button>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="flex justify-content-center mt-2">
+  <button pButton pRipple class="p-button-sm p-button-outlined p-button-raised p-button-rounded" (click)="addProjectLecturer()">
+    Vortragende hinzufügen<i class="pi pi-plus-circle ml-1"></i></button>
+</div>
