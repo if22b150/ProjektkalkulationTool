@@ -1,0 +1,22 @@
+version: "3.0"
+services:
+    backend:
+        build: ./docker/backend
+        volumes:
+            - ./backend:/backend
+        ports:
+            - "127.0.0.1:8080:80"
+        depends_on:
+            - mariadb_database
+
+    mariadb_database:
+        image: mariadb:10.11
+        volumes:
+            - ./docker/_vol/mariadb_database:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=raspberry
+            - MYSQL_DATABASE=project_calculation
+            - MYSQL_USER=innolab
+            - MYSQL_PASSWORD=innolab
+        ports:
+            - "127.0.0.1:3306:3306"
