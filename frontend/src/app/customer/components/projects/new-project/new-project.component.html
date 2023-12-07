@@ -3,7 +3,7 @@
   <div class="p-fluid">
 
     <div class="field mb-2">
-      <label for="title" class="mb-1">Titel</label>
+      <label for="title" class="mb-1">Reservierung</label>
       <input id="title" type="text" class="w-full" pInputText formControlName="title">
       <small *ngIf="title?.errors?.required && submitted" class="p-error">
         Ein Titel ist erforderlich.
@@ -11,7 +11,7 @@
     </div>
 
     <div class="field mb-2">
-      <label for="text" class="mb-1">Frage</label>
+      <label for="text" class="mb-1">Lehrer Anforderung</label>
       <input id="text" type="text" class="w-full" pInputText formControlName="text">
       <small *ngIf="text?.errors?.required && submitted" class="p-error">
         Ein Text ist erforderlich.
@@ -19,7 +19,7 @@
     </div>
 
     <div class="field mb-2">
-      <label for="helptext" class="mb-1">Hinweistext</label>
+      <label for="helptext" class="mb-1">zusätzliche Informationen</label>
       <input id="helptext" type="text" class="w-full" pInputText
              formControlName="helptext">
     </div>
