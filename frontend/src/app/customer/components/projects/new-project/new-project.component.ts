@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-project',
@@ -10,16 +11,18 @@ export class NewProjectComponent implements OnInit{
   newProjectForm: FormGroup;
   submitted: boolean = false;
   loading: boolean = false;
+  totalCost = 0;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
+
   }
 
   ngOnInit() {
     this.newProjectForm = this.formBuilder.group({
       title: [null, [Validators.required]],
-      text: [null, [Validators.required]],
-      helptext: [null],
-      projectLecturers: this.formBuilder.array([])
+      travelCosts: [null, [Validators.required]],
+      helptext: ['', Validators.required],
+      projectLecturers: this.formBuilder.array([]),
     })
   }
 
@@ -33,19 +36,21 @@ export class NewProjectComponent implements OnInit{
     // Fake request time
     setTimeout(() => {
       this.loading = false;
-      console.log("Kosten: " + this.calculateTotalCost());  // Added line to log the total cost
     }, 2000);
-    console.log(this.calculateTotalCost())
+    this.calculateTotalCost();
+    this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt abgeschlossen'});
   }
 
-  calculateTotalCost(): number {
-    let totalCost = 0;
+  calculateTotalCost() {
+    let newCosts = 0;
     this.projectLecturers.controls.forEach(lecturer => {
       const hours = lecturer.get('hours').value || 0;
       const hourlyRate = lecturer.get('lecturer').value.hourlyRate || 0;
-      totalCost += hours * hourlyRate;
+      newCosts += hours * hourlyRate;
     });
-    return totalCost;
+    newCosts += this.travelCosts.value;
+    this.totalCost = newCosts;
+    console.log(this.totalCost)
   }
 
   addLecturer() {
@@ -60,8 +65,8 @@ export class NewProjectComponent implements OnInit{
     return this.newProjectForm.get("title");
   }
 
-  get text(): AbstractControl {
-    return this.newProjectForm.get("text");
+  get travelCosts(): AbstractControl {
+    return this.newProjectForm.get("travelCosts");
   }
 
   get helptext(): AbstractControl {
