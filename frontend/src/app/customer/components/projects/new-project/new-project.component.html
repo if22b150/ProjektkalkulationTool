@@ -11,7 +11,7 @@
     </div>
 
     <div class="field mb-2">
-      <label for="text" class="mb-1">Lehrer Anforderung</label>
+      <label for="text" class="mb-1">Reisekosten in Euro</label>
       <input id="text" type="text" class="w-full" pInputText formControlName="text">
       <small *ngIf="text?.errors?.required && submitted" class="p-error">
         Ein Text ist erforderlich.
@@ -20,8 +20,21 @@
 
     <div class="field mb-2">
       <label for="helptext" class="mb-1">zusätzliche Informationen</label>
-      <input id="helptext" type="text" class="w-full" pInputText
-             formControlName="helptext">
+      <select id="helptext" class="w-full" formControlName="helptext">
+        <option value="option1">Sachkosten 1</option>
+        <option value="option2">Sachkosten 2</option>
+        <option value="option3">Sachkosten 3</option>
+        <option value="option3">Sachkosten 4</option>
+        <option value="option3">Sachkosten 5</option>
+        <!-- Weitere Optionen hier hinzufügen -->
+      </select>
+    </div>
+
+    <div class="field mb-2">
+      <label for="totalCost" class="mb-1">Gesamtkosten</label>
+      <div id="totalCost" class="w-full">
+        {{ calculateTotalCost() }} Euro <!-- Hier wird der Wert der Gesamtkosten angezeigt -->
+      </div>
     </div>
 
   </div>
