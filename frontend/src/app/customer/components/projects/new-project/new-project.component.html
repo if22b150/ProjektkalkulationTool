@@ -11,9 +11,9 @@
     </div>
 
     <div class="field mb-2">
-      <label for="travelCosts" class="mb-1">Reisekosten in Euro</label>
-      <input id="travelCosts" type="number" class="w-full" pInputText formControlName="travelCosts"
-             pattern="^\d+(\.\d{1,2})?$" min="0" max="10000" placeholder="€">
+      <label for="travelCosts" class="mb-1">Reisekosten (€)</label>
+      <p-inputNumber id="travelCosts" mode="currency" currency="EUR" locale="de-DE" [minFractionDigits]="2"
+                     class="w-full" formControlName="travelCosts" pattern="^\d+(\.\d{1,2})?$" min="0" max="10000" />
       <small *ngIf="travelCosts?.errors?.required && submitted" class="p-error">
         Ein Text ist erforderlich.
       </small>
@@ -29,29 +29,32 @@
     </div>
 
     <div class="field mb-2">
-      <label for="helptext" class="mb-1">zusätzliche Sachkosten</label>
-      <select id="helptext" class="w-full" formControlName="helptext">
-        <option value="" disabled selected hidden>Bitte wählen...</option>
-        <option value="option1">Sachkosten 1</option>
-        <option value="option2">Sachkosten 2</option>
-        <option value="option3">Sachkosten 3</option>
-        <option value="option4">Sachkosten 4</option>
-        <option value="option5">Sachkosten 5</option>
-      </select>
-      <small *ngIf="submitted && newProjectForm.get('helptext').errors?.required" class="p-error">
-        Bitte wählen Sie eine Option aus.
-      </small>
+      <label for="materialCosts">
+        Sachkosten
+      </label>
+
+      <p-multiSelect id="materialCosts" formControlName="materialCosts"
+                  [options]="materialCostsList" optionLabel="name"  placeholder="Auswählen">
+        <ng-template let-materialCost pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div>{{ materialCost.name }}</div>
+            <div>({{ materialCost.costs/100|currency:"EUR" }})</div>
+          </div>
+        </ng-template>
+      </p-multiSelect>
+
     </div>
 
   </div>
 
   <app-project-lecturers [newProject]="true" [projectForm]="newProjectForm"></app-project-lecturers>
 
-  <hr>
-  <div class="field mb-2">
-    <label for="totalCost" class="mb-1">Gesamtkosten</label>
-    <div id="totalCost" class="w-full">
-      {{ totalCost }} Euro
+  <hr class="my-3">
+
+  <div class="flex justify-content-end mb-2">
+    <div class="flex flex-column align-items-end">
+      <h4 class="m-0">Gesamtkosten</h4>
+      <p class="m-0">{{totalCost}}</p>
     </div>
   </div>
 
@@ -59,7 +62,7 @@
     <p-button pRipple label="Projekt speichern" [loading]="loading" (click)="create()"></p-button>
   </div>
 
-  
+
   <p-toast></p-toast>
 
 </form>

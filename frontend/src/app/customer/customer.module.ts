@@ -17,6 +17,7 @@ import {DropdownModule} from "primeng/dropdown";
 import {InputNumberModule} from "primeng/inputnumber";
 import {MegaMenuModule} from "primeng/megamenu";
 import {SharedModule} from "../shared/shared.module";
+import {MultiSelectModule} from "primeng/multiselect";
 
 @NgModule({
   providers: [
@@ -42,6 +43,7 @@ import {SharedModule} from "../shared/shared.module";
     DropdownModule,
     InputNumberModule,
     MegaMenuModule,
+    MultiSelectModule,
     SharedModule
   ]
 })
