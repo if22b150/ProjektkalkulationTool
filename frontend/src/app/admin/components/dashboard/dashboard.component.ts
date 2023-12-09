@@ -33,10 +33,10 @@ export class DashboardComponent implements OnInit{
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
-        routerLink: ['..', '..'],
+        // routerLink: ['..', '..'],
         command: () => {
           // LOGOUT LOGIC
-          // this.authService.logout();
+          this.authService.logout();
         }
       }
     ];

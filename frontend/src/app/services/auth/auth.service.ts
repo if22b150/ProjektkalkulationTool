@@ -30,7 +30,7 @@ export class AuthService {
     return this._user.value?.token;
   }
 
-  public get isLoggedIn(): boolean {
+  public get isLoggedInAndVerified(): boolean {
     return this._user.value != null && this._user.value.verified;
   }
 
@@ -40,9 +40,10 @@ export class AuthService {
     this._user = new BehaviorSubject<User>(savedUser);
   }
 
-  public login(user: string, password: string): Observable<User> {
-    return this.http.post<User>(environment.apiUrl + 'auth/login', {user, password})
+  public login(email: string, password: string): Observable<User> {
+    return this.http.post<User>(environment.apiUrl + 'login', {email, password})
       .pipe(
+        take(1),
         tap((user: User) => {
           this._user.next(user);
           localStorage.removeItem('user');
@@ -51,17 +52,16 @@ export class AuthService {
       );
   }
 
-  public logout(): Observable<any> {
-
-    // log user out on server
-    return this.http.post<any>(environment.apiUrl + 'auth/logout', {})
+  public logout() {
+    return this.http.post<any>(environment.apiUrl + 'logout', {})
       .pipe(
         take(1),
         tap(() => {
           // log user out in browser
           localStorage.removeItem('user');
           this._user.next(null);
-          this.router.navigate(['login']);
-        }));
+          this.router.navigate(['auth']);
+        }))
+      .subscribe();
   }
 }

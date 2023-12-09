@@ -36,7 +36,6 @@ export class LoginComponent implements OnInit {
       return;
 
     this.loading = true;
-    this.verifyEmailSent = false;
 
     this.authService.login(
       this.email.value,
@@ -66,9 +65,9 @@ export class LoginComponent implements OnInit {
             // }
           },
           error: (e) => {
-            if(e.error == "Credentials incorrect")
+            if(e.error.message == "Credentials incorrect")
               this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Das Passwort ist inkorrekt.' });
-            else if (e.error == "The selected email is invalid.")
+            else if (e.error.message == "The selected email is invalid.")
               this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Ungültige E-Mail-Adresse.' });
             else
               this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Es ist ein Fehler aufgetreten.' });
