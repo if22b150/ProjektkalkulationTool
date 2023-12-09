@@ -20,3 +20,8 @@ Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
 });
+
+// admin routes
+Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::apiResource('faculties', \App\Http\Controllers\Admin\FacultyController::class);
+});
