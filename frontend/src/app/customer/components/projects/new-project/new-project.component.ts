@@ -1,5 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-new-project',
@@ -10,21 +11,22 @@ export class NewProjectComponent implements OnInit{
   newProjectForm: FormGroup;
   submitted: boolean = false;
   loading: boolean = false;
+  totalCost = 0;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
+
   }
 
   ngOnInit() {
     this.newProjectForm = this.formBuilder.group({
       title: [null, [Validators.required]],
-      text: [null, [Validators.required]],
-      helptext: [null],
-      projectLecturers: this.formBuilder.array([])
+      travelCosts: [null, [Validators.required]],
+      helptext: ['', Validators.required],
+      projectLecturers: this.formBuilder.array([]),
     })
   }
 
   create() {
-    console.log(this.newProjectForm)
     this.submitted = true;
     if(this.newProjectForm.invalid)
       return;
@@ -35,20 +37,36 @@ export class NewProjectComponent implements OnInit{
     setTimeout(() => {
       this.loading = false;
     }, 2000);
+    this.calculateTotalCost();
+    this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt abgeschlossen'});
+  }
 
-    // calculate hours/price
-    // iterate through projectLecturers and sum the hours multiplied with the hourlyRate of the lecturer
-    let price = 0;
+  calculateTotalCost() {
+    let newCosts = 0;
+    this.projectLecturers.controls.forEach(lecturer => {
+      const hours = lecturer.get('hours').value || 0;
+      const hourlyRate = lecturer.get('lecturer').value.hourlyRate || 0;
+      newCosts += hours * hourlyRate;
+    });
+    newCosts += this.travelCosts.value;
+    this.totalCost = newCosts;
+    console.log(this.totalCost)
+  }
 
-    console.log("Kosten: " + price)
+  addLecturer() {
+    const lecturerGroup = this.formBuilder.group({
+      hours: [null, Validators.required],
+      hourlyRate: [null, Validators.required]
+    });
+    this.projectLecturers.push(lecturerGroup);
   }
 
   get title(): AbstractControl {
     return this.newProjectForm.get("title");
   }
 
-  get text(): AbstractControl {
-    return this.newProjectForm.get("text");
+  get travelCosts(): AbstractControl {
+    return this.newProjectForm.get("travelCosts");
   }
 
   get helptext(): AbstractControl {
