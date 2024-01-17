@@ -25,4 +25,5 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::apiResource('faculties', \App\Http\Controllers\Admin\FacultyController::class);
     Route::apiResource('users', \App\Http\Controllers\Admin\UserController::class)->except('update');
+    Route::apiResource('lecturers', \App\Http\Controllers\Admin\LecturerController::class)->except('update');
 });
