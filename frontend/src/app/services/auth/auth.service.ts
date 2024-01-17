@@ -31,7 +31,7 @@ export class AuthService {
   }
 
   public get isLoggedInAndVerified(): boolean {
-    return this._user.value != null && this._user.value.verified;
+    return this._user.value != null && this.token != null && this._user.value.verified;
   }
 
   constructor(private http: HttpClient,
