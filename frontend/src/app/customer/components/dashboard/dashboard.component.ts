@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {LecturerService} from "../../../services/lecturer.service";
 import {MegaMenuItem} from "primeng/api";
 import {AuthService} from "../../../services/auth/auth.service";
+import {ExpenseService} from "../../../services/expense.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -12,11 +13,13 @@ export class DashboardComponent implements OnInit {
   items: MegaMenuItem[] | undefined;
 
   constructor(private lecturerService: LecturerService,
+              private expenseService: ExpenseService,
               public authService: AuthService) {
   }
 
   ngOnInit() {
     this.lecturerService.getAll();
+    this.expenseService.getAll();
 
     this.items = [
       {

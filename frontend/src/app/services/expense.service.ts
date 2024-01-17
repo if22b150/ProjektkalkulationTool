@@ -1,30 +1,30 @@
 import { Injectable } from '@angular/core';
 import {BehaviorSubject, Observable} from "rxjs";
-import {Lecturer} from "../models/lecturer.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {Expense} from "../models/expense.model";
 
 @Injectable({
   providedIn: 'root'
 })
-export class LecturerService {
-  private _lecturers: BehaviorSubject<Lecturer[]>;
+export class ExpenseService {
+  private _expenses: BehaviorSubject<Expense[]>;
 
-  public get lecturers$(): Observable<Lecturer[]> {
-    return this._lecturers.asObservable();
+  public get expenses$(): Observable<Expense[]> {
+    return this._expenses.asObservable();
   }
 
-  public get lecturers(): Lecturer[] {
-    return this._lecturers.value;
+  public get expenses(): Expense[] {
+    return this._expenses.value;
   }
 
   constructor(private http: HttpClient) {
-    this._lecturers = new BehaviorSubject<Lecturer[]>(null);
+    this._expenses = new BehaviorSubject<Expense[]>(null);
   }
 
   getAll(): void {
-    this.http.get<Lecturer[]>(environment.apiUrl + `lecturers`)
-      .subscribe(lecturers => this._lecturers.next(lecturers));
+    this.http.get<Expense[]>(environment.apiUrl + `expenses`)
+      .subscribe(expenses => this._expenses.next(expenses));
   }
 
   // create(name: string): Observable<Lecturer> {

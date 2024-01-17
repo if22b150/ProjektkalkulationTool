@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { MessageService } from 'primeng/api';
+import {ExpenseService} from "../../../../services/expense.service";
 
 @Component({
   selector: 'app-new-project',
@@ -13,30 +14,17 @@ export class NewProjectComponent implements OnInit{
   loading: boolean = false;
   totalCost: number = 0;
 
-  materialCostsList = [
-    {
-      name: "Sachkosten 1",
-      costs: 2500
-    },
-    {
-      name: "Sachkosten 2",
-      costs: 2500
-    },
-    {
-      name: "Sachkosten 3",
-      costs: 2500
-    },
-  ];
-
-  constructor(private formBuilder: FormBuilder, private messageService: MessageService) {
+  constructor(private formBuilder: FormBuilder,
+              private messageService: MessageService,
+              public expenseService: ExpenseService) {
 
   }
 
   ngOnInit() {
     this.newProjectForm = this.formBuilder.group({
       title: [null, [Validators.required]],
-      travelCosts: [null, [Validators.required]],
-      materialCosts: [[]],
+      // travelCosts: [null, [Validators.required]],
+      expenses: [[]],
       projectLecturers: this.formBuilder.array([]),
     })
   }
@@ -65,9 +53,9 @@ export class NewProjectComponent implements OnInit{
       const hourlyRate = lecturer.get('lecturer').value.hourlyRate || 0;
       newCosts += hours * hourlyRate;
     });
-    newCosts += this.travelCosts.value;
-    this.materialCosts.value.forEach(m => {
-      newCosts += m.costs/100;
+    // newCosts += this.travelCosts.value;
+    this.expenses.value.forEach(e => {
+      newCosts += e.price;
     })
     this.totalCost = newCosts;
   }
@@ -84,9 +72,9 @@ export class NewProjectComponent implements OnInit{
     return this.newProjectForm.get("title");
   }
 
-  get travelCosts(): AbstractControl {
-    return this.newProjectForm.get("travelCosts");
-  }
+  // get travelCosts(): AbstractControl {
+  //   return this.newProjectForm.get("travelCosts");
+  // }
 
   get helptext(): AbstractControl {
     return this.newProjectForm.get("helptext");
@@ -96,7 +84,7 @@ export class NewProjectComponent implements OnInit{
     return this.newProjectForm.get("projectLecturers") as FormArray;
   }
 
-  get materialCosts(): AbstractControl {
-    return this.newProjectForm.get("materialCosts");
+  get expenses(): AbstractControl {
+    return this.newProjectForm.get("expenses");
   }
 }

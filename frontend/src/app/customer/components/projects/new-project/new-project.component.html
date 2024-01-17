@@ -3,42 +3,42 @@
   <div class="p-fluid">
 
     <div class="field mb-2">
-      <label for="title" class="mb-1">Reservierung</label>
+      <label for="title" class="mb-1">Projekttitel</label>
       <input id="title" type="text" class="w-full" pInputText formControlName="title" placeholder="Name">
       <small *ngIf="title?.errors?.required && submitted" class="p-error">
         Ein Titel ist erforderlich.
       </small>
     </div>
 
-    <div class="field mb-2">
-      <label for="travelCosts" class="mb-1">Reisekosten (€)</label>
-      <p-inputNumber id="travelCosts" mode="currency" currency="EUR" locale="de-DE" [minFractionDigits]="2"
-                     class="w-full" formControlName="travelCosts" pattern="^\d+(\.\d{1,2})?$" min="0" max="10000" />
-      <small *ngIf="travelCosts?.errors?.required && submitted" class="p-error">
-        Ein Text ist erforderlich.
-      </small>
-      <small *ngIf="travelCosts?.errors?.pattern && submitted" class="p-error">
-        Bitte geben Sie einen gültigen Euro-Betrag ein.
-      </small>
-      <small *ngIf="travelCosts?.errors?.min && submitted" class="p-error">
-        Der Betrag darf nicht negativ sein.
-      </small>
-      <small *ngIf="travelCosts?.errors?.max && submitted" class="p-error">
-        Der Betrag darf nicht größer als 10.000 Euro sein.
-      </small>
-    </div>
+<!--    <div class="field mb-2">-->
+<!--      <label for="travelCosts" class="mb-1">Reisekosten (€)</label>-->
+<!--      <p-inputNumber id="travelCosts" mode="currency" currency="EUR" locale="de-DE" [minFractionDigits]="2"-->
+<!--                     class="w-full" formControlName="travelCosts" pattern="^\d+(\.\d{1,2})?$" min="0" max="10000" />-->
+<!--      <small *ngIf="travelCosts?.errors?.required && submitted" class="p-error">-->
+<!--        Ein Text ist erforderlich.-->
+<!--      </small>-->
+<!--      <small *ngIf="travelCosts?.errors?.pattern && submitted" class="p-error">-->
+<!--        Bitte geben Sie einen gültigen Euro-Betrag ein.-->
+<!--      </small>-->
+<!--      <small *ngIf="travelCosts?.errors?.min && submitted" class="p-error">-->
+<!--        Der Betrag darf nicht negativ sein.-->
+<!--      </small>-->
+<!--      <small *ngIf="travelCosts?.errors?.max && submitted" class="p-error">-->
+<!--        Der Betrag darf nicht größer als 10.000 Euro sein.-->
+<!--      </small>-->
+<!--    </div>-->
 
     <div class="field mb-2">
-      <label for="materialCosts">
-        Sachkosten
+      <label for="expenses">
+        Aufwände
       </label>
 
-      <p-multiSelect id="materialCosts" formControlName="materialCosts"
-                  [options]="materialCostsList" optionLabel="name"  placeholder="Auswählen">
-        <ng-template let-materialCost pTemplate="item">
+      <p-multiSelect id="expenses" formControlName="expenses"
+                  [options]="expenseService.expenses$|async" optionLabel="name"  placeholder="Auswählen">
+        <ng-template let-expense pTemplate="item">
           <div class="flex align-items-center gap-2">
-            <div>{{ materialCost.name }}</div>
-            <div>({{ materialCost.costs/100|currency:"EUR" }})</div>
+            <div>{{ expense.name }}</div>
+            <div>({{ expense.price|currency:"EUR" }})</div>
           </div>
         </ng-template>
       </p-multiSelect>
@@ -54,7 +54,7 @@
   <div class="flex justify-content-end mb-2">
     <div class="flex flex-column align-items-end">
       <h4 class="m-0">Gesamtkosten</h4>
-      <p class="m-0">{{totalCost}}</p>
+      <p class="m-0">{{totalCost|currency:"EUR"}}</p>
     </div>
   </div>
 
