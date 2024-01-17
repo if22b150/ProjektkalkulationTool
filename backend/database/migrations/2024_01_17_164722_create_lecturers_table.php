@@ -17,6 +17,9 @@ return new class extends Migration
             $table->string('name');
             $table->integer('hourly_rate');
             $table->integer('daily_rate');
+            $table->unsignedBigInteger('faculty_id');
+
+            $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
         });
     }
 

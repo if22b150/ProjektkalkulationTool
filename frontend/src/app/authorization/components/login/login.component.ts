@@ -14,9 +14,6 @@ import {ERole} from "../../../models/user.model";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading: boolean;
-  newVerifyEmail: boolean = false;
-  verifyEmailSent: boolean = false;
-  messages: Message[];
 
   constructor(private fb: FormBuilder,
               private authService: AuthService,
@@ -29,6 +26,8 @@ export class LoginComponent implements OnInit {
       email: [null, [Validators.required, Validators.email]],
       password: [null, Validators.required]
     })
+    if(this.authService.user?.passwordReset)
+      this.email.setValue(this.authService.user.email)
   }
 
   submit() {
@@ -45,8 +44,9 @@ export class LoginComponent implements OnInit {
       .subscribe(
         {
           next: (user) => {
-            if(user.verified) {
-              let route = user.role == ERole.ADMIN ? '/admin' : '/customer'
+            if(user.passwordReset) {
+              let route = user.role == ERole.ADMIN ? '/admin' : '/customer';
+              console.log(route)
               this.router.navigate([route]).then(() => {
                 this.messageService.add({
                   severity: 'success',
@@ -54,15 +54,15 @@ export class LoginComponent implements OnInit {
                   detail: 'Der Login war erfolgreich.'
                 });
               });
+            } else {
+              this.router.navigate(['/auth/change-password']).then(() => {
+                this.messageService.add({
+                  severity: 'error',
+                  summary: 'Neues Passwort benötigt',
+                  detail: 'Ein neues Passwort muss gesetzt werden.'
+                });
+              });
             }
-            // else {
-            //   this.newVerifyEmail = true;
-            //   this.messageService.add({
-            //     severity: 'error',
-            //     summary: 'Verifizierung ausstehend',
-            //     detail: 'Bestätige deine E-Mail Adresse über die Verifizierungs-Mail in deinem Postkasten.'
-            //   });
-            // }
           },
           error: (e) => {
             if(e.error.message == "Credentials incorrect")

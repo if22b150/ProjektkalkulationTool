@@ -13,7 +13,8 @@ class LecturerResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'hourlyRate' => $this->hourly_rate,
-            'dailyRate' => $this->daily_rate
+            'dailyRate' => $this->daily_rate,
+            'faculty' => new FacultyResource($this->faculty)
         ];
     }
 }

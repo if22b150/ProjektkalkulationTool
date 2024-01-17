@@ -46,12 +46,13 @@ class LecturerRepository implements ILecturerRepository
         return $lecturer->save() ? $lecturer : null;
     }
 
-    public function create(string $name, int $hourlyRate, int $dailyRate): ?Lecturer
+    public function create(string $name, int $hourlyRate, int $dailyRate, int $facultyId): ?Lecturer
     {
         $lecturer = new Lecturer([
             'name' => $name,
-            'hourlyRate' => $hourlyRate,
-            'dailyRate' => $dailyRate
+            'hourly_rate' => $hourlyRate,
+            'daily_rate' => $dailyRate,
+            'faculty_id' => $facultyId
         ]);
         return $this->save($lecturer);
     }

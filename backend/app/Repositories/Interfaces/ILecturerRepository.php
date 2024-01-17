@@ -19,7 +19,7 @@ interface ILecturerRepository
 
     public function save(Lecturer $faculty): ?Lecturer;
 //
-    public function create(string $name, int $hourlyRate, int $dailyRate): ?Lecturer;
+    public function create(string $name, int $hourlyRate, int $dailyRate, int $facultyId): ?Lecturer;
 
     public function update(int $id, string $name): ?Lecturer;
 }

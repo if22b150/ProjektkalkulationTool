@@ -13,7 +13,7 @@
           </label>
 
           <p-dropdown [id]="newProject ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
-                      formControlName="lecturer" [options]="(lecturerService.lecturers$|async)" optionLabel="name"  placeholder="Auswählen"></p-dropdown>
+                      formControlName="lecturer" [options]="lecturerService.lecturers$|async|lecturersByFaculty:authService.user.faculty.id" optionLabel="name"  placeholder="Auswählen"></p-dropdown>
 
         </div>
 

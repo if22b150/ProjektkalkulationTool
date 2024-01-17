@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 
+use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\LoginRequest;
 use App\Http\Resources\UserLoginResource;
+use App\Http\Resources\UserResource;
 use App\Repositories\Interfaces\IUserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -38,5 +40,10 @@ class AuthController extends Controller
         $request->user()->tokens()->delete();
         return response()->json(['message' => 'Logged out']);
     }
+
+    public function changePassword(ChangePasswordRequest $request) {
+        return new UserResource($this->userRepository->setPassword($request->user()->id, Hash::make($request->password)));
+    }
+
 }
 

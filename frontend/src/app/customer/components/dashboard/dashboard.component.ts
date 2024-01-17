@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {LecturerService} from "../../../services/lecturer.service";
 import {MegaMenuItem} from "primeng/api";
+import {AuthService} from "../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -10,7 +11,8 @@ import {MegaMenuItem} from "primeng/api";
 export class DashboardComponent implements OnInit {
   items: MegaMenuItem[] | undefined;
 
-  constructor(private lecturerService: LecturerService) {
+  constructor(private lecturerService: LecturerService,
+              public authService: AuthService) {
   }
 
   ngOnInit() {
@@ -25,10 +27,10 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
-        routerLink: ['..', '..'],
+        // routerLink: ['..', '..'],
         command: () => {
           // LOGOUT LOGIC
-          // this.authService.logout();
+          this.authService.logout();
         }
       }
     ];

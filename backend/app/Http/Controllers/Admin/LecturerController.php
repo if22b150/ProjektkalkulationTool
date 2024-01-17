@@ -6,6 +6,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Lecturer\StoreLecturerRequest;
 use App\Http\Resources\LecturerResource;
+use App\Models\Faculty;
 use App\Repositories\Interfaces\ILecturerRepository;
 
 
@@ -24,12 +25,13 @@ class LecturerController extends Controller
         return new LecturerResource($this->lecturerRepository->getOne($id));
     }
 
-    public function store(StoreLecturerRequest $request)
+    public function store(StoreLecturerRequest $request, Faculty $faculty)
     {
         return new LecturerResource($this->lecturerRepository->create(
             $request->name,
             $request->hourlyRate,
-            $request->dailyRate
+            $request->dailyRate,
+            $faculty->id
         ));
     }
 

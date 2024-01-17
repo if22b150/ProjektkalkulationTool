@@ -3,6 +3,7 @@ import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Project} from "../../../../../models/project.model";
 import {LecturerService} from "../../../../../services/lecturer.service";
 import {filter, take} from "rxjs";
+import {AuthService} from "../../../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-project-lecturers',
@@ -20,6 +21,7 @@ export class ProjectLecturersComponent implements OnInit {
   @Input() newProject: boolean;
 
   constructor(private formBuilder: FormBuilder,
+              public authService: AuthService,
               public lecturerService: LecturerService) {
   }
 

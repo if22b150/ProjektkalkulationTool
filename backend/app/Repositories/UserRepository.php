@@ -76,8 +76,18 @@ class UserRepository implements IUserRepository
             'password' => $password,
             'role' => $role,
             'faculty_id' => $faculty_id,
-            'verified' => true
         ]);
+        $user->markEmailAsVerified();
+        return $this->save($user);
+    }
+
+    public function setPassword(int $id, string $password)
+    {
+        /** @var User $user */
+        $user = $this->getOne($id);
+        $user->password = $password;
+        $user->password_reset = true;
+
         return $this->save($user);
     }
 }

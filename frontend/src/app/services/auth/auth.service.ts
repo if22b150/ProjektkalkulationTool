@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable, take, tap} from "rxjs";
+import {BehaviorSubject, filter, Observable, take, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
@@ -63,5 +63,18 @@ export class AuthService {
           this.router.navigate(['auth']);
         }))
       .subscribe();
+  }
+
+  public changePassword(password: string, password_confirmation: string): Observable<User>
+  {
+    return this.http.put<User>(environment.apiUrl + 'change-password', {password, password_confirmation})
+      .pipe(
+        filter(u => u != null),
+        take(1),
+        tap((user: User) => {
+          localStorage.removeItem('user');
+          this._user.next(user);
+        })
+      );
   }
 }

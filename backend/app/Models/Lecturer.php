@@ -14,6 +14,11 @@ class Lecturer  extends Model
     protected $fillable = [
         'name',
         'hourly_rate',
-        'daily_rate'
+        'daily_rate',
+        'faculty_id'
     ];
+
+    public function faculty() {
+        return $this->belongsTo(Faculty::class, 'faculty_id');
+    }
 }
