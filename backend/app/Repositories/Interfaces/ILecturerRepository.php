@@ -9,7 +9,7 @@ interface ILecturerRepository
 {
     public function getOne(int $id): ?Lecturer;
 
-    public function getAll(?string $role = null): Collection;
+    public function getAll(): Collection;
 
     public function getWhere($column, $value, array $related = null): Collection;
 

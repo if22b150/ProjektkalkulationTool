@@ -2,7 +2,9 @@
 
 namespace App\Providers;
 
+use App\Repositories\ExpenseRepository;
 use App\Repositories\FacultyRepository;
+use App\Repositories\Interfaces\IExpenseRepository;
 use App\Repositories\Interfaces\IFacultyRepository;
 use App\Repositories\Interfaces\ILecturerRepository;
 use App\Repositories\Interfaces\IUserRepository;
@@ -21,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IUserRepository::class, UserRepository::class);
         $this->app->bind(IFacultyRepository::class, FacultyRepository::class);
         $this->app->bind(ILecturerRepository::class, LecturerRepository::class);
+        $this->app->bind(IExpenseRepository::class, ExpenseRepository::class);
     }
 
     /**

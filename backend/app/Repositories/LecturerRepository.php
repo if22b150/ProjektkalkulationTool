@@ -16,11 +16,8 @@ class LecturerRepository implements ILecturerRepository
         return $this->exists($id) ? Lecturer::find($id) : null;
     }
 
-    public function getAll(?string $role = null): Collection
+    public function getAll(): Collection
     {
-        if (!$role)
-            return Lecturer::all();
-
         return Lecturer::all();
     }
 

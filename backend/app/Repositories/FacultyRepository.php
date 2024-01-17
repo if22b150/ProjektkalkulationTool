@@ -16,11 +16,8 @@ class FacultyRepository implements IFacultyRepository
         return $this->exists($id) ? Faculty::find($id) : null;
     }
 
-    public function getAll(?string $role = null): Collection
+    public function getAll(): Collection
     {
-        if (!$role)
-            return Faculty::all();
-
         return Faculty::all();
     }
 

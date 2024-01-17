@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\Faculty;
+use App\Models\Expense;
 use Illuminate\Database\Eloquent\Collection;
 
-interface IFacultyRepository
+interface IExpenseRepository
 {
-    public function getOne(int $id): ?Faculty;
+    public function getOne(int $id): ?Expense;
 
     public function getAll(): Collection;
 
@@ -17,9 +17,9 @@ interface IFacultyRepository
 
     public function exists(int $id): bool;
 
-    public function save(Faculty $faculty): ?Faculty;
+    public function save(Expense $expense): ?Expense;
 //
-    public function create(string $name): ?Faculty;
+    public function create(string $name, int $price): ?Expense;
 
-    public function update(int $id, string $name): ?Faculty;
+    public function update(int $id, string $name): ?Expense;
 }

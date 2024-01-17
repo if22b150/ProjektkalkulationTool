@@ -21,7 +21,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     Route::put('change-password', [\App\Http\Controllers\AuthController::class, 'changePassword']);
 
-    Route::get('lecturers', [\App\Http\Controllers\Admin\LecturerController::class, 'index']);
+    Route::get('lecturers', [\App\Http\Controllers\LecturerController::class, 'index']);
+    Route::get('expenses', [\App\Http\Controllers\ExpenseController::class, 'index']);
 });
 
 // admin routes
@@ -29,4 +30,5 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
     Route::apiResource('faculties', \App\Http\Controllers\Admin\FacultyController::class);
     Route::apiResource('faculties.lecturers', \App\Http\Controllers\Admin\LecturerController::class)->except('update');
     Route::apiResource('users', \App\Http\Controllers\Admin\UserController::class)->except('update');
+    Route::apiResource('expenses', \App\Http\Controllers\Admin\ExpenseController::class)->except('update');
 });
