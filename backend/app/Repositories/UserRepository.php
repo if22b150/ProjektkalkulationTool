@@ -6,12 +6,12 @@ use App\Enums\ERole;
 use App\Models\User;
 use App\Repositories\Interfaces\IUserRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Hash;
 
 class UserRepository implements IUserRepository
 {
     public function __construct()
-    {}
+    {
+    }
 
     public function getOne(int $id): ?User
     {
@@ -28,7 +28,7 @@ class UserRepository implements IUserRepository
 
     public function getWhere($column, $value, array $related = null): Collection
     {
-        if($related)
+        if ($related)
             return User::where($column, $value)->where([$related])->get();
         return User::where($column, $value)->get();
     }
@@ -65,18 +65,19 @@ class UserRepository implements IUserRepository
 //
 //        return $this->save($user);
 //    }
-//
-//    public function create(string $email,
-//                           string $wko_number,
-//                           ERole $role,
-//                           string $password,
-//                           string $language): ?User
-//    {
-//        $user = new User([
-//            'email' => $email,
-//            'password' => Hash::make($password),
-//            'role' => $role
-//        ]);
-//        return $user->save() ? $user : null;
-//    }
+
+    public function create(string $email,
+                           ERole  $role,
+                           string $password,
+                           ?int   $faculty_id): ?User
+    {
+        $user = new User([
+            'email' => $email,
+            'password' => $password,
+            'role' => $role,
+            'faculty_id' => $faculty_id,
+            'verified' => true
+        ]);
+        return $this->save($user);
+    }
 }

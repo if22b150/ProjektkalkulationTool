@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->unsignedBigInteger('faculty_id')->nullable();
+            $table->boolean('password_reset')->default(false);
 
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');
         });
@@ -25,6 +26,7 @@ return new class extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->dropConstrainedForeignId('faculty_id');
+            $table->dropColumn('password_reset');
         });
     }
 };

@@ -19,7 +19,8 @@ class InitialUserSeeder extends Seeder
         $admin = new User([
             'email' => 'if22b150@technikum-wien.at',
             'password' => Hash::make('123456'),
-            'role' => ERole::ADMIN
+            'role' => ERole::ADMIN,
+            'password_reset' => true
         ]);
         $admin->markEmailAsVerified();
         $admin->save();

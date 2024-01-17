@@ -21,6 +21,7 @@ class User extends Authenticatable implements MustVerifyEmail
         'email',
         'password',
         'role',
+        'password_reset',
 
         'faculty_id'
     ];
@@ -43,6 +44,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
+        'password_reset' => 'boolean',
         'role' => ERole::class
     ];
+
+    public function faculty() {
+        return $this->belongsTo(Faculty::class, 'faculty_id');
+    }
 }

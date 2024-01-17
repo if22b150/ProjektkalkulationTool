@@ -21,6 +21,7 @@ class UserLoginResource extends JsonResource
             'email' => $this->email,
             'role' => $this->role,
             'verified' => $this->email_verified_at != null,
+            'passwordReset' => $this->password_reset,
             'token' => $this->bearerToken ?? $this->createToken('token', [$this->role->name])->plainTextToken
         ];
     }

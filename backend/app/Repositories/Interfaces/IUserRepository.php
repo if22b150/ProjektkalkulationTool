@@ -25,7 +25,8 @@ interface IUserRepository
 //    public function update(int $id,
 //                           string $email): ?User;
 //
-//    public function create(string $email,
-//                           ERole $role,
-//                           string $password): ?User;
+    public function create(string $email,
+                           ERole $role,
+                           string $password,
+                           ?int $faculty_id): ?User;
 }
