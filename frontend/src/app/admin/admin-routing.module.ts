@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {SettingsComponent} from "./components/settings/settings.component";
 import {UsersComponent} from "./components/users/users.component";
-import {FacultiesComponent} from "./components/faculties/faculties.component";
+import {FacultyViewComponent} from "./views/faculty-view/faculty-view.component";
 
 const routes: Routes = [
   {
@@ -11,7 +11,7 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: 'users', component: UsersComponent },
-      { path: 'faculties', component: FacultiesComponent },
+      { path: 'faculties', component: FacultyViewComponent },
       { path: 'settings', component: SettingsComponent },
       {path: '', redirectTo: '/admin/users', pathMatch: 'full'}
     ]

@@ -1,0 +1,26 @@
+<div class="flex align-items-center flex-wrap gap-4 mb-4">
+    <h1 class="m-0">Fakultäten</h1>
+    <app-faculties></app-faculties>
+  </div>
+  <app-loading-spinner-admin *ngIf="(facultyService.loading$|async)"></app-loading-spinner-admin>
+  <div class="card" *ngIf="!(facultyService.loading$|async) && (facultyService.faculties$|async)">
+    <p-table [value]="(facultyService.faculties$|async)" [tableStyle]="{'min-width': '60rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id" style="width:20%">Id <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th>Aktionen</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-faculty>
+        <tr>
+          <td>{{faculty.id}}</td>
+          <td>{{faculty.name}}</td>
+          <td>
+            <app-faculty-delete [faculty]="faculty"></app-faculty-delete>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+  
+  </div>

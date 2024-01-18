@@ -17,6 +17,9 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { UsersComponent } from './components/users/users.component';
 import { FacultiesComponent } from './components/faculties/faculties.component';
 import {CardModule} from "primeng/card";
+import { DialogModule } from 'primeng/dialog';
+import { FacultyViewComponent } from './views/faculty-view/faculty-view.component';
+import { DeleteFacultyComponent } from './views/faculty-view/delete-faculty/delete-faculty.component';
 
 @NgModule({
   providers: [
@@ -26,7 +29,9 @@ import {CardModule} from "primeng/card";
     DashboardComponent,
     SettingsComponent,
     UsersComponent,
-    FacultiesComponent
+    FacultiesComponent,
+    FacultyViewComponent,
+    DeleteFacultyComponent
   ],
   imports: [
     CommonModule,
@@ -41,7 +46,8 @@ import {CardModule} from "primeng/card";
     InputTextModule,
     AutoFocusModule,
     MegaMenuModule,
-    CardModule
+    CardModule,
+    DialogModule
   ]
 })
 export class AdminModule { }
