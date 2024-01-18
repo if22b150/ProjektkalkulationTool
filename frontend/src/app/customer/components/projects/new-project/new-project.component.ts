@@ -2,6 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import { MessageService } from 'primeng/api';
 import {ExpenseService} from "../../../../services/expense.service";
+import {ProjectTypeService} from "../../../../services/project-type.service";
+import {filter, take} from "rxjs";
+import {LecturerService} from "../../../../services/lecturer.service";
 
 @Component({
   selector: 'app-new-project',
@@ -16,6 +19,8 @@ export class NewProjectComponent implements OnInit{
 
   constructor(private formBuilder: FormBuilder,
               private messageService: MessageService,
+              public lecturerService: LecturerService,
+              public projectTypeService: ProjectTypeService,
               public expenseService: ExpenseService) {
 
   }
@@ -24,9 +29,18 @@ export class NewProjectComponent implements OnInit{
     this.newProjectForm = this.formBuilder.group({
       title: [null, [Validators.required]],
       // travelCosts: [null, [Validators.required]],
+      projectType: [null, [Validators.required]],
       projectExpenses: this.formBuilder.array([]),
       projectLecturers: this.formBuilder.array([]),
     })
+
+    this.projectTypeService.projectTypes$
+      .pipe(filter(p => p != null), take(1))
+      .subscribe({
+        next: (p) => {
+          this.projectType.setValue(p[0]);
+        }
+      })
   }
 
   create() {
@@ -72,13 +86,14 @@ export class NewProjectComponent implements OnInit{
     return this.newProjectForm.get("title");
   }
 
+  get projectType(): AbstractControl {
+    return this.newProjectForm.get("projectType");
+  }
+
   // get travelCosts(): AbstractControl {
   //   return this.newProjectForm.get("travelCosts");
   // }
 
-  get helptext(): AbstractControl {
-    return this.newProjectForm.get("helptext");
-  }
 
   get projectLecturers(): FormArray {
     return this.newProjectForm.get("projectLecturers") as FormArray;

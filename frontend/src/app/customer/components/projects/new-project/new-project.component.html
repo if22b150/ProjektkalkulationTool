@@ -1,6 +1,25 @@
-<form [formGroup]="newProjectForm">
+<form [formGroup]="newProjectForm"
+      *ngIf="(projectTypeService.projectTypes$|async)
+              && (expenseService.expenses$|async)
+              && (lecturerService.lecturers$|async); else loadingSpinner">
 
   <div class="p-fluid">
+
+    <div class="field mb-2">
+      <label for="projectType">
+        Projektart
+      </label>
+
+      <p-dropdown id="projectType" formControlName="projectType"
+                     [options]="projectTypeService.projectTypes$|async" optionLabel="name"  placeholder="Auswählen">
+        <ng-template let-projectType pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div>{{ projectType.name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+
+    </div>
 
     <div class="field mb-4">
       <label for="title" class="mb-1 font-bold">Projekttitel</label>
@@ -57,3 +76,7 @@
   <p-toast></p-toast>
 
 </form>
+
+<ng-template #loadingSpinner>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

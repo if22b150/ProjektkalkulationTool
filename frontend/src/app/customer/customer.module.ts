@@ -46,6 +46,7 @@ import { ProjectExpensesComponent } from './components/projects/new-project/proj
     InputNumberModule,
     MegaMenuModule,
     MultiSelectModule,
+    DropdownModule,
     SharedModule
   ]
 })

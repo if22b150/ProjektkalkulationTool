@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {filter, take} from "rxjs";
 import {ExpenseService} from "../../../../../services/expense.service";
@@ -10,7 +10,7 @@ import {Project} from "../../../../../models/project.model";
   templateUrl: './project-expenses.component.html',
   styleUrls: ['./project-expenses.component.scss']
 })
-export class ProjectExpensesComponent {
+export class ProjectExpensesComponent implements OnInit{
 // This component will be used when creating a new project, but also when editing an existing project
   // Therefore there needs to be a distinction, which is done via the "newProject" boolean, which gets passed from the outside component (either the new-project or hte edit-project component)
   // When newProject is true, "project" is not set, when it is false, "project" is set with the already existing project
