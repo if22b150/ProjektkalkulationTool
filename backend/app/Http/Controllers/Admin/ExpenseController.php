@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Expense\StoreExpenseRequest;
-use App\Http\Requests\Faculty\StoreFacultyRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Repositories\Interfaces\IExpenseRepository;
 
@@ -25,7 +24,7 @@ class ExpenseController extends Controller
 
     public function store(StoreExpenseRequest $request)
     {
-        return new ExpenseResource($this->expenseRepository->create($request->name, $request->price));
+        return new ExpenseResource($this->expenseRepository->create($request->name));
     }
 
 //    public function update(StoreFacultyRequest $request, int $id)

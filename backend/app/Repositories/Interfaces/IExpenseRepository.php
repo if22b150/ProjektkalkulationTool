@@ -19,7 +19,7 @@ interface IExpenseRepository
 
     public function save(Expense $expense): ?Expense;
 //
-    public function create(string $name, int $price): ?Expense;
+    public function create(string $name): ?Expense;
 
     public function update(int $id, string $name): ?Expense;
 }

@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Faculty\StoreFacultyRequest;
 use App\Http\Resources\ExpenseResource;
 use App\Repositories\Interfaces\IExpenseRepository;
 

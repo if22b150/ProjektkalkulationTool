@@ -43,11 +43,10 @@ class ExpenseRepository implements IExpenseRepository
         return $expense->save() ? $expense : null;
     }
 
-    public function create(string $name, int $price): ?Expense
+    public function create(string $name): ?Expense
     {
         $expense = new Expense([
-            'name' => $name,
-            'price' => $price
+            'name' => $name
         ]);
         return $this->save($expense);
     }
