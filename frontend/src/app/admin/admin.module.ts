@@ -10,7 +10,6 @@ import {InputTextModule} from "primeng/inputtext";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
 import {MegaMenuModule} from "primeng/megamenu";
-import {MenuModule} from "primeng/menu";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import {SharedModule} from "../shared/shared.module";
 import { SettingsComponent } from './components/settings/settings.component';
