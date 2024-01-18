@@ -6,6 +6,7 @@ use App\Enums\ERole;
 use App\Models\Expense;
 use App\Models\Faculty;
 use App\Models\Lecturer;
+use App\Models\ProjectType;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -83,21 +84,36 @@ class InitialUserSeeder extends Seeder
         $lecturer3->save();
 
         $expense1 = new Expense([
-            'name' => 'Reiseaufwand',
-            'price' => 250
+            'name' => 'Reiseaufwand'
         ]);
         $expense1->save();
 
         $expense2 = new Expense([
-            'name' => 'Bewirtung',
-            'price' => 100
+            'name' => 'Bewirtung'
         ]);
         $expense2->save();
 
         $expense3 = new Expense([
-            'name' => 'Marketing und Werbung',
-            'price' => 500
+            'name' => 'Marketing und Werbung'
         ]);
         $expense3->save();
+
+        $projectType1 = new ProjectType([
+            'name' => 'Lehrgänge',
+            'code' => 'LG'
+        ]);
+        $projectType1->save();
+
+        $projectType2 = new ProjectType([
+            'name' => 'Internes Projekt',
+            'code' => 'IP'
+        ]);
+        $projectType2->save();
+
+        $projectType3 = new ProjectType([
+            'name' => 'Förderprojekte',
+            'code' => 'FP'
+        ]);
+        $projectType3->save();
     }
 }

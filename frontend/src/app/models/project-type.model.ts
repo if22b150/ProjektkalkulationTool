@@ -1,5 +1,5 @@
 import {AModel} from "./a-model.model";
 
-export interface Expense extends AModel {
+export interface ProjectType extends AModel {
   name: string;
 }

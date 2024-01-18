@@ -18,6 +18,7 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {MegaMenuModule} from "primeng/megamenu";
 import {SharedModule} from "../shared/shared.module";
 import {MultiSelectModule} from "primeng/multiselect";
+import { ProjectExpensesComponent } from './components/projects/new-project/project-expenses/project-expenses.component';
 
 @NgModule({
   providers: [
@@ -27,7 +28,8 @@ import {MultiSelectModule} from "primeng/multiselect";
     DashboardComponent,
     ProjectsComponent,
     NewProjectComponent,
-    ProjectLecturersComponent
+    ProjectLecturersComponent,
+    ProjectExpensesComponent
   ],
   imports: [
     CommonModule,
@@ -44,6 +46,7 @@ import {MultiSelectModule} from "primeng/multiselect";
     InputNumberModule,
     MegaMenuModule,
     MultiSelectModule,
+    DropdownModule,
     SharedModule
   ]
 })

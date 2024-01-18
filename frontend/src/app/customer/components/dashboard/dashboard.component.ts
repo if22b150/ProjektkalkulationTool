@@ -3,6 +3,7 @@ import {LecturerService} from "../../../services/lecturer.service";
 import {MegaMenuItem} from "primeng/api";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ExpenseService} from "../../../services/expense.service";
+import {ProjectTypeService} from "../../../services/project-type.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -14,12 +15,14 @@ export class DashboardComponent implements OnInit {
 
   constructor(private lecturerService: LecturerService,
               private expenseService: ExpenseService,
+              private projectTypeService: ProjectTypeService,
               public authService: AuthService) {
   }
 
   ngOnInit() {
     this.lecturerService.getAll();
     this.expenseService.getAll();
+    this.projectTypeService.getAll();
 
     this.items = [
       {
