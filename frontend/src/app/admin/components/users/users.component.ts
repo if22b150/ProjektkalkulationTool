@@ -3,6 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import {UserService} from "../../../services/user.service";
 import {MessageService} from "primeng/api";
 import {finalize} from "rxjs";
+import {FacultyService} from "../../../services/faculty.service";
 
 @Component({
   selector: 'app-users',
@@ -17,6 +18,7 @@ export class UsersComponent implements OnInit {
 
   constructor(private formBuilder: FormBuilder,
               public userService: UserService,
+              public facultyService: FacultyService,
               private messageService: MessageService) {
   }
 
