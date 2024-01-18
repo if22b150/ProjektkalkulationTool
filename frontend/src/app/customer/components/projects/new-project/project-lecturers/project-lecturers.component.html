@@ -18,10 +18,10 @@
         </div>
 
         <div class="flex align-items-center gap-2 flex-grow-1">
-          <label [for]="newProject ? 'new-project-hours-' + i : 'question-' + project.id + '-' + 'hours-' + i">
+          <label [for]="newProject ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
             Stunden
           </label>
-          <p-inputNumber [inputId]="newProject ? 'new-project-hours-' + i : 'question-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
+          <p-inputNumber [inputId]="newProject ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
         </div>
 
         <button pButton pRipple type="button" icon="pi pi-trash"

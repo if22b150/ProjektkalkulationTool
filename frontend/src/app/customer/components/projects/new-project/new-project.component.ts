@@ -24,7 +24,7 @@ export class NewProjectComponent implements OnInit{
     this.newProjectForm = this.formBuilder.group({
       title: [null, [Validators.required]],
       // travelCosts: [null, [Validators.required]],
-      expenses: [[]],
+      projectExpenses: this.formBuilder.array([]),
       projectLecturers: this.formBuilder.array([]),
     })
   }
@@ -54,9 +54,9 @@ export class NewProjectComponent implements OnInit{
       newCosts += hours * hourlyRate;
     });
     // newCosts += this.travelCosts.value;
-    this.expenses.value.forEach(e => {
-      newCosts += e.price;
-    })
+    this.projectExpenses.controls.forEach(expense => {
+      newCosts += expense.get('costs').value || 0;
+    });
     this.totalCost = newCosts;
   }
 
@@ -84,7 +84,7 @@ export class NewProjectComponent implements OnInit{
     return this.newProjectForm.get("projectLecturers") as FormArray;
   }
 
-  get expenses(): AbstractControl {
-    return this.newProjectForm.get("expenses");
+  get projectExpenses(): FormArray {
+    return this.newProjectForm.get("projectExpenses") as FormArray;
   }
 }
