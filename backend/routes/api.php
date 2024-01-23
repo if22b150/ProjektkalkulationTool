@@ -34,3 +34,8 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
     Route::apiResource('expenses', \App\Http\Controllers\Admin\ExpenseController::class)->except('update');
     Route::apiResource('project-types', \App\Http\Controllers\Admin\ProjectTypeController::class)->except('update');
 });
+
+// faculty user routes
+Route::middleware(['auth:sanctum', 'auth.faculty'])->prefix('faculties/{facultyId}')->name('faculties.')->group(function () {
+    Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only('store');
+});
