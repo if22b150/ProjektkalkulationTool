@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class ProjectExpense extends Pivot
 {
+    protected $table = 'project_expense';
+
     /**
      * The attributes that are mass assignable.
      *

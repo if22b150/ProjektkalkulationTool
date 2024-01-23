@@ -25,8 +25,6 @@ class StoreProjectRequest extends FormRequest
             'name' => ['required', 'string'],
             'costs' => ['required', 'integer'],
             'projectTypeId' => ['required', 'integer', 'exists:project_types,id'],
-            'userId' => ['required', 'integer', 'exists:users,id'],
-            'facultyId' => ['required', 'integer', 'exists:faculties,id'],
 
             'lecturers' => ['present', 'array'],
             'lecturers.*.id' => ['required', 'integer', 'exists:lecturers,id'],

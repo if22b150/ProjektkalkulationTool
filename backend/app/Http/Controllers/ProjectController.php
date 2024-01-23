@@ -15,14 +15,19 @@ class ProjectController extends Controller
                                 protected IProjectExpenseRepository $projectExpenseRepository)
     {}
 
-    public function store(StoreProjectRequest $request)
+    public function index(int $facultyId)
+    {
+        return ProjectResource::collection($this->projectRepository->getWhere('faculty_id', $facultyId));
+    }
+
+    public function store(StoreProjectRequest $request, int $facultyId)
     {
         $project = $this->projectRepository->create(
             $request->name,
             $request->costs,
             $request->projectTypeId,
-            $request->$request->user()->id,
-            $request->facultyId
+            $request->user()->id,
+            $facultyId
         );
 
         foreach ($request->lecturers as $lecturer) {

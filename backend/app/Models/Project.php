@@ -29,13 +29,9 @@ class Project extends Model
         return $this->belongsTo(Faculty::class, 'faculty_id');
     }
     public function lecturers() {
-        return $this->belongsToMany(Lecturer::class, 'project_lecturer', 'project_id', 'lecturer_id')
-            ->using(ProjectLecturer::class)
-            ->withPivot(['hours']);
+        return $this->hasMany(ProjectLecturer::class, 'project_id', 'id');
     }
     public function expenses() {
-        return $this->belongsToMany(Expense::class, 'project_expense', 'project_id', 'expense_id')
-            ->using(ProjectExpense::class)
-            ->withPivot(['costs']);
+        return $this->hasMany(ProjectExpense::class, 'project_id', 'id');
     }
 }

@@ -10,8 +10,7 @@ class ProjectLecturerResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'project_id' => $this->project->id,
+            'project_id' => $this->project_id,
             'lecturer' => new LecturerResource($this->lecturer),
             'hours' => $this->hours
         ];

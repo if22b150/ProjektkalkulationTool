@@ -14,4 +14,8 @@ class Expense  extends Model
     protected $fillable = [
         'name'
     ];
+
+    public function projects() {
+        return $this->belongsToMany(Project::class, 'project_expense');
+    }
 }
