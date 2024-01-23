@@ -8,20 +8,25 @@
         <input type="hidden" [value]="i" formControlName="id">
 
         <div class="flex align-items-center gap-2">
-          <label [for]="newProject ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i">
+          <label [for]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i">
             Vortragende/r
           </label>
 
-          <p-dropdown [id]="newProject ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
+          <p-dropdown [id]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
                       formControlName="lecturer" [options]="lecturerService.lecturers$|async|lecturersByFaculty:authService.user.faculty.id" optionLabel="name"  placeholder="Auswählen"></p-dropdown>
 
         </div>
 
         <div class="flex align-items-center gap-2 flex-grow-1">
-          <label [for]="newProject ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
+          <label [for]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
             Stunden
           </label>
-          <p-inputNumber [inputId]="newProject ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
+          <div>
+            <p-inputNumber [inputId]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
+            <small *ngIf="hours(i)?.errors?.required && submitted" class="p-error">
+              Stunden sind erforderlich.
+            </small>
+          </div>
         </div>
 
         <button pButton pRipple type="button" icon="pi pi-trash"

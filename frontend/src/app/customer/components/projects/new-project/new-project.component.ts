@@ -5,6 +5,10 @@ import {ExpenseService} from "../../../../services/expense.service";
 import {ProjectTypeService} from "../../../../services/project-type.service";
 import {filter, take} from "rxjs";
 import {LecturerService} from "../../../../services/lecturer.service";
+import Utils from "../../../../shared/utils";
+import {Project} from "../../../../models/project.model";
+import {ProjectExpense} from "../../../../models/project-expense.model";
+import {ProjectLecturer} from "../../../../models/project-lecturer.model";
 
 @Component({
   selector: 'app-new-project',
@@ -26,21 +30,25 @@ export class NewProjectComponent implements OnInit{
   }
 
   ngOnInit() {
-    this.newProjectForm = this.formBuilder.group({
-      title: [null, [Validators.required]],
-      // travelCosts: [null, [Validators.required]],
-      projectType: [null, [Validators.required]],
-      projectExpenses: this.formBuilder.array([]),
-      projectLecturers: this.formBuilder.array([]),
-    })
+    // this.newProjectForm = this.formBuilder.group({
+    //   name: [null, [Validators.required]],
+    //   // travelCosts: [null, [Validators.required]],
+    //   projectType: [null, [Validators.required]],
+    //   projectExpenses: this.formBuilder.array([]),
+    //   projectLecturers: this.formBuilder.array([]),
+    // })
+    //
+    // this.projectTypeService.projectTypes$
+    //   .pipe(filter(p => p != null), take(1))
+    //   .subscribe({
+    //     next: (p) => {
+    //       this.projectType.setValue(p[0]);
+    //     }
+    //   })
+  }
 
-    this.projectTypeService.projectTypes$
-      .pipe(filter(p => p != null), take(1))
-      .subscribe({
-        next: (p) => {
-          this.projectType.setValue(p[0]);
-        }
-      })
+  formChanges(fg: FormGroup) {
+    this.newProjectForm = fg;
   }
 
   create() {
@@ -61,29 +69,34 @@ export class NewProjectComponent implements OnInit{
   }
 
   calculateTotalCost() {
-    let newCosts = 0;
-    this.projectLecturers.controls.forEach(lecturer => {
-      const hours = lecturer.get('hours').value || 0;
-      const hourlyRate = lecturer.get('lecturer').value.hourlyRate || 0;
-      newCosts += hours * hourlyRate;
-    });
-    // newCosts += this.travelCosts.value;
+    let expenses: ProjectExpense[] = [];
     this.projectExpenses.controls.forEach(expense => {
-      newCosts += expense.get('costs').value || 0;
+      expenses.push({
+        costs: expense.get('costs').value || 0,
+        expense: expense.get('expense').value
+      });
     });
-    this.totalCost = newCosts;
+
+    let lecturers: ProjectLecturer[] = [];
+    this.projectLecturers.controls.forEach(lecturer => {
+      lecturers.push({
+        hours: lecturer.get('hours').value || 0,
+        lecturer: lecturer.get('lecturer').value
+      });
+    });
+
+    let project: Project = {
+      id: null,
+      lecturers: lecturers,
+      expenses: expenses,
+      name: this.name.value,
+      projectType: this.projectType.value
+    }
+    this.totalCost = Utils.calculateProjectCosts(project);
   }
 
-  addLecturer() {
-    const lecturerGroup = this.formBuilder.group({
-      hours: [null, Validators.required],
-      hourlyRate: [null, Validators.required]
-    });
-    this.projectLecturers.push(lecturerGroup);
-  }
-
-  get title(): AbstractControl {
-    return this.newProjectForm.get("title");
+  get name(): AbstractControl {
+    return this.newProjectForm.get("name");
   }
 
   get projectType(): AbstractControl {

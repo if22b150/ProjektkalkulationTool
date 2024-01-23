@@ -8,26 +8,31 @@
         <input type="hidden" [value]="i" formControlName="id">
 
         <div class="flex align-items-center gap-2">
-          <label [for]="newProject ? 'new-project-expense-' + i : 'project-' + project.id + '-' + 'expense-' + i">
+          <label [for]="!project ? 'new-project-expense-' + i : 'project-' + project.id + '-' + 'expense-' + i">
             Aufwandsart
           </label>
 
-          <p-dropdown [id]="newProject ? 'new-project-expense-' + i : 'project-' + project.id + '-' + 'expense-' + i"
+          <p-dropdown [id]="!project ? 'new-project-expense-' + i : 'project-' + project.id + '-' + 'expense-' + i"
                       formControlName="expense" [options]="expenseService.expenses$|async" optionLabel="name"  placeholder="Auswählen"></p-dropdown>
 
         </div>
 
         <div class="flex align-items-center gap-2 flex-grow-1">
-          <label [for]="newProject ? 'new-project-expense-costs-' + i : 'new-project-' + project.id + '-' + 'expense-costs-' + i">
+          <label [for]="!project ? 'new-project-expense-costs-' + i : 'new-project-' + project.id + '-' + 'expense-costs-' + i">
             Kosten
           </label>
-          <p-inputNumber [inputId]="newProject ? 'new-project-expense-costs-' + i : 'new-project-' + project.id + '-' + 'expense-costs-' + i"
-                         formControlName="costs"
-                         class="flex-grow-1"
-                         mode="currency"
-                         currency="EUR"
-                         locale="de-DE"
-                         placeholder="€"></p-inputNumber>
+          <div>
+            <p-inputNumber [inputId]="!project ? 'new-project-expense-costs-' + i : 'new-project-' + project.id + '-' + 'expense-costs-' + i"
+                           formControlName="costs"
+                           class="flex-grow-1"
+                           mode="currency"
+                           currency="EUR"
+                           locale="de-DE"
+                           placeholder="€"></p-inputNumber>
+            <small *ngIf="costs(i)?.errors?.required && submitted" class="p-error">
+              Kosten sind erforderlich.
+            </small>
+          </div>
         </div>
 
         <button pButton pRipple type="button" icon="pi pi-trash"

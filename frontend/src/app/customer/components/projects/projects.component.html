@@ -1,3 +1,26 @@
-<div class="flex  mb-3">
+<div class="flex align-items-end gap-4 mb-3">
+  <h1 class="m-0">Projekte</h1>
   <p-button routerLink="new-project" pRipple label="Projekt anlegen" class="p-button-outlined p-button-raised"></p-button>
 </div>
+
+<div class="grid" *ngIf="projectService.projects$|async; else loadingSpinner">
+  <div *ngFor="let project of projectService.projects$|async"
+       class="col-12 md:col-6 lg:col-3 xl:col-2 cursor-pointer">
+    <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center">
+      <span class="block text-500 font-medium mb-2">{{project.projectType.name}}</span>
+      <div class="text-900 font-medium text-xl mb-2">{{project.name}}</div>
+      <span class="text-500">{{project.costs|currency:"EUR"}}</span>
+    </div>
+  </div>
+</div>
+
+<!--<div class="flex gap-4" *ngIf="projectService.projects$|async; else loadingSpinner">-->
+<!--  <div *ngFor="let project of projectService.projects$|async"-->
+<!--       class="card border-1">-->
+<!--    <p class="">{{project.name}}</p>-->
+<!--  </div>-->
+<!--</div>-->
+
+<ng-template #loadingSpinner>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

@@ -12,9 +12,10 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'costs' => $this->costs/100,
             'projectType' => new ProjectTypeResource($this->projectType),
-            'user_id' => $this->user->id,
-            'faculty_id' => $this->faculty->id,
+            'userId' => $this->user->id,
+            'facultyId' => $this->faculty->id,
             'lecturers' => ProjectLecturerResource::collection($this->lecturers),
             'expenses' => ProjectExpenseResource::collection($this->expenses)
         ];

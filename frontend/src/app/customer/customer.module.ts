@@ -19,6 +19,7 @@ import {MegaMenuModule} from "primeng/megamenu";
 import {SharedModule} from "../shared/shared.module";
 import {MultiSelectModule} from "primeng/multiselect";
 import { ProjectExpensesComponent } from './components/projects/new-project/project-expenses/project-expenses.component';
+import { ProjectFormComponent } from './components/projects/project-form/project-form.component';
 
 @NgModule({
   providers: [
@@ -29,7 +30,8 @@ import { ProjectExpensesComponent } from './components/projects/new-project/proj
     ProjectsComponent,
     NewProjectComponent,
     ProjectLecturersComponent,
-    ProjectExpensesComponent
+    ProjectExpensesComponent,
+    ProjectFormComponent
   ],
   imports: [
     CommonModule,

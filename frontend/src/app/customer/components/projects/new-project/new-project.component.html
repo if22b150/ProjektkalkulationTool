@@ -1,82 +1,26 @@
-<form [formGroup]="newProjectForm"
-      *ngIf="(projectTypeService.projectTypes$|async)
+<div style="max-width: 800px">
+  <h1>Neues Projekt</h1>
+  <div *ngIf="(projectTypeService.projectTypes$|async)
               && (expenseService.expenses$|async)
               && (lecturerService.lecturers$|async); else loadingSpinner">
+    <app-project-form [submitted]="submitted" (formChangesEmitter)="formChanges($event)"></app-project-form>
 
-  <div class="p-fluid">
+    <hr class="my-3">
 
-    <div class="field mb-2">
-      <label for="projectType">
-        Projektart
-      </label>
-
-      <p-dropdown id="projectType" formControlName="projectType"
-                     [options]="projectTypeService.projectTypes$|async" optionLabel="name"  placeholder="Auswählen">
-        <ng-template let-projectType pTemplate="item">
-          <div class="flex align-items-center gap-2">
-            <div>{{ projectType.name }}</div>
-          </div>
-        </ng-template>
-      </p-dropdown>
-
+    <div class="flex justify-content-end mb-2">
+      <div class="flex flex-column align-items-end">
+        <h4 class="m-0">Gesamtkosten</h4>
+        <p class="m-0">{{totalCost|currency:"EUR"}}</p>
+      </div>
     </div>
 
-    <div class="field mb-4">
-      <label for="title" class="mb-1">Projekttitel</label>
-      <input id="title" type="text" class="w-full" pInputText formControlName="title" placeholder="Name">
-      <small *ngIf="title?.errors?.required && submitted" class="p-error">
-        Ein Titel ist erforderlich.
-      </small>
-    </div>
-
-<!--    <div class="field mb-2">-->
-<!--      <label for="travelCosts" class="mb-1">Reisekosten (€)</label>-->
-<!--      <p-inputNumber id="travelCosts" mode="currency" currency="EUR" locale="de-DE" [minFractionDigits]="2"-->
-<!--                     class="w-full" formControlName="travelCosts" pattern="^\d+(\.\d{1,2})?$" min="0" max="10000" />-->
-<!--      <small *ngIf="travelCosts?.errors?.required && submitted" class="p-error">-->
-<!--        Ein Text ist erforderlich.-->
-<!--      </small>-->
-<!--      <small *ngIf="travelCosts?.errors?.pattern && submitted" class="p-error">-->
-<!--        Bitte geben Sie einen gültigen Euro-Betrag ein.-->
-<!--      </small>-->
-<!--      <small *ngIf="travelCosts?.errors?.min && submitted" class="p-error">-->
-<!--        Der Betrag darf nicht negativ sein.-->
-<!--      </small>-->
-<!--      <small *ngIf="travelCosts?.errors?.max && submitted" class="p-error">-->
-<!--        Der Betrag darf nicht größer als 10.000 Euro sein.-->
-<!--      </small>-->
-<!--    </div>-->
-
-  </div>
-
-  <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
-    <p class="m-0 my-1 font-bold">Aufwände</p>
-    <app-project-expenses [newProject]="true" [projectForm]="newProjectForm"></app-project-expenses>
-  </div>
-
-  <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
-    <p class="m-0 my-1 font-bold">Vortragende</p>
-    <app-project-lecturers [newProject]="true" [projectForm]="newProjectForm"></app-project-lecturers>
-  </div>
-
-  <hr class="my-3">
-
-  <div class="flex justify-content-end mb-2">
-    <div class="flex flex-column align-items-end">
-      <h4 class="m-0">Gesamtkosten</h4>
-      <p class="m-0">{{totalCost|currency:"EUR"}}</p>
+    <div class="flex justify-content-end mt-2">
+      <p-button pRipple label="Projekt speichern" [loading]="loading" (click)="create()"></p-button>
     </div>
   </div>
+  <ng-template #loadingSpinner>
+    <app-loading-spinner></app-loading-spinner>
+  </ng-template>
+</div>
 
-  <div class="flex justify-content-end mt-2">
-    <p-button pRipple label="Projekt speichern" [loading]="loading" (click)="create()"></p-button>
-  </div>
-
-
-  <p-toast></p-toast>
-
-</form>
-
-<ng-template #loadingSpinner>
-  <app-loading-spinner></app-loading-spinner>
-</ng-template>
+<p-toast></p-toast>
