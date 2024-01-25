@@ -19,6 +19,7 @@ import {CardModule} from "primeng/card";
 import { DialogModule } from 'primeng/dialog';
 import { FacultyViewComponent } from './views/faculty-view/faculty-view.component';
 import { DeleteFacultyComponent } from './views/faculty-view/delete-faculty/delete-faculty.component';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   providers: [
@@ -46,7 +47,8 @@ import { DeleteFacultyComponent } from './views/faculty-view/delete-faculty/dele
     AutoFocusModule,
     MegaMenuModule,
     CardModule,
-    DialogModule
+    DialogModule,
+    TableModule
   ]
 })
 export class AdminModule { }

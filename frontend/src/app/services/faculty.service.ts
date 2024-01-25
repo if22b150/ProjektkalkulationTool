@@ -37,7 +37,7 @@ export class FacultyService {
 
   public getAll() {
     this._loading.next(true);
-    this.http.get<Faculty[]>(environment.apiUrl + 'faculties')
+    this.http.get<Faculty[]>(environment.adminApiUrl + 'faculties')
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe({
         next: (faculties) => {
