@@ -1,0 +1,28 @@
+<div class="flex align-items-center flex-wrap gap-4 mb-4">
+    <h1 class="m-0">Fakultäts Mitarbeiter</h1>
+    <app-users></app-users>
+  </div>
+  <app-loading-spinner *ngIf="(userService.loading$|async)"></app-loading-spinner>
+  <div class="card" *ngIf="!(userService.loading$|async) && (userService.users$|async)">
+    <p-table [value]="(userService.users$|async)" [tableStyle]="{'min-width': '60rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="id" style="width:20%">Id <p-sortIcon field="id"></p-sortIcon></th>
+          <th pSortableColumn="name" style="width:20%">Email <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="faculty" style="width:20%">Fakultät <p-sortIcon field="faculty"></p-sortIcon></th>
+          <th>Löschen</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-user>
+        <tr>
+          <td>{{user.id}}</td>
+          <td>{{user.email}}</td>
+          <td>{{user.faculty.name}}</td>
+          <td>
+            <app-delete-user [user]="user"></app-delete-user>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>
