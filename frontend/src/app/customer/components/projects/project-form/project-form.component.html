@@ -1,41 +1,134 @@
-<form [formGroup]="projectForm">
+<div *ngIf="(projectTypeService.projectTypes$|async)
+              && (expenseService.expenses$|async)
+              && (lecturerService.lecturers$|async); else loadingSpinner"
+     style="max-width: 800px">
 
-  <div class="p-fluid">
+  <h1>{{title}}</h1>
+  <form [formGroup]="projectForm">
 
-    <div class="field mb-2">
-      <label for="projectType">
-        Projektart
-      </label>
+    <div class="p-fluid">
 
-      <p-dropdown id="projectType" formControlName="projectType"
-                  [options]="projectTypeService.projectTypes$|async" optionLabel="name"  placeholder="Auswählen">
-        <ng-template let-projectType pTemplate="item">
-          <div class="flex align-items-center gap-2">
-            <div>{{ projectType.name }}</div>
-          </div>
-        </ng-template>
-      </p-dropdown>
+      <div class="flex flex-wrap gap-4 mb-2">
+        <div>
+          <label for="projectType" class="mb-1">
+            Projektart
+          </label>
+
+          <p-dropdown id="projectType" formControlName="projectType"
+                      [options]="projectTypeService.projectTypes$|async" optionLabel="name"  placeholder="Auswählen">
+            <ng-template let-projectType pTemplate="item">
+              <div class="flex align-items-center gap-2">
+                <div>{{ projectType.name }}</div>
+              </div>
+            </ng-template>
+          </p-dropdown>
+
+        </div>
+
+        <div>
+          <label for="name" class="mb-1">Projekttitel</label>
+          <input id="name" type="text" class="w-full" pInputText formControlName="name" placeholder="Name">
+          <small *ngIf="name?.errors?.required && submitted" class="p-error">
+            Ein Titel ist erforderlich.
+          </small>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-4 mb-2">
+        <div>
+          <label for="start" class="mb-1">Startdatum</label>
+          <p-calendar formControlName="start"
+                      inputId="start"
+                      [showIcon]="true"
+                      firstDayOfWeek="1"
+                      dateFormat="dd.mm.yy"></p-calendar>
+        </div>
+
+        <div>
+          <label for="end" class="mb-1">Enddatum</label>
+          <p-calendar formControlName="end"
+                      inputId="end"
+                      [showIcon]="true"
+                      firstDayOfWeek="1"
+                      dateFormat="dd.mm.yy"></p-calendar>
+        </div>
+      </div>
+
+      <div class="mb-4">
+        <label for="notes" class="mb-1">Anmerkungen</label>
+        <textarea rows="5" cols="30" pInputTextarea formControlName="notes"></textarea>
+      </div>
+
+
+      <p class="m-0 my-1 font-bold">Ansprechperson</p>
+
+      <div class="mb-2 flex">
+        <div>
+          <label for="email" class="mb-1">E-Mail</label>
+          <input id="email" type="text" pInputText formControlName="email" placeholder="E-Mail">
+          <small *ngIf="email?.errors?.required && submitted" class="p-error">
+            Eine E-Mail ist erforderlich.
+          </small>
+        </div>
+      </div>
+
+      <div class="flex flex-wrap gap-4 mb-4">
+        <div>
+          <label for="firstname" class="mb-1">Vorname</label>
+          <input id="firstname" type="text" pInputText formControlName="firstname" placeholder="Vorname">
+          <small *ngIf="firstname?.errors?.required && submitted" class="p-error">
+            Ein Vorname ist erforderlich.
+          </small>
+        </div>
+
+        <div>
+          <label for="lastname" class="mb-1">Nachname</label>
+          <input id="lastname" type="text" pInputText formControlName="lastname" placeholder="Nachname">
+          <small *ngIf="lastname?.errors?.required && submitted" class="p-error">
+            Ein Nachname ist erforderlich.
+          </small>
+        </div>
+      </div>
 
     </div>
 
-    <div class="field mb-4">
-      <label for="name" class="mb-1">Projekttitel</label>
-      <input id="name" type="text" class="w-full" pInputText formControlName="name" placeholder="Name">
-      <small *ngIf="name?.errors?.required && submitted" class="p-error">
-        Ein Titel ist erforderlich.
-      </small>
+    <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
+      <p class="m-0 my-1 font-bold">Aufwände</p>
+      <app-project-expenses [project]="project" [projectForm]="projectForm" [submitted]="submitted"></app-project-expenses>
     </div>
 
+    <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
+      <p class="m-0 my-1 font-bold">Vortragende</p>
+
+      <div class="mb-2">
+        <p-checkbox [binary]="true" formControlName="crossFaculty" inputId="crossFaculty" class="mr-2"></p-checkbox>
+        <label for="crossFaculty">Fakultätsübergreifend</label>
+      </div>
+
+      <app-project-lecturers [project]="project" [projectForm]="projectForm" [submitted]="submitted"></app-project-lecturers>
+    </div>
+
+  </form>
+
+  <hr class="my-3">
+
+  <div class="flex justify-content-end mb-2">
+    <div class="flex flex-column align-items-end">
+      <h4 class="m-0">Gesamtkosten</h4>
+      <p class="m-0">{{totalCost|currency:"EUR"}}</p>
+      <p *ngIf="project && project.costs != totalCost" class="font-light">(vorherige Kosten: {{project.costs}})</p>
+    </div>
   </div>
 
-  <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
-    <p class="m-0 my-1 font-bold">Aufwände</p>
-    <app-project-expenses [project]="project" [projectForm]="projectForm" [submitted]="submitted"></app-project-expenses>
+  <div class="flex justify-content-end mt-2 gap-4">
+    <p-button pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
+    <p-button pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
+    <p-button pRipple [label]="submitLabel" [loading]="loading" (click)="submitEmitter.emit()"></p-button>
   </div>
+</div>
 
-  <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
-    <p class="m-0 my-1 font-bold">Vortragende</p>
-    <app-project-lecturers [project]="project" [projectForm]="projectForm" [submitted]="submitted"></app-project-lecturers>
-  </div>
+<ng-template #loadingSpinner>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>
 
-</form>
+<p-toast></p-toast>

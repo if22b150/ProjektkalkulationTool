@@ -5,6 +5,13 @@ import {ProjectType} from "./project-type.model";
 
 export interface Project extends AModel {
   name: string;
+  firstname: string;
+  lastname: string;
+  email: string;
+  start: Date;
+  end: Date;
+  crossFaculty: boolean;
+  notes?: string;
   costs?: number;
   projectType: ProjectType;
   lecturers: ProjectLecturer[];
