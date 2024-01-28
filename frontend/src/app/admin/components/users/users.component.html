@@ -2,7 +2,7 @@
     <p-button  (click)="openDialog()" pRipple label="Fakultätsmitarbeiter anlegen" icon="pi pi-plus"
                styleClass="p-button-primary"></p-button>
   
-    <p-dialog header="Fakultät anlegen" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
+    <p-dialog header="Mitarbeiter anlegen" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
               [draggable]="false" [resizable]="false" (onHide)="closeDialog()">
       <form [formGroup]="createForm">
   
@@ -15,19 +15,19 @@
           </div>
         </div>
 
-        <!-- <div class="card" *ngIf="!(facultyService.loading$|async) && (facultyService.faculties$|async)">
-            <p-multiSelect id="faculties"
-            [options]="facultyService.faculties$|async" optionLabel="name"  placeholder="Auswählen">
-            <ng-template let-expense pTemplate="item">
-                <div class="flex align-items-center gap-2">
-                <div>{{ faculty.id }}</div>
-                <div>{{ faculty.name }}</div>
-                </div>
+        <div class="card">
+          <label for="mail" class="block text-900 font-medium mb-2">Fakultät</label>
+            <p-dropdown (onChange)="selectedFaculty($event?.value)" placeholder="Arbeitende Fakultät" appendTo="body" [style]="{'width':'100%'}" id="faculties"
+            [options]="facultyService.faculties$|async" optionLabel="name">
+            <ng-template let-faculty pTemplate="item">
+                <div [style]="{'width':'46vw'}" class="flex align-items-center gap-2">
+                  <div>{{ faculty.name }}</div>
+                  </div>
             </ng-template>
-            </p-multiSelect>
-        </div> -->
+            </p-dropdown>
+        </div>
         
-        <div class="flex justify-content-end">
+        <div class="flex justify-content-end" [style]="{ 'margin-top': '2em'}">
           <p-button  (click)="submit()" pRipple label="Erstellen" [loading]="loading" icon="pi pi-save"
                      styleClass="p-button-primary"></p-button>
         </div>

@@ -20,6 +20,10 @@ import { DialogModule } from 'primeng/dialog';
 import { FacultyViewComponent } from './views/faculty-view/faculty-view.component';
 import { DeleteFacultyComponent } from './views/faculty-view/delete-faculty/delete-faculty.component';
 import { TableModule } from 'primeng/table';
+import { MultiSelectModule } from 'primeng/multiselect';
+import { UsersViewComponent } from './views/users-view/users-view.component';
+import { DeleteUserComponent } from './views/users-view/delete-user/delete-user.component';
+import { DropdownModule } from 'primeng/dropdown';
 
 @NgModule({
   providers: [
@@ -31,7 +35,9 @@ import { TableModule } from 'primeng/table';
     UsersComponent,
     FacultiesComponent,
     FacultyViewComponent,
-    DeleteFacultyComponent
+    DeleteFacultyComponent,
+    UsersViewComponent,
+    DeleteUserComponent
   ],
   imports: [
     CommonModule,
@@ -48,7 +54,9 @@ import { TableModule } from 'primeng/table';
     MegaMenuModule,
     CardModule,
     DialogModule,
-    TableModule
+    TableModule,
+    MultiSelectModule,
+    DropdownModule
   ]
 })
 export class AdminModule { }
