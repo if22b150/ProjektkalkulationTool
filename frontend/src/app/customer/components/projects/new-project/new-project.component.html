@@ -1,26 +1,14 @@
-<div style="max-width: 800px">
-  <h1>Neues Projekt</h1>
-  <div *ngIf="(projectTypeService.projectTypes$|async)
+<app-project-form *ngIf="(projectTypeService.projectTypes$|async)
               && (expenseService.expenses$|async)
-              && (lecturerService.lecturers$|async); else loadingSpinner">
-    <app-project-form [submitted]="submitted" (formChangesEmitter)="formChanges($event)"></app-project-form>
+              && (lecturerService.lecturers$|async); else loadingSpinner"
+                  (submitEmitter)="create()"
+                  (formChangesEmitter)="formChanges($event)"
+                  [submitted]="submitted"
+                  [title]="'Neues Projekt'"
+                  [submitLabel]="'Projekt erstellen'"
+                  [loading]="loading">
+</app-project-form>
 
-    <hr class="my-3">
-
-    <div class="flex justify-content-end mb-2">
-      <div class="flex flex-column align-items-end">
-        <h4 class="m-0">Gesamtkosten</h4>
-        <p class="m-0">{{totalCost|currency:"EUR"}}</p>
-      </div>
-    </div>
-
-    <div class="flex justify-content-end mt-2">
-      <p-button pRipple label="Projekt speichern" [loading]="loading" (click)="create()"></p-button>
-    </div>
-  </div>
-  <ng-template #loadingSpinner>
-    <app-loading-spinner></app-loading-spinner>
-  </ng-template>
-</div>
-
-<p-toast></p-toast>
+<ng-template #loadingSpinner>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

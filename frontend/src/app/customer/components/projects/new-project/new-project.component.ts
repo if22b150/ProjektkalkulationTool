@@ -3,12 +3,16 @@ import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@a
 import { MessageService } from 'primeng/api';
 import {ExpenseService} from "../../../../services/expense.service";
 import {ProjectTypeService} from "../../../../services/project-type.service";
-import {filter, take} from "rxjs";
+import {filter, finalize, isEmpty, take} from "rxjs";
 import {LecturerService} from "../../../../services/lecturer.service";
 import Utils from "../../../../shared/utils";
 import {Project} from "../../../../models/project.model";
 import {ProjectExpense} from "../../../../models/project-expense.model";
 import {ProjectLecturer} from "../../../../models/project-lecturer.model";
+import {ProjectService} from "../../../../services/project.service";
+import {AuthService} from "../../../../services/auth/auth.service";
+import {Router} from "@angular/router";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-new-project',
@@ -21,30 +25,18 @@ export class NewProjectComponent implements OnInit{
   loading: boolean = false;
   totalCost: number = 0;
 
-  constructor(private formBuilder: FormBuilder,
-              private messageService: MessageService,
-              public lecturerService: LecturerService,
+  constructor(private messageService: MessageService,
+              private projectService: ProjectService,
+              private authService: AuthService,
+              private router: Router,
               public projectTypeService: ProjectTypeService,
-              public expenseService: ExpenseService) {
+              public expenseService: ExpenseService,
+              public lecturerService: LecturerService,
+              private datePipe: DatePipe) {
 
   }
 
   ngOnInit() {
-    // this.newProjectForm = this.formBuilder.group({
-    //   name: [null, [Validators.required]],
-    //   // travelCosts: [null, [Validators.required]],
-    //   projectType: [null, [Validators.required]],
-    //   projectExpenses: this.formBuilder.array([]),
-    //   projectLecturers: this.formBuilder.array([]),
-    // })
-    //
-    // this.projectTypeService.projectTypes$
-    //   .pipe(filter(p => p != null), take(1))
-    //   .subscribe({
-    //     next: (p) => {
-    //       this.projectType.setValue(p[0]);
-    //     }
-    //   })
   }
 
   formChanges(fg: FormGroup) {
@@ -58,55 +50,71 @@ export class NewProjectComponent implements OnInit{
 
     this.loading = true;
 
-    this.calculateTotalCost();
-
-    // Fake request time
-    setTimeout(() => {
-      this.loading = false;
-    }, 1000);
-
-    this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt abgeschlossen'});
-  }
-
-  calculateTotalCost() {
-    let expenses: ProjectExpense[] = [];
-    this.projectExpenses.controls.forEach(expense => {
-      expenses.push({
-        costs: expense.get('costs').value || 0,
-        expense: expense.get('expense').value
+    this.projectService.create(
+      this.authService.user.faculty.id,
+      this.projectType.value.id,
+      this.name.value,
+      this.datePipe.transform(this.start.value, 'YYYY-MM-dd'),
+      this.datePipe.transform(this.end.value, 'YYYY-MM-dd'),
+      this.firstname.value,
+      this.lastname.value,
+      this.email.value,
+      this.crossFaculty.value,
+      this.notes.value,
+      this.projectExpenses.value,
+      this.projectLecturers.value,
+      this.totalCost * 100
+    )
+      .pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe({
+        next: project  => {
+          this.router.navigate(['/projects']).then(() => {
+            setTimeout(() => {
+              this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt wurde gespeichert'});
+            },1);
+            this.projectService.getAllByFaculty(this.authService.user.faculty.id)
+          })
+        }
       });
-    });
-
-    let lecturers: ProjectLecturer[] = [];
-    this.projectLecturers.controls.forEach(lecturer => {
-      lecturers.push({
-        hours: lecturer.get('hours').value || 0,
-        lecturer: lecturer.get('lecturer').value
-      });
-    });
-
-    let project: Project = {
-      id: null,
-      lecturers: lecturers,
-      expenses: expenses,
-      name: this.name.value,
-      projectType: this.projectType.value
-    }
-    this.totalCost = Utils.calculateProjectCosts(project);
   }
 
   get name(): AbstractControl {
     return this.newProjectForm.get("name");
   }
 
+  get firstname(): AbstractControl {
+    return this.newProjectForm.get("firstname");
+  }
+
+  get lastname(): AbstractControl {
+    return this.newProjectForm.get("lastname");
+  }
+
+  get email(): AbstractControl {
+    return this.newProjectForm.get("email");
+  }
+
+  get start(): AbstractControl {
+    return this.newProjectForm.get("start");
+  }
+
+  get end(): AbstractControl {
+    return this.newProjectForm.get("end");
+  }
+
+  get crossFaculty(): AbstractControl {
+    return this.newProjectForm.get("crossFaculty");
+  }
+
+  get notes(): AbstractControl {
+    return this.newProjectForm.get("notes");
+  }
+
   get projectType(): AbstractControl {
     return this.newProjectForm.get("projectType");
   }
-
-  // get travelCosts(): AbstractControl {
-  //   return this.newProjectForm.get("travelCosts");
-  // }
-
 
   get projectLecturers(): FormArray {
     return this.newProjectForm.get("projectLecturers") as FormArray;

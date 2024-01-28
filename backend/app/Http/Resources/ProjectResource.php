@@ -13,9 +13,16 @@ class ProjectResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'costs' => $this->costs/100,
-            'projectType' => new ProjectTypeResource($this->projectType),
+            'firstname' => $this->firstname,
+            'lastname' => $this->lastname,
+            'email' => $this->email,
+            'start' => $this->start->format('Y-m-d'),
+            'end' => $this->end->format('Y-m-d'),
+            'notes' => $this->notes,
+            'cross_faculty' => $this->cross_faculty,
             'userId' => $this->user->id,
             'facultyId' => $this->faculty->id,
+            'projectType' => new ProjectTypeResource($this->projectType),
             'lecturers' => ProjectLecturerResource::collection($this->lecturers),
             'expenses' => ProjectExpenseResource::collection($this->expenses)
         ];

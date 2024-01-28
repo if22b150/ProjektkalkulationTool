@@ -16,7 +16,20 @@ class Project extends Model
         'costs',
         'project_type_id',
         'user_id',
-        'faculty_id'
+        'faculty_id',
+        'firstname',
+        'lastname',
+        'email',
+        'start',
+        'end',
+        'cross_faculty',
+        'notes'
+    ];
+
+    protected $casts = [
+        'start' => 'datetime:Y-m-d',
+        'end' => 'datetime:Y-m-d',
+        'cross_faculty' => 'boolean'
     ];
 
     public function projectType() {

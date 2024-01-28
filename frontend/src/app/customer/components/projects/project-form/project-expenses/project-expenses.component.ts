@@ -31,9 +31,10 @@ export class ProjectExpensesComponent implements OnInit{
     if (this.project) {
       // not needed until there is no editing of projects
       this.project.expenses.forEach((projectExpenses: ProjectExpense) => {
+        let expense = this.expenseService.expenses.find(e => e.id == projectExpenses.expense.id);
         this.projectExpenses.push(this.formBuilder.group({
           id: [projectExpenses.id],
-          expense: [projectExpenses.expense, [Validators.required]],
+          expense: [expense, [Validators.required]],
           costs: [projectExpenses.costs, [Validators.required, Validators.min(1)]]
         }))
       })

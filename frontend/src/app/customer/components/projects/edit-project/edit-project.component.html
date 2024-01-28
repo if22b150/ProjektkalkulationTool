@@ -1,0 +1,14 @@
+<div style="max-width: 800px" *ngIf="!loading && project; else loadingSpinner">
+  <app-project-form [submitted]="submitted"
+                    (formChangesEmitter)="formChanges($event)"
+                    [project]="project"
+                    [submitLabel]="'Änderungen speichern'"
+                    [title]="project.name"
+                    (submitEmitter)="update()"
+                    [loading]="loading">
+  </app-project-form>
+</div>
+
+<ng-template #loadingSpinner>
+  <app-loading-spinner></app-loading-spinner>
+</ng-template>

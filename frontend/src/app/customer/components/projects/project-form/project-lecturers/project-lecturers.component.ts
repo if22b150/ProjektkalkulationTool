@@ -5,6 +5,7 @@ import {LecturerService} from "../../../../../services/lecturer.service";
 import {filter, take} from "rxjs";
 import {AuthService} from "../../../../../services/auth/auth.service";
 import {ProjectLecturer} from "../../../../../models/project-lecturer.model";
+import {Lecturer} from "../../../../../models/lecturer.model";
 
 @Component({
   selector: 'app-project-lecturers',
@@ -18,6 +19,8 @@ export class ProjectLecturersComponent implements OnInit {
   @Input() projectForm: FormGroup;
   @Input() submitted: boolean;
 
+  dropDownLecturers: Lecturer[];
+
   constructor(private formBuilder: FormBuilder,
               public authService: AuthService,
               public lecturerService: LecturerService) {
@@ -25,14 +28,23 @@ export class ProjectLecturersComponent implements OnInit {
 
   ngOnInit() {
     this.initializeLecturers();
+    this.lecturerService.lecturers$.subscribe({
+      next: (l) => {
+        if(l)
+          this.initializeLecturers()
+      }
+    })
   }
 
   initializeLecturers() {
+    this.projectLecturers.clear({emitEvent:false});
+    this.dropDownLecturers = this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
+
     if (this.project) {
       this.project.lecturers.forEach((projectLecturer: ProjectLecturer) => {
         this.projectLecturers.push(this.formBuilder.group({
-          id: [projectLecturer.id],
-          lecturer: [projectLecturer.lecturer, [Validators.required]],
+          id: [null],
+          lecturer: [this.dropDownLecturers.find(dl => projectLecturer.lecturer.id == dl.id), [Validators.required]],
           hours: [projectLecturer.hours, [Validators.required, Validators.min(1)]]
         }))
       })
@@ -44,7 +56,7 @@ export class ProjectLecturersComponent implements OnInit {
   newProjectLecturerFormGroup(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      lecturer: [this.lecturerService.lecturers[0], [Validators.required]],
+      lecturer: [this.dropDownLecturers[0], [Validators.required]],
       hours: [null, [Validators.required]]
     })
   }
@@ -56,6 +68,7 @@ export class ProjectLecturersComponent implements OnInit {
   }
 
   removeProjectLecturer(i: number) {
+    this.dropDownLecturers.push(this.projectLecturers.at(i).value.lecturer);
     this.projectLecturers.removeAt(i);
   }
 

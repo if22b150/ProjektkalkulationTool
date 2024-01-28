@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 import {CustomerRoutingModule} from "./customer-routing.module";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {ButtonModule} from "primeng/button";
@@ -12,18 +12,23 @@ import {MessageService} from "primeng/api";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import { ProjectsComponent } from './components/projects/projects.component';
 import { NewProjectComponent } from './components/projects/new-project/new-project.component';
-import { ProjectLecturersComponent } from './components/projects/new-project/project-lecturers/project-lecturers.component';
+import { ProjectLecturersComponent } from './components/projects/project-form/project-lecturers/project-lecturers.component';
 import {DropdownModule} from "primeng/dropdown";
 import {InputNumberModule} from "primeng/inputnumber";
 import {MegaMenuModule} from "primeng/megamenu";
 import {SharedModule} from "../shared/shared.module";
 import {MultiSelectModule} from "primeng/multiselect";
-import { ProjectExpensesComponent } from './components/projects/new-project/project-expenses/project-expenses.component';
+import { ProjectExpensesComponent } from './components/projects/project-form/project-expenses/project-expenses.component';
 import { ProjectFormComponent } from './components/projects/project-form/project-form.component';
+import { EditProjectComponent } from './components/projects/edit-project/edit-project.component';
+import {CheckboxModule} from "primeng/checkbox";
+import {CalendarModule} from "primeng/calendar";
+import {InputTextareaModule} from "primeng/inputtextarea";
 
 @NgModule({
   providers: [
-    MessageService
+    MessageService,
+    DatePipe
   ],
   declarations: [
     DashboardComponent,
@@ -31,7 +36,8 @@ import { ProjectFormComponent } from './components/projects/project-form/project
     NewProjectComponent,
     ProjectLecturersComponent,
     ProjectExpensesComponent,
-    ProjectFormComponent
+    ProjectFormComponent,
+    EditProjectComponent
   ],
   imports: [
     CommonModule,
@@ -49,6 +55,9 @@ import { ProjectFormComponent } from './components/projects/project-form/project
     MegaMenuModule,
     MultiSelectModule,
     DropdownModule,
+    CheckboxModule,
+    CalendarModule,
+    InputTextareaModule,
     SharedModule
   ]
 })
