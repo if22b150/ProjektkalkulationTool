@@ -32,6 +32,7 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.facultyService.getAll();
     this.createForm = this.formBuilder.group({
       name: [null, [Validators.required]]
     });
