@@ -116,13 +116,13 @@
     <div class="flex flex-column align-items-end">
       <h4 class="m-0">Gesamtkosten</h4>
       <p class="m-0">{{totalCost|currency:"EUR"}}</p>
-      <p *ngIf="project && project.costs != totalCost" class="font-light">(vorherige Kosten: {{project.costs}})</p>
+      <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige Kosten: {{project.costs}})</p>
     </div>
   </div>
 
   <div class="flex justify-content-end mt-2 gap-4">
-    <p-button pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
-    <p-button pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
+    <p-button *ngIf="exportCSVOption" pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
+    <p-button *ngIf="exportPDFOption" pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
     <p-button pRipple [label]="submitLabel" [loading]="loading" (click)="submitEmitter.emit()"></p-button>
   </div>
 </div>

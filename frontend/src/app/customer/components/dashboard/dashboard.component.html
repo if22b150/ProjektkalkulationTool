@@ -1,11 +1,18 @@
 <div class="flex">
   <p-megaMenu [model]="items" orientation="vertical" styleClass="admin-menu">
     <ng-template pTemplate="start">
-      <img src="assets/images/logo-transparent.png" height="100" />
       <div class="flex justify-content-center">
+        <img src="assets/images/logo-transparent.png" height="65"  alt="FH Logo"/>
+        <img src="assets/images/logo-innovations-transparent.png" height="65"  alt="Innovations Logo"/>
+      </div>
+      <div class="flex justify-content-center mt-2">
         <h2 class="m-0 mb-3">{{authService.user.faculty.name}}</h2>
       </div>
     </ng-template>
+<!--    <ng-template pTemplate="end">-->
+<!--      <img src="assets/images/logo-transparent.png" height="100"  alt="FH Logo"/>-->
+<!--      <img src="assets/images/logo-innovations-transparent.png" height="100"  alt="Innovations Logo"/>-->
+<!--    </ng-template>-->
   </p-megaMenu>
 
   <div class="page-content p-4 flex-grow-1">

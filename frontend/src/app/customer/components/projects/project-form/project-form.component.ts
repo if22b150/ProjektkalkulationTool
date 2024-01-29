@@ -22,6 +22,8 @@ export class ProjectFormComponent implements OnInit{
   @Input() title: string;
   @Input() submitted: boolean;
   @Input() loading: boolean = false;
+  @Input() exportCSVOption: boolean;
+  @Input() exportPDFOption: boolean;
 
   projectForm: FormGroup;
   totalCost: number = 0;
