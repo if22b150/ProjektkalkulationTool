@@ -37,7 +37,7 @@ export class UserService {
 
   public getAll() {
     this._loading.next(true);
-    this.http.get<User[]>(environment.apiUrl + 'users')
+    this.http.get<User[]>(environment.adminApiUrl + 'users')
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe({
         next: (users) => { 
@@ -50,7 +50,12 @@ export class UserService {
     return this.http.delete<any>(environment.adminApiUrl + `users/${id}`);
   }
 
-  public create(name: string): Observable<User> {
-    return this.http.post<User>(environment.adminApiUrl + 'users', { name });
+  public create(name: string, facultyId: number): Observable<User> {
+    const data = {
+      email: name,
+      faculty_id: facultyId
+    };
+  
+    return this.http.post<User>(environment.adminApiUrl + 'users', data);
   }
 }
