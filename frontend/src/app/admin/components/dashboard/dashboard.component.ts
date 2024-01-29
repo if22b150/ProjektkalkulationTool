@@ -26,10 +26,20 @@ export class DashboardComponent implements OnInit{
         routerLink: 'faculties'
       },
       {
-        label: 'Einstellungen',
-        icon: 'pi pi-fw pi-cog',
-        routerLink: 'settings'
+        label: 'Vortragende',
+        icon: 'pi pi-fw pi-users',
+        routerLink: 'lecturer'
       },
+      {
+        label: 'Aufwände',
+        icon: 'pi pi-fw pi-folder-open',
+        routerLink: 'expenses'
+      },
+      // {
+      //   label: 'Einstellungen',
+      //   icon: 'pi pi-fw pi-cog',
+      //   routerLink: 'settings'
+      // },
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',

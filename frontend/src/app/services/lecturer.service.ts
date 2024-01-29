@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
-import {Lecturer} from "../models/lecturer.model";
-import {HttpClient} from "@angular/common/http";
-import {environment} from "../../environments/environment";
+import { BehaviorSubject, finalize, Observable } from "rxjs";
+import { Lecturer } from "../models/lecturer.model";
+import { HttpClient } from "@angular/common/http";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: 'root'
@@ -18,20 +18,42 @@ export class LecturerService {
     return this._lecturers.value;
   }
 
+  public set lecturers(lecturers: Lecturer[]) {
+    sessionStorage.setItem('lecturers', JSON.stringify(lecturers));
+    this._lecturers.next(lecturers);
+  }
+
   constructor(private http: HttpClient) {
-    this._lecturers = new BehaviorSubject<Lecturer[]>(null);
+    let savedlecturers = JSON.parse(sessionStorage.getItem('lecturers'));
+    this._lecturers = new BehaviorSubject<Lecturer[]>(savedlecturers);
+    this._loading = new BehaviorSubject<boolean>(null);
+  }
+
+  private _loading: BehaviorSubject<boolean>;
+
+  public get loading$(): Observable<boolean> {
+    return this._loading.asObservable();
   }
 
   getAll(): void {
+    this._loading.next(true);
     this.http.get<Lecturer[]>(environment.apiUrl + `lecturers`)
-      .subscribe(lecturers => this._lecturers.next(lecturers));
+      .pipe(finalize(() => this._loading.next(false)))
+      .subscribe({
+        next: (lecturers) => this.lecturers = lecturers
+      });
   }
 
-  // create(name: string): Observable<Lecturer> {
-  //   return this.http.post<Lecturer>(environment.adminApiURL + 'grant-programs', {name});
-  // }
-  //
-  // delete(id: number): Observable<any> {
-  //   return this.http.delete<any>(environment.adminApiURL + `grant-programs/${id}`);
-  // }
+  create(name: string, hourlyRate: number, dailyRate: number, facultyId: number): Observable<Lecturer> {
+    const data = {
+      name: name,
+      hourlyRate: hourlyRate,
+      dailyRate: dailyRate
+    }
+    return this.http.post<Lecturer>(environment.adminApiUrl + `faculties/${facultyId}/lecturers`, data);
+  }
+
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(environment.adminApiUrl + `lecturers/${id}`);
+  }
 }

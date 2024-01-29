@@ -51,7 +51,6 @@ export class FacultyService {
   }
 
   public create(name: string): Observable<Faculty> {
-    console.log(name);
     return this.http.post<Faculty>(environment.adminApiUrl + 'faculties', { name });
   }
 }

@@ -1,0 +1,30 @@
+<div class="flex align-items-center flex-wrap gap-4 mb-4">
+    <h1 class="m-0">Lektoren</h1>
+    <app-lecturer></app-lecturer>
+  </div>
+  <app-loading-spinner *ngIf="(lecturerService.loading$|async)"></app-loading-spinner>
+  <div class="card" *ngIf="!(lecturerService.loading$|async) && (lecturerService.lecturers$|async)">
+    <p-table [value]="(lecturerService.lecturers$|async)" [tableStyle]="{'min-width': '60rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="hourlyRate" style="width:20%">Stundensatz <p-sortIcon field="hourlyRate"></p-sortIcon></th>
+          <th pSortableColumn="dailyRate" style="width:20%">Tagessatz <p-sortIcon field="dailyRate"></p-sortIcon></th>
+          <th pSortableColumn="faculty" style="width:20%">Fakultät <p-sortIcon field="faculty"></p-sortIcon></th>
+          <th>Löschen</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-lecturer>
+        <tr>
+          <td>{{lecturer.name}}</td>
+          <td>{{lecturer.hourlyRate}}</td>
+          <td>{{lecturer.dailyRate}}</td>
+          <td>{{lecturer.faculty.name}}</td>
+          <td>
+            <app-lecturer-delete [lecturer]="lecturer"></app-lecturer-delete>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>

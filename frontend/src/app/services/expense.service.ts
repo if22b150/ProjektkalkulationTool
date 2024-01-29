@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, finalize, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Expense} from "../models/expense.model";
@@ -18,20 +18,42 @@ export class ExpenseService {
     return this._expenses.value;
   }
 
+  public set expenses(expenses: Expense[]) {
+    sessionStorage.setItem('expenses', JSON.stringify(expenses));
+    this._expenses.next(expenses);
+  }
+
+  private _loading: BehaviorSubject<boolean>;
+
+  public get loading$(): Observable<boolean> {
+    return this._loading.asObservable();
+  }
+
   constructor(private http: HttpClient) {
-    this._expenses = new BehaviorSubject<Expense[]>(null);
+    let savedExpenses = JSON.parse(sessionStorage.getItem('expenses'));
+    this._expenses = new BehaviorSubject<Expense[]>(savedExpenses);
+    this._loading = new BehaviorSubject<boolean>(null);
   }
 
   getAll(): void {
+    this._loading.next(true);
     this.http.get<Expense[]>(environment.apiUrl + `expenses`)
-      .subscribe(expenses => this._expenses.next(expenses));
+      .pipe(finalize(() => this._loading.next(false)))
+      .subscribe({
+        next: (expenses) => this.expenses = expenses
+      });
   }
 
-  // create(name: string): Observable<Lecturer> {
-  //   return this.http.post<Lecturer>(environment.adminApiURL + 'grant-programs', {name});
-  // }
-  //
-  // delete(id: number): Observable<any> {
-  //   return this.http.delete<any>(environment.adminApiURL + `grant-programs/${id}`);
-  // }
+  create(name: string, price: number): Observable<Expense> {
+    let data = {
+      name: name,
+      price: price
+    }
+    return this.http.post<Expense>(environment.adminApiUrl + 'expenses', data);
+  }
+  
+  
+  delete(id: number): Observable<any> {
+    return this.http.delete<any>(environment.adminApiUrl + `expenses/${id}`);
+  }
 }

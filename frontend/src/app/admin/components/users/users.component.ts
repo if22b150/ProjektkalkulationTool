@@ -22,7 +22,6 @@ export class UsersComponent implements OnInit {
   loading: boolean;
   faculty: Faculty;
   nameValue: String;
-  numberOfIntervals: number = 5;
 
   constructor(private formBuilder: FormBuilder,
     public userService: UserService,

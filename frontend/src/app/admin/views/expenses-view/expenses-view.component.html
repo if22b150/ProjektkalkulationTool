@@ -1,0 +1,26 @@
+<div class="flex align-items-center flex-wrap gap-4 mb-4">
+    <h1 class="m-0">Aufwände</h1>
+    <app-expenses></app-expenses>
+  </div>
+  <app-loading-spinner *ngIf="(expenseService.loading$|async)"></app-loading-spinner>
+  <div class="card" *ngIf="!(expenseService.loading$|async) && (expenseService.expenses$|async)">
+    <p-table [value]="(expenseService.expenses$|async)" [tableStyle]="{'min-width': '60rem'}">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th pSortableColumn="price" style="width:20%">Preis <p-sortIcon field="price"></p-sortIcon></th>
+          <th>Löschen</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-expense>
+        <tr>
+          <td>{{expense.name}}</td>
+          <td>{{expense.price}}</td>
+          <td>
+            <app-delete-expense [expense]="expense"></app-delete-expense>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>

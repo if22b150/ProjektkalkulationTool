@@ -24,6 +24,12 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { UsersViewComponent } from './views/users-view/users-view.component';
 import { DeleteUserComponent } from './views/users-view/delete-user/delete-user.component';
 import { DropdownModule } from 'primeng/dropdown';
+import { LecturerComponent } from './components/lecturer/lecturer.component';
+import { LecturerViewComponent } from './views/lecturer-view/lecturer-view.component';
+import { ExpensesViewComponent } from './views/expenses-view/expenses-view.component';
+import { ExpensesComponent } from './components/expenses/expenses.component';
+import { DeleteExpenseComponent } from './views/expenses-view/delete-expense/delete-expense.component';
+import { LecturerDeleteComponent } from './views/lecturer-view/lecturer-delete/lecturer-delete.component';
 
 @NgModule({
   providers: [
@@ -37,7 +43,13 @@ import { DropdownModule } from 'primeng/dropdown';
     FacultyViewComponent,
     DeleteFacultyComponent,
     UsersViewComponent,
-    DeleteUserComponent
+    DeleteUserComponent,
+    LecturerComponent,
+    LecturerViewComponent,
+    ExpensesViewComponent,
+    ExpensesComponent,
+    DeleteExpenseComponent,
+    LecturerDeleteComponent
   ],
   imports: [
     CommonModule,
