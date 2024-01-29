@@ -43,11 +43,13 @@ export class ChangePasswordComponent {
         {
           next: (user) => {
             this.router.navigate(['/auth/login']).then(() => {
-              this.messageService.add({
-                severity: 'success',
-                summary: 'Erfolgreich',
-                detail: 'Passwort wurde erfolgreich zurückgesetzt.'
-              });
+              setTimeout(() => {
+                this.messageService.add({
+                  severity: 'success',
+                  summary: 'Erfolgreich',
+                  detail: 'Passwort wurde erfolgreich zurückgesetzt.'
+                });
+              })
             });
           },
           error: (e) => {

@@ -46,20 +46,23 @@ export class LoginComponent implements OnInit {
           next: (user) => {
             if(user.passwordReset) {
               let route = user.role == ERole.ADMIN ? '/admin' : '/customer';
-              console.log(route)
               this.router.navigate([route]).then(() => {
-                this.messageService.add({
-                  severity: 'success',
-                  summary: 'Erfolgreich',
-                  detail: 'Der Login war erfolgreich.'
+                setTimeout(() => {
+                    this.messageService.add({
+                      severity: 'success',
+                      summary: 'Erfolgreich',
+                      detail: 'Der Login war erfolgreich.'
+                    });
                 });
               });
             } else {
               this.router.navigate(['/auth/change-password']).then(() => {
-                this.messageService.add({
-                  severity: 'error',
-                  summary: 'Neues Passwort benötigt',
-                  detail: 'Ein neues Passwort muss gesetzt werden.'
+                setTimeout(() => {
+                  this.messageService.add({
+                    severity: 'error',
+                    summary: 'Neues Passwort benötigt',
+                    detail: 'Ein neues Passwort muss gesetzt werden.'
+                  });
                 });
               });
             }
