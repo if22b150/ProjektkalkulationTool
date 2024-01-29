@@ -121,7 +121,7 @@
   </div>
 
   <div class="flex justify-content-end mt-2 gap-4">
-    <p-button *ngIf="exportCSVOption" pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
+    <p-button *ngIf="exportCSVOption" pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading" (click)="exportToCSV()"></p-button>
     <p-button *ngIf="exportPDFOption" pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"></p-button>
     <p-button pRipple [label]="submitLabel" [loading]="loading" (click)="submitEmitter.emit()"></p-button>
   </div>

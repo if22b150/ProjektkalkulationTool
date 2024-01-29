@@ -38,4 +38,5 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
 // faculty user routes
 Route::middleware(['auth:sanctum', 'auth.faculty'])->prefix('faculties/{facultyId}')->name('faculties.')->group(function () {
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only(['store','index','show']);
+    Route::get('projects/{projectId}/csv', [\App\Http\Controllers\ProjectController::class, 'exportToCSV']);
 });

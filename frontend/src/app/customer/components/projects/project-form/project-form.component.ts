@@ -7,6 +7,8 @@ import {LecturerService} from "../../../../services/lecturer.service";
 import {ProjectExpense} from "../../../../models/project-expense.model";
 import {ProjectLecturer} from "../../../../models/project-lecturer.model";
 import Utils from "../../../../shared/utils";
+import {ProjectService} from "../../../../services/project.service";
+import {AuthService} from "../../../../services/auth/auth.service";
 
 @Component({
   selector: 'app-project-form',
@@ -30,7 +32,9 @@ export class ProjectFormComponent implements OnInit{
 
   constructor(private formBuilder: FormBuilder,
               public projectTypeService: ProjectTypeService,
+              public projectService: ProjectService,
               public expenseService: ExpenseService,
+              private authService: AuthService,
               public lecturerService: LecturerService) {
 
   }
@@ -83,6 +87,10 @@ export class ProjectFormComponent implements OnInit{
     });
 
     this.totalCost = Utils.calculateProjectCosts(lecturers, expenses);
+  }
+
+  exportToCSV() {
+    this.projectService.exportToCSV(this.authService.user.faculty.id, this.project);
   }
 
   get name(): AbstractControl {

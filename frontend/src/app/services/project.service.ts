@@ -65,4 +65,23 @@ export class ProjectService {
         costs
       });
   }
+
+  exportToCSV(facultyId: number, project: Project) {
+    this.http.get(environment.apiUrl + `faculties/${facultyId}/projects/${project.id}/csv`).subscribe((response: any) => {
+      this.downloadCsv(response.csv_string, 'project_' + project.id + '.csv');
+    })
+  }
+
+  private downloadCsv(csvData: string, fileName: string) {
+    const blob = new Blob([csvData], {type: 'text/csv;charset=utf-8;'});
+
+    // For other browsers
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.setAttribute('download', fileName);
+    link.style.display = 'none';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }

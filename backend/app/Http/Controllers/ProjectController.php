@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
 use App\Repositories\Interfaces\IProjectLecturerRepository;
 use App\Repositories\Interfaces\IProjectRepository;
+use App\Utils\ProjectToCSV;
 use Carbon\Carbon;
 
 class ProjectController extends Controller
@@ -64,6 +65,15 @@ class ProjectController extends Controller
         $this->projectRepository->delete($id);
 
         return response(null, 204);
+    }
+
+    public function exportToCSV(int $facultyId, int $projectId)
+    {
+        $project = $this->projectRepository->getOne($projectId);
+        if(!$project || $project->faculty_id != $facultyId)
+            return response('Not found',404);
+        $response['csv_string'] = ProjectToCSV::getProjectCSVString($this->projectRepository->getOne($project->id));
+        return $response;
     }
 }
 
