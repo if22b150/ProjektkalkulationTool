@@ -58,26 +58,11 @@ export class UsersComponent implements OnInit {
     this.userService.create(this.name.value, this.faculty.id)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
-        next: () => {
+        next: (response: User) => {
+          console.log('Response:', response);
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Benutzer wurde erstellt.' });
           this.closeDialog();
-
-          const intervalId = setInterval(() => {
-            this.userService.getAll();
-            console.log("Users after 5 sek: " + this.userService.users);
-            let foundUser = this.userService.users.find(user => user.email.toLowerCase() === this.nameValue.toLowerCase());
-
-            if (foundUser !== undefined) {
-              clearInterval(intervalId);
-            }
-
-            this.download(foundUser);
-            this.numberOfIntervals++;
-
-            if (this.numberOfIntervals === 5) {
-              clearInterval(intervalId);
-            }
-          }, 5000);
+          this.download(response);
         },
         error: (err) => {
           this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Der Benutzer konnte nicht erstellt werden.' });

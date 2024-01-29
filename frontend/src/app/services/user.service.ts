@@ -51,8 +51,6 @@ export class UserService {
   }
 
   public create(name: string, facultyId: number): Observable<User> {
-    console.log(name)
-    console.log(facultyId)
     const data = {
       email: name,
       faculty_id: facultyId
