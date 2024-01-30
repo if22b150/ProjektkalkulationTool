@@ -19,7 +19,7 @@ class ProjectResource extends JsonResource
             'start' => $this->start->format('Y-m-d'),
             'end' => $this->end->format('Y-m-d'),
             'notes' => $this->notes,
-            'cross_faculty' => $this->cross_faculty,
+            'crossFaculty' => $this->cross_faculty,
             'userId' => $this->user->id,
             'facultyId' => $this->faculty->id,
             'projectType' => new ProjectTypeResource($this->projectType),

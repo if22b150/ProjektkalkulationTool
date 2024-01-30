@@ -43,6 +43,10 @@ export class NewProjectComponent implements OnInit{
     this.newProjectForm = fg;
   }
 
+  costChanges(costs: number) {
+    this.totalCost = costs;
+  }
+
   create() {
     this.submitted = true;
     if(this.newProjectForm.invalid)

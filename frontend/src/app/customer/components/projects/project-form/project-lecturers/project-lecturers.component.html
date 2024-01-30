@@ -3,34 +3,43 @@
 
     <div *ngFor="let projectLecturer of projectLecturers.controls; let i=index" class="flex align-items-start mb-2" [formGroupName]="i">
 
-      <div class="flex align-items-center flex-wrap gap-4 mb-1 w-full">
+      <div class="flex align-items-end flex-wrap gap-4 mb-1 w-full">
 
         <input type="hidden" [value]="i" formControlName="id">
 
-        <div class="flex align-items-center gap-2">
+        <div class="flex flex-column align-items-start gap-1">
           <label [for]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i">
             Vortragende/r
           </label>
 
           <p-dropdown [id]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
-                      formControlName="lecturer" [options]="dropDownLecturers"
-                      optionLabel="name"
+                      formControlName="lecturer"
+                      [options]="dropDownLecturers"
+                      [optionLabel]="crossFaculty ? undefined : 'name'"
                       [emptyMessage]="'Kein/e Vortragende/r mehr verfügbar'"
-                      placeholder="Auswählen"></p-dropdown>
+                      [group]="crossFaculty"
+                      [style]="{'width':'200px'}"
+                      [autoDisplayFirst]="false"
+                      placeholder="Auswählen">
+            <ng-template let-group pTemplate="group">
+              {{group.label}}
+            </ng-template>
+            <ng-template let-selected pTemplate="selectedItem">
+              {{selected ? (selected.name + ((crossFaculty || selected.faculty.id != authService.user.faculty.id) ? ' (' + selected.faculty.name + ')'  : '')) : 'Auswählen'}}
+            </ng-template>
+          </p-dropdown>
 
         </div>
 
-        <div class="flex align-items-center gap-2 flex-grow-1">
+        <span class="p-float-label">
+          <p-inputNumber [inputId]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
           <label [for]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
             Stunden
           </label>
-          <div>
-            <p-inputNumber [inputId]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
-            <small *ngIf="hours(i)?.errors?.required && submitted" class="p-error">
-              Stunden sind erforderlich.
-            </small>
-          </div>
-        </div>
+          <small *ngIf="hours(i)?.errors?.required && submitted" class="p-error">
+            Stunden sind erforderlich.
+          </small>
+        </span>
 
         <button pButton pRipple type="button" icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-button-outlined" (click)="removeProjectLecturer(i)"></button>
@@ -42,7 +51,7 @@
   </div>
 </div>
 
-<div class="flex justify-content-center mt-2">
+<div class="flex justify-content-start mt-2">
   <button pButton pRipple class="p-button-sm p-button-outlined p-button-raised p-button-rounded" (click)="addProjectLecturer()">
     Vortragende hinzufügen<i class="pi pi-plus-circle ml-1"></i></button>
 </div>

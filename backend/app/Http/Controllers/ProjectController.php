@@ -32,26 +32,31 @@ class ProjectController extends Controller
 
     public function store(StoreProjectRequest $request, int $facultyId)
     {
-        $project = $this->projectRepository->create(
-            $request->name,
-            $request->costs,
-            $request->firstname,
-            $request->lastname,
-            $request->email,
-            Carbon::createFromFormat('Y-m-d', $request->start),
-            Carbon::createFromFormat('Y-m-d', $request->end),
-            $request->crossFaculty,
-            $request->notes,
-            $request->projectTypeId,
-            $request->user()->id,
-            $facultyId
-        );
+        try {
+            $project = $this->projectRepository->create(
+                $request->name,
+                $request->costs,
+                $request->firstname,
+                $request->lastname,
+                $request->email,
+                Carbon::createFromFormat('Y-m-d', $request->start),
+                Carbon::createFromFormat('Y-m-d', $request->end),
+                $request->crossFaculty,
+                $request->notes,
+                $request->projectTypeId,
+                $request->user()->id,
+                $facultyId
+            );
 
-        foreach ($request->lecturers as $lecturer) {
-            $this->projectLecturerRepository->create($project->id, $lecturer['id'], $lecturer['hours']);
-        }
-        foreach ($request->expenses as $expense) {
-            $this->projectExpenseRepository->create($project->id, $expense['id'], $expense['costs']);
+            foreach ($request->lecturers as $lecturer) {
+                $this->projectLecturerRepository->create($project->id, $lecturer['id'], $lecturer['hours']);
+            }
+            foreach ($request->expenses as $expense) {
+                $this->projectExpenseRepository->create($project->id, $expense['id'], $expense['costs']);
+            }
+        } catch (\Exception) {
+            if($project)
+                $this->projectRepository->delete($project->id);
         }
 
         return new ProjectResource($this->projectRepository->getOne($project->id));

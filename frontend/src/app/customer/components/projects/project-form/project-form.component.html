@@ -105,7 +105,10 @@
         <label for="crossFaculty">Fakultätsübergreifend</label>
       </div>
 
-      <app-project-lecturers [project]="project" [projectForm]="projectForm" [submitted]="submitted"></app-project-lecturers>
+      <app-project-lecturers [project]="project"
+                             [projectForm]="projectForm"
+                             [dropDownLecturers]="dropDownLecturers"
+                             [submitted]="submitted"></app-project-lecturers>
     </div>
 
   </form>
@@ -116,7 +119,7 @@
     <div class="flex flex-column align-items-end">
       <h4 class="m-0">Gesamtkosten</h4>
       <p class="m-0">{{totalCost|currency:"EUR"}}</p>
-      <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige Kosten: {{project.costs}})</p>
+      <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige Kosten: {{project.costs|currency:"EUR"}})</p>
     </div>
   </div>
 

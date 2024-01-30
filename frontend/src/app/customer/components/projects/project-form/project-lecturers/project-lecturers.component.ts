@@ -19,7 +19,7 @@ export class ProjectLecturersComponent implements OnInit {
   @Input() projectForm: FormGroup;
   @Input() submitted: boolean;
 
-  dropDownLecturers: Lecturer[];
+  @Input() dropDownLecturers: any[];
 
   constructor(private formBuilder: FormBuilder,
               public authService: AuthService,
@@ -38,13 +38,14 @@ export class ProjectLecturersComponent implements OnInit {
 
   initializeLecturers() {
     this.projectLecturers.clear({emitEvent:false});
-    this.dropDownLecturers = this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
+
+    // TODO: Set lecturer doesnt show in dropdown
 
     if (this.project) {
       this.project.lecturers.forEach((projectLecturer: ProjectLecturer) => {
         this.projectLecturers.push(this.formBuilder.group({
           id: [null],
-          lecturer: [this.dropDownLecturers.find(dl => projectLecturer.lecturer.id == dl.id), [Validators.required]],
+          lecturer: [this.getProjectLecturerValue(projectLecturer), [Validators.required]],
           hours: [projectLecturer.hours, [Validators.required, Validators.min(1)]]
         }))
       })
@@ -53,10 +54,19 @@ export class ProjectLecturersComponent implements OnInit {
     }
   }
 
+  getProjectLecturerValue(projectLecturer: ProjectLecturer) {
+    if(this.crossFaculty) {
+      let dropdownGroup = this.dropDownLecturers.find(d => d.value.id == projectLecturer.lecturer.faculty.id);
+      // console.log(dropdownGroup)
+      return dropdownGroup.items.find(dl => dl.value.id == projectLecturer.lecturer.id);
+    } else
+      return this.dropDownLecturers.find(dl => projectLecturer.lecturer.id == dl.id);
+  }
+
   newProjectLecturerFormGroup(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      lecturer: [this.dropDownLecturers[0], [Validators.required]],
+      lecturer: [null, [Validators.required]],
       hours: [null, [Validators.required]]
     })
   }
@@ -68,12 +78,15 @@ export class ProjectLecturersComponent implements OnInit {
   }
 
   removeProjectLecturer(i: number) {
-    this.dropDownLecturers.push(this.projectLecturers.at(i).value.lecturer);
     this.projectLecturers.removeAt(i);
   }
 
   get projectLecturers(): FormArray {
     return this.projectForm.get("projectLecturers") as FormArray;
+  }
+
+  get crossFaculty(): boolean {
+    return this.projectForm.get('crossFaculty').value;
   }
 
   hours(i: number): AbstractControl {

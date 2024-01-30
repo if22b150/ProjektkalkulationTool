@@ -18,6 +18,18 @@ export class LecturerService {
     return this._lecturers.value;
   }
 
+  public get lecturersGroupedByFaculty() {
+    return this.lecturers.reduce((acc, lecturer) => {
+      const existingFaculty = acc.find(item => item.value.id === lecturer.faculty.id);
+      if (existingFaculty) {
+        existingFaculty.items.push({label: lecturer.name, value: lecturer});
+      } else {
+        acc.push({ label: lecturer.faculty.name, value: lecturer.faculty, items: [{label: lecturer.name, value: lecturer}] });
+      }
+      return acc;
+    }, []);
+  }
+
   public set lecturers(lecturers: Lecturer[]) {
     sessionStorage.setItem('lecturers', JSON.stringify(lecturers));
     this._lecturers.next(lecturers);

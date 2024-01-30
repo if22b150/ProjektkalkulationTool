@@ -9,6 +9,7 @@ import {ProjectLecturer} from "../../../../models/project-lecturer.model";
 import Utils from "../../../../shared/utils";
 import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
+import {Lecturer} from "../../../../models/lecturer.model";
 
 @Component({
   selector: 'app-project-form',
@@ -17,6 +18,7 @@ import {AuthService} from "../../../../services/auth/auth.service";
 })
 export class ProjectFormComponent implements OnInit{
   @Output() formChangesEmitter: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
+  @Output() costChangesEmitter: EventEmitter<number> = new EventEmitter<number>();
   @Output() submitEmitter: EventEmitter<void> = new EventEmitter<void>();
 
   @Input() project: Project = null;
@@ -29,6 +31,7 @@ export class ProjectFormComponent implements OnInit{
 
   projectForm: FormGroup;
   totalCost: number = 0;
+  dropDownLecturers;
 
   constructor(private formBuilder: FormBuilder,
               public projectTypeService: ProjectTypeService,
@@ -54,12 +57,30 @@ export class ProjectFormComponent implements OnInit{
       projectLecturers: this.formBuilder.array([]),
     });
 
+    this.setLecturers();
+    // if(this.project)
+    //   this.costChanges();
+
     this.projectForm.valueChanges.subscribe({
       next: (fg) => {
         this.formChangesEmitter.emit(this.projectForm);
         this.costChanges();
       }
+    });
+
+    this.crossFaculty.valueChanges.subscribe({
+      next: (cf) => {
+        this.setLecturers();
+      }
     })
+  }
+
+  setLecturers() {
+    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.lecturersGroupedByFaculty : this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
+    this.projectLecturers.controls.forEach(c => {
+      // TODO: not working
+      c.get('lecturer').setValue(null);
+    });
   }
 
   costChanges() {
@@ -87,6 +108,7 @@ export class ProjectFormComponent implements OnInit{
     });
 
     this.totalCost = Utils.calculateProjectCosts(lecturers, expenses);
+    this.costChangesEmitter.emit(this.totalCost);
   }
 
   exportToCSV() {
@@ -121,10 +143,10 @@ export class ProjectFormComponent implements OnInit{
     return this.projectForm.get("notes");
   }
 
-  // get crossFaculty(): AbstractControl {
-  //   return this.projectForm.get("crossFaculty");
-  // }
-  //
+  get crossFaculty(): AbstractControl {
+    return this.projectForm.get("crossFaculty");
+  }
+
   // get projectType(): AbstractControl {
   //   return this.projectForm.get("projectType");
   // }

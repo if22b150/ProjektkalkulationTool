@@ -3,6 +3,7 @@
               && (lecturerService.lecturers$|async); else loadingSpinner"
                   (submitEmitter)="create()"
                   (formChangesEmitter)="formChanges($event)"
+                  (costChangesEmitter)="costChanges($event)"
                   [submitted]="submitted"
                   [title]="'Neues Projekt'"
                   [submitLabel]="'Projekt erstellen'"
