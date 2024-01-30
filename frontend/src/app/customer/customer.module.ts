@@ -24,6 +24,7 @@ import { EditProjectComponent } from './components/projects/edit-project/edit-pr
 import {CheckboxModule} from "primeng/checkbox";
 import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
+import { ExportButtonsComponent } from './components/projects/export-buttons/export-buttons.component';
 
 @NgModule({
   providers: [
@@ -37,7 +38,8 @@ import {InputTextareaModule} from "primeng/inputtextarea";
     ProjectLecturersComponent,
     ProjectExpensesComponent,
     ProjectFormComponent,
-    EditProjectComponent
+    EditProjectComponent,
+    ExportButtonsComponent
   ],
   imports: [
     CommonModule,

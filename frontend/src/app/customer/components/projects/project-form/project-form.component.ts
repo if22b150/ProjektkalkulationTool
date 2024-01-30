@@ -26,8 +26,7 @@ export class ProjectFormComponent implements OnInit{
   @Input() title: string;
   @Input() submitted: boolean;
   @Input() loading: boolean = false;
-  @Input() exportCSVOption: boolean;
-  @Input() exportPDFOption: boolean;
+  @Input() exportOptions: boolean;
 
   projectForm: FormGroup;
   totalCost: number = 0;
@@ -109,10 +108,6 @@ export class ProjectFormComponent implements OnInit{
 
     this.totalCost = Utils.calculateProjectCosts(lecturers, expenses);
     this.costChangesEmitter.emit(this.totalCost);
-  }
-
-  exportToCSV() {
-    this.projectService.exportToCSV(this.authService.user.faculty.id, this.project);
   }
 
   get name(): AbstractControl {

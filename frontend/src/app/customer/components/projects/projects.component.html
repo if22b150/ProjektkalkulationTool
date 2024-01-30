@@ -5,14 +5,16 @@
 
 <div class="grid" *ngIf="projectService.projects$|async; else loadingSpinner">
   <div *ngFor="let project of projectService.projects$|async"
-       class="col-12 md:col-6 lg:col-3 xl:col-2 cursor-pointer">
-    <a [routerLink]="'' + project.id">
-      <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center">
-        <span class="block text-500 font-medium mb-2">{{project.projectType.name}}</span>
-        <div class="text-900 font-medium text-xl mb-2">{{project.name}}</div>
-        <span class="text-500">{{project.costs|currency:"EUR"}}</span>
+       class="col-12 md:col-6 lg:col-3 xl:col-2">
+      <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">
+        <a [routerLink]="'' + project.id" style="text-decoration: none">
+          <span class="block text-500 text-center font-medium mb-2">{{project.projectType.name}}</span>
+          <span class="block text-900 text-center font-medium text-xl mb-2">{{project.name}}</span>
+          <span class="block text-center text-500">{{project.costs|currency:"EUR"}}</span>
+        </a>
+
+        <app-export-buttons [project]="project" class="mt-4"></app-export-buttons>
       </div>
-    </a>
   </div>
 </div>
 

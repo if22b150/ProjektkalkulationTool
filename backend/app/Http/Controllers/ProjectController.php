@@ -8,7 +8,11 @@ use App\Repositories\Interfaces\IProjectExpenseRepository;
 use App\Repositories\Interfaces\IProjectLecturerRepository;
 use App\Repositories\Interfaces\IProjectRepository;
 use App\Utils\ProjectToCSV;
+use App\Utils\ProjectToPDF;
 use Carbon\Carbon;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\App;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class ProjectController extends Controller
 {
@@ -79,6 +83,32 @@ class ProjectController extends Controller
             return response('Not found',404);
         $response['csv_string'] = ProjectToCSV::getProjectCSVString($this->projectRepository->getOne($project->id));
         return $response;
+    }
+
+    public function exportToPDF(int $facultyId, int $projectId)
+    {
+        $project = $this->projectRepository->getOne($projectId);
+        if(!$project || $project->faculty_id != $facultyId)
+            return response('Not found',404);
+
+        $pdf = App::make('dompdf.wrapper');
+
+        $costs = number_format($project->costs / 100, 2, ',', '.');
+
+        $view = view('pdf.project-pdf', [
+            'project' => $project,
+            'costs' => $costs
+        ]);
+        $view->render();
+        $pdf->loadHTML($view);
+
+        $response['pdf_string'] = $pdf->output();
+//        return $response;
+
+        return new Response($response, 200, array(
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' =>  'attachment; filename="x.pdf"'
+        ));
     }
 }
 
