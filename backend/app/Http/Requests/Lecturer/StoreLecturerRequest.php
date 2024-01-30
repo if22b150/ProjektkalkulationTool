@@ -22,7 +22,7 @@ class StoreLecturerRequest extends FormRequest
      */
     public function rules() {
         return [
-            'name' => ['required', 'string', 'unique:lecturers,name'],
+            'name' => ['required', 'string'],
             'hourlyRate' => ['required', 'integer'],
             'dailyRate' => ['required', 'integer']
         ];
