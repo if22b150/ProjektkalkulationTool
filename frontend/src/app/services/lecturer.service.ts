@@ -53,7 +53,7 @@ export class LecturerService {
     return this.http.post<Lecturer>(environment.adminApiUrl + `faculties/${facultyId}/lecturers`, data);
   }
 
-  delete(id: number): Observable<any> {
-    return this.http.delete<any>(environment.adminApiUrl + `lecturers/${id}`);
+  delete(id: number, facultyId: number): Observable<any> {
+    return this.http.delete<any>(environment.adminApiUrl + `faculties/${facultyId}/lecturers/${id}`);
   }
 }

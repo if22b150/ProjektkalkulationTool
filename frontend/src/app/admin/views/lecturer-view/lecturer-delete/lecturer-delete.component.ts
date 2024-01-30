@@ -19,7 +19,7 @@ export class LecturerDeleteComponent {
 
   delete() {
     this.loading = true;
-    this.lecturerService.delete(this.lecturer.id)
+    this.lecturerService.delete(this.lecturer.id, this.lecturer.faculty.id)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
