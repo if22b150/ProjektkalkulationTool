@@ -54,10 +54,13 @@ class LecturerRepository implements ILecturerRepository
         return $this->save($lecturer);
     }
 
-    public function update(int $id, string $name): ?Lecturer
+    public function update(int $id, string $name, int $hourlyRate, int $dailyRate, int $facultyId): ?Lecturer
     {
         $faculty = $this->getOne($id);
         $faculty->name = $name;
+        $faculty->hourly_rate = $hourlyRate;
+        $faculty->daily_rate = $dailyRate;
+        $faculty->faculty_id = $facultyId;
 
         return $this->save($faculty);
     }

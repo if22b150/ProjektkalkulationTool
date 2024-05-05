@@ -35,13 +35,13 @@ class LecturerController extends Controller
         ));
     }
 
-//    public function update(StoreFacultyRequest $request, int $id)
-//    {
-//        if(!$this->facultyRepository->getOne($id))
-//            return response(null, 404);
-//
-//        return new FacultyResource($this->facultyRepository->update($id, $request->name));
-//    }
+   public function update(StoreLecturerRequest $request)
+   {
+       if(!$this->lecturerRepository->getOne($request->id))
+           return response(null, 404);
+
+       return new StoreLecturerRequest($this->lecturerRepository->update($request->id, $request->name, $request->hourlyRate, $request->dailyRate, $request->facultyId));
+   }
 
     public function destroy(int $id)
     {

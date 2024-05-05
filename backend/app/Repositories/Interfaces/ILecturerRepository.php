@@ -21,5 +21,5 @@ interface ILecturerRepository
 //
     public function create(string $name, int $hourlyRate, int $dailyRate, int $facultyId): ?Lecturer;
 
-    public function update(int $id, string $name): ?Lecturer;
+    public function update(int $id, string $name, int $hourlyRate, int $dailyRate, int $facultyId): ?Lecturer;
 }

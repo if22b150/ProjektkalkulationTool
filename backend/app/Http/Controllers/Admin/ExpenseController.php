@@ -27,13 +27,13 @@ class ExpenseController extends Controller
         return new ExpenseResource($this->expenseRepository->create($request->name));
     }
 
-//    public function update(StoreFacultyRequest $request, int $id)
-//    {
-//        if(!$this->facultyRepository->getOne($id))
-//            return response(null, 404);
-//
-//        return new FacultyResource($this->facultyRepository->update($id, $request->name));
-//    }
+   public function update(StoreExpenseRequest $request, int $id)
+   {
+       if(!$this->expenseRepository->getOne($id))
+           return response(null, 404);
+
+       return new ExpenseResource($this->expenseRepository->update($id, $request->name));
+   }
 
     public function destroy(int $id)
     {
