@@ -11,6 +11,7 @@
           <th pSortableColumn="hourlyRate" style="width:20%">Stundensatz <p-sortIcon field="hourlyRate"></p-sortIcon></th>
           <th pSortableColumn="dailyRate" style="width:20%">Tagessatz <p-sortIcon field="dailyRate"></p-sortIcon></th>
           <th pSortableColumn="faculty" style="width:20%">Fakultät <p-sortIcon field="faculty"></p-sortIcon></th>
+          <th>Bearbeiten</th>
           <th>Löschen</th>
         </tr>
       </ng-template>
@@ -20,6 +21,9 @@
           <td>{{lecturer.hourlyRate}}</td>
           <td>{{lecturer.dailyRate}}</td>
           <td>{{lecturer.faculty.name}}</td>
+          <td>
+            <app-lecturer-update style="display: flex !important;" [lecturer]="lecturer"></app-lecturer-update>
+          </td>
           <td>
             <app-lecturer-delete [lecturer]="lecturer"></app-lecturer-delete>
           </td>
