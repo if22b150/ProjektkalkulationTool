@@ -23,7 +23,7 @@ class Project extends Model
         'start',
         'end',
         'cross_faculty',
-        'notes'
+        'notes',
         'contribution_margin_1',
         'contribution_margin_2'
     ];
