@@ -4,11 +4,12 @@
   </div>
   <app-loading-spinner *ngIf="(expenseService.loading$|async)"></app-loading-spinner>
   <div class="card" *ngIf="!(expenseService.loading$|async) && (expenseService.expenses$|async)">
-    <p-table [value]="(expenseService.expenses$|async)" [tableStyle]="{'min-width': '60rem'}">
+    <p-table [value]="(expenseService.expenses$|async)">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
           <th>Bearbeiten</th>
+          <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
           <th>Löschen</th>
         </tr>
       </ng-template>

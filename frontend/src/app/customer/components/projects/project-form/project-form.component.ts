@@ -63,6 +63,7 @@ export class ProjectFormComponent implements OnInit{
     this.projectForm.valueChanges.subscribe({
       next: (fg) => {
         this.formChangesEmitter.emit(this.projectForm);
+        this.breakEvenPoint = this.calculateBreakEvenPoint();
         this.costChanges();
       }
     });
@@ -129,6 +130,19 @@ export class ProjectFormComponent implements OnInit{
   get start(): AbstractControl {
     return this.projectForm.get("start");
   }
+
+  calculateBreakEvenPoint(): number {
+    const fixedCosts = this.projectForm.get('fixedCosts').value;
+    const variableCosts = this.projectForm.get('variableCosts').value;
+    const salePrice = this.projectForm.get('salePrice').value;
+  
+    if (salePrice - variableCosts === 0) {
+      throw new Error('Verkaufspreis pro Einheit darf nicht gleich den variablen Kosten pro Einheit sein');
+    }
+    return fixedCosts / (salePrice - variableCosts);
+  }
+
+  breakEvenPoint: number;
 
   get end(): AbstractControl {
     return this.projectForm.get("end");

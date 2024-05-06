@@ -57,4 +57,8 @@ export class FacultyService {
   public create(name: string): Observable<Faculty> {
     return this.http.post<Faculty>(environment.adminApiUrl + 'faculties', { name });
   }
+
+  public update(id: number, name: string): Observable<Faculty> {
+    return this.http.put<Faculty>(environment.adminApiUrl + `faculties/${id}`, { name });
+  }
 }

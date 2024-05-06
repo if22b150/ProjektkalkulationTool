@@ -60,8 +60,4 @@ export class ExpensesComponent {
   get name(): AbstractControl {
     return this.createForm.get('name');
   }
-
-  get price(): AbstractControl {
-    return this.createForm.get('price');
-  }
 }

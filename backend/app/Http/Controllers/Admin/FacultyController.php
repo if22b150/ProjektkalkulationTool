@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Faculty\StoreFacultyRequest;
+use App\Http\Requests\Faculty\UpdateFacultyRequest;
 use App\Http\Resources\FacultyResource;
 use App\Repositories\Interfaces\IFacultyRepository;
 
@@ -29,7 +30,7 @@ class FacultyController extends Controller
         return new FacultyResource($this->facultyRepository->create($request->name));
     }
 
-    public function update(StoreFacultyRequest $request, int $id)
+    public function update(UpdateFacultyRequest $request, int $id)
     {
         if(!$this->facultyRepository->getOne($id))
             return response(null, 404);

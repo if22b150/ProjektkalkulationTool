@@ -17,21 +17,21 @@ export class UpdateFacultyComponent {
     createForm: FormGroup;
     visible: boolean;
     submitted: boolean;
-  
+
     constructor(private facultyService: FacultyService, private formBuilder: FormBuilder,
       private messageService: MessageService) {
     }
 
     ngOnInit() {
       this.createForm = this.formBuilder.group({
-        name: [null, [Validators.required]]
+        name: [this.faculty.name, [Validators.required]]
       });
     }
-  
+
     openDialog() {
       this.visible = true;
     }
-  
+
     closeDialog() {
       this.visible = false;
       this.createForm.reset();
@@ -41,11 +41,11 @@ export class UpdateFacultyComponent {
       this.submitted = true;
       if(this.createForm.invalid)
         return;
-  
+
       this.loading = true;
       console.log(this.name.value)
       console.log(this.faculty.id)
-  
+
       this.facultyService.update(this.faculty.id, this.name.value)
         .pipe(finalize(() => this.loading = false))
         .subscribe({

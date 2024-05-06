@@ -115,8 +115,8 @@ class ProjectController extends Controller
     {
         // Beispielhafte Logik, passe diese an deine Bedürfnisse an
         $variableCosts = $project->expenses()->sum('cost');
-        $fixedCosts = ...; // Define how you obtain the fixed costs
-        $revenue = ...; // Auch hier musst du definieren, wie du an die Einnahmen kommst
+        $fixedCosts = 0; // Define how you obtain the fixed costs
+        $revenue = 0; // Auch hier musst du definieren, wie du an die Einnahmen kommst
 
         $project->contribution_margin_1 = $revenue - $variableCosts;
         $project->contribution_margin_2 = $project->contribution_margin_1 - $fixedCosts;
