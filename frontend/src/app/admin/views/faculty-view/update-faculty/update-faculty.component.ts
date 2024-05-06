@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {finalize} from "rxjs";
 import {Faculty} from "../../../../models/faculty.model";
 import {FacultyService} from "../../../../services/faculty.service";
@@ -10,7 +10,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
   templateUrl: './update-faculty.component.html',
   styleUrls: ['./update-faculty.component.scss']
 })
-export class UpdateFacultyComponent {
+export class UpdateFacultyComponent implements OnInit{
     @Input() faculty: Faculty;
     loading: boolean;
 
@@ -24,12 +24,17 @@ export class UpdateFacultyComponent {
 
     ngOnInit() {
       this.createForm = this.formBuilder.group({
-        name: [this.faculty.name, [Validators.required]]
+        name: [this.faculty.name, [Validators.required]],
+        priceForCoursePerDay: [this.faculty.priceForCoursePerDay, [Validators.required, Validators.min(1)]],
       });
     }
 
     openDialog() {
       this.visible = true;
+      this.createForm = this.formBuilder.group({
+        name: [this.faculty.name, [Validators.required]],
+        priceForCoursePerDay: [this.faculty.priceForCoursePerDay, [Validators.required, Validators.min(1)]],
+      });
     }
 
     closeDialog() {
@@ -46,7 +51,7 @@ export class UpdateFacultyComponent {
       console.log(this.name.value)
       console.log(this.faculty.id)
 
-      this.facultyService.update(this.faculty.id, this.name.value)
+      this.facultyService.update(this.faculty.id, this.name.value, this.priceForCoursePerDay.value)
         .pipe(finalize(() => this.loading = false))
         .subscribe({
           next: () => {
@@ -64,4 +69,8 @@ export class UpdateFacultyComponent {
     get name(): AbstractControl {
       return this.createForm.get('name');
     }
+
+  get priceForCoursePerDay(): AbstractControl {
+    return this.createForm.get('priceForCoursePerDay');
+  }
 }

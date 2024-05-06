@@ -9,6 +9,7 @@
       <tr>
         <th pSortableColumn="id">Id <p-sortIcon field="id"></p-sortIcon></th>
         <th pSortableColumn="name">Name <p-sortIcon field="name"></p-sortIcon></th>
+        <th pSortableColumn="priceForCoursePerDay">Preis für Kurs pro Tag<p-sortIcon field="priceForCoursePerDay"></p-sortIcon></th>
         <th style="width:20%">Bearbeiten</th>
         <th>Löschen</th>
       </tr>
@@ -17,6 +18,7 @@
       <tr>
         <td>{{faculty.id}}</td>
         <td>{{faculty.name}}</td>
+        <td>{{faculty.priceForCoursePerDay}}</td>
         <td>
           <app-faculty-update [faculty]="faculty"></app-faculty-update>
 <!--          <button (click)="editFaculty(faculty)">Bearbeiten</button>-->

@@ -23,7 +23,8 @@ export class FacultiesComponent implements OnInit {
 
   ngOnInit() {
     this.createForm = this.formBuilder.group({
-      name: [null, [Validators.required]]
+      name: [null, [Validators.required]],
+      priceForCoursePerDay: [null, [Validators.required, Validators.min(1)]],
     });
   }
 
@@ -43,7 +44,7 @@ export class FacultiesComponent implements OnInit {
 
     this.loading = true;
 
-    this.facultyService.create(this.name.value)
+    this.facultyService.create(this.name.value, this.priceForCoursePerDay.value)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
@@ -60,5 +61,9 @@ export class FacultiesComponent implements OnInit {
 
   get name(): AbstractControl {
     return this.createForm.get('name');
+  }
+
+  get priceForCoursePerDay(): AbstractControl {
+    return this.createForm.get('priceForCoursePerDay');
   }
 }

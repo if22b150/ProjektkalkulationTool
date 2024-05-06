@@ -33,6 +33,7 @@ import { LecturerDeleteComponent } from './views/lecturer-view/lecturer-delete/l
 import { UpdateFacultyComponent } from './views/faculty-view/update-faculty/update-faculty.component';
 import { UpdateExpensesComponent } from './views/expenses-view/update-expenses/update-expenses.component';
 import { LecturerUpdateComponent } from './views/lecturer-view/lecturer-update/lecturer-update.component';
+import {InputNumberModule} from "primeng/inputnumber";
 
 @NgModule({
   providers: [
@@ -74,7 +75,8 @@ import { LecturerUpdateComponent } from './views/lecturer-view/lecturer-update/l
     DialogModule,
     TableModule,
     MultiSelectModule,
-    DropdownModule
+    DropdownModule,
+    InputNumberModule
   ]
 })
 export class AdminModule { }

@@ -50,11 +50,11 @@ export class FacultyService {
     return this.http.delete<any>(environment.adminApiUrl + `faculties/${id}`);
   }
 
-  public create(name: string): Observable<Faculty> {
-    return this.http.post<Faculty>(environment.adminApiUrl + 'faculties', { name });
+  public create(name: string, priceForCoursePerDay: number): Observable<Faculty> {
+    return this.http.post<Faculty>(environment.adminApiUrl + 'faculties', { name, priceForCoursePerDay });
   }
 
-  public update(id: number, name: string): Observable<Faculty> {
-    return this.http.put<Faculty>(environment.adminApiUrl + `faculties/${id}`, { name });
+  public update(id: number, name: string, priceForCoursePerDay: number): Observable<Faculty> {
+    return this.http.put<Faculty>(environment.adminApiUrl + `faculties/${id}`, { name, priceForCoursePerDay });
   }
 }
