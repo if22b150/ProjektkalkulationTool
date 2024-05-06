@@ -99,6 +99,10 @@
           </small>
         </div>
 
+        <div *ngIf="breakEvenPoint">
+          Break-Even-Punkt: {{ breakEvenPoint }}
+        </div>
+
         <div>
           <label for="lastname" class="mb-1">Nachname</label>
           <input id="lastname" type="text" pInputText formControlName="lastname" placeholder="Nachname">
