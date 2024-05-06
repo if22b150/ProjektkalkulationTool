@@ -11,6 +11,7 @@ import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Lecturer} from "../../../../models/lecturer.model";
 import {ProjectType} from "../../../../models/project-type.model";
+import {UserService} from "../../../../services/user.service";
 
 @Component({
   selector: 'app-project-form',
@@ -158,15 +159,31 @@ export class ProjectFormComponent implements OnInit{
   }
 
   calculateBreakEvenPoint(): number {
-    // const fixedCosts = this.projectForm.get('fixedCosts').value;
+    let expenses: ProjectExpense[] = [];
+    this.projectExpenses.controls.forEach(expense => {
+      expenses.push({
+        costs: expense.get('costs').value || 0,
+        expense: expense.get('expense').value
+      });
+    });
+
+    let lecturers: ProjectLecturer[] = [];
+    this.projectLecturers.controls.forEach(lecturer => {
+      lecturers.push({
+        hours: lecturer.get('hours').value || 0,
+        lecturer: lecturer.get('lecturer').value
+      });
+    });
+
+    const fixedCosts = Utils.calculateProjectCosts(lecturers, expenses);
     // const variableCosts = this.projectForm.get('variableCosts').value;
-    // const salePrice = this.projectForm.get('salePrice').value;
-    //
+    const salePrice = this.authService.user.faculty.priceForCoursePerDay * this.participants.value * this.duration.value;
+
     // if (salePrice - variableCosts === 0) {
     //   throw new Error('Verkaufspreis pro Einheit darf nicht gleich den variablen Kosten pro Einheit sein');
     // }
-    // return fixedCosts / (salePrice - variableCosts);
-    return 1;
+    return fixedCosts / salePrice;
+    // return 1;
   }
 
   breakEvenPoint: number;
