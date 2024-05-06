@@ -53,7 +53,7 @@ export class FacultiesComponent implements OnInit {
         },
         error: (err) => {
           console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Die Fakultät konnte nicht erstellt.' });
+          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Die Fakultät konnte nicht erstellt werden.' });
         }
       })
   }

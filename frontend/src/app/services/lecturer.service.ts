@@ -65,6 +65,17 @@ export class LecturerService {
     return this.http.post<Lecturer>(environment.adminApiUrl + `faculties/${facultyId}/lecturers`, data);
   }
 
+  public update(id: number, name: string, hourlyRate: number, dailyRate: number, facultyId: number): Observable<any> {
+    const data = {
+      id: id,
+      name: name,
+      hourlyRate: hourlyRate,
+      dailyRate: dailyRate,
+      facultyId: facultyId,
+    }
+    return this.http.put<any>(environment.adminApiUrl + `faculties/${facultyId}/lecturers/${id}`, data);
+  }
+
   delete(id: number, facultyId: number): Observable<any> {
     return this.http.delete<any>(environment.adminApiUrl + `faculties/${facultyId}/lecturers/${id}`);
   }

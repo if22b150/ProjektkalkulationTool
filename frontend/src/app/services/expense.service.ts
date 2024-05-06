@@ -44,12 +44,15 @@ export class ExpenseService {
       });
   }
 
-  create(name: string, price: number): Observable<Expense> {
+  create(name: string): Observable<Expense> {
     let data = {
-      name: name,
-      price: price
+      name: name
     }
     return this.http.post<Expense>(environment.adminApiUrl + 'expenses', data);
+  }
+
+  public update(id: number, name: string): Observable<any> {
+    return this.http.put<any>(environment.adminApiUrl + `expenses/${id}`, { name });
   }
   
   

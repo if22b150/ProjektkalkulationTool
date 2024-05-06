@@ -22,8 +22,7 @@ export class ExpensesComponent {
 
   ngOnInit() {
     this.createForm = this.formBuilder.group({
-      name: [null, [Validators.required]],
-      price: [null, [Validators.required]]
+      name: [null, [Validators.required]]
     });
   }
 
@@ -43,7 +42,7 @@ export class ExpensesComponent {
 
     this.loading = true;
 
-    this.expenseService.create(this.name.value, this.price.value)
+    this.expenseService.create(this.name.value)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {

@@ -30,6 +30,9 @@ import { ExpensesViewComponent } from './views/expenses-view/expenses-view.compo
 import { ExpensesComponent } from './components/expenses/expenses.component';
 import { DeleteExpenseComponent } from './views/expenses-view/delete-expense/delete-expense.component';
 import { LecturerDeleteComponent } from './views/lecturer-view/lecturer-delete/lecturer-delete.component';
+import { UpdateFacultyComponent } from './views/faculty-view/update-faculty/update-faculty.component';
+import { UpdateExpensesComponent } from './views/expenses-view/update-expenses/update-expenses.component';
+import { LecturerUpdateComponent } from './views/lecturer-view/lecturer-update/lecturer-update.component';
 
 @NgModule({
   providers: [
@@ -49,7 +52,10 @@ import { LecturerDeleteComponent } from './views/lecturer-view/lecturer-delete/l
     ExpensesViewComponent,
     ExpensesComponent,
     DeleteExpenseComponent,
-    LecturerDeleteComponent
+    LecturerDeleteComponent,
+    UpdateFacultyComponent,
+    UpdateExpensesComponent,
+    LecturerUpdateComponent
   ],
   imports: [
     CommonModule,
