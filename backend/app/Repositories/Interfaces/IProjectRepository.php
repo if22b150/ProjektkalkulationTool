@@ -30,6 +30,8 @@ interface IProjectRepository
         DateTime $end,
         bool $crossFaculty,
         ?string $notes,
+        ?int $participants,
+        ?int $duration,
         int $projectTypeId,
         int $userId,
         int $facultyId

@@ -24,6 +24,8 @@ class Project extends Model
         'end',
         'cross_faculty',
         'notes',
+        'participants',
+        'duration',
         'contribution_margin_1',
         'contribution_margin_2'
     ];

@@ -53,6 +53,8 @@ class ProjectRepository implements IProjectRepository
                            DateTime $end,
                            bool $crossFaculty,
                            ?string $notes,
+                           ?int $participants,
+                           ?int $duration,
                            int $projectTypeId,
                            int $userId,
                            int $facultyId): ?Project
@@ -67,6 +69,8 @@ class ProjectRepository implements IProjectRepository
             'end' => $end,
             'cross_faculty' => $crossFaculty,
             'notes' => $notes,
+            'participants' => $participants,
+            'duration' => $duration,
             'project_type_id' => $projectTypeId,
             'user_id' => $userId,
             'faculty_id' => $facultyId

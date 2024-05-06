@@ -24,7 +24,7 @@ class ProjectTypeController extends Controller
 
     public function store(StoreProjectTypeRequest $request)
     {
-        return new ProjectTypeResource($this->projectTypeRepository->create($request->name, $request->code));
+        return new ProjectTypeResource($this->projectTypeRepository->create($request->name, $request->code, $request->isCourse));
     }
 
 //    public function update(StoreFacultyRequest $request, int $id)

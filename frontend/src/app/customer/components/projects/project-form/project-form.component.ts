@@ -10,6 +10,7 @@ import Utils from "../../../../shared/utils";
 import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Lecturer} from "../../../../models/lecturer.model";
+import {ProjectType} from "../../../../models/project-type.model";
 
 @Component({
   selector: 'app-project-form',
@@ -54,9 +55,12 @@ export class ProjectFormComponent implements OnInit{
       projectType: [this.project ? this.project.projectType : this.projectTypeService.projectTypes[0], [Validators.required]],
       projectExpenses: this.formBuilder.array([]),
       projectLecturers: this.formBuilder.array([]),
+      participants: [this.project ? this.project.participants : null],
+      duration: [this.project ? this.project.duration : null],
     });
 
     this.setLecturers();
+    this.setCourseValidators()
     // if(this.project)
     //   this.costChanges();
 
@@ -73,6 +77,12 @@ export class ProjectFormComponent implements OnInit{
         this.setLecturers();
       }
     })
+
+    this.projectType.valueChanges.subscribe({
+      next: (pt: ProjectType) => {
+        this.setCourseValidators()
+      }
+    })
   }
 
   setLecturers() {
@@ -81,6 +91,17 @@ export class ProjectFormComponent implements OnInit{
       // TODO: not working
       c.get('lecturer').setValue(null);
     });
+  }
+
+  setCourseValidators() {
+    if(this.projectType.value.isCourse) {
+      this.participants.setValidators([Validators.required, Validators.min(1)])
+      this.duration.setValidators([Validators.required, Validators.min(1)])
+    } else {
+      this.participants.clearValidators()
+      this.duration.clearValidators()
+    }
+    this.projectForm.updateValueAndValidity()
   }
 
   costChanges() {
@@ -111,6 +132,11 @@ export class ProjectFormComponent implements OnInit{
     this.costChangesEmitter.emit(this.totalCost);
   }
 
+
+  get projectType(): AbstractControl {
+    return this.projectForm.get("projectType");
+  }
+
   get name(): AbstractControl {
     return this.projectForm.get("name");
   }
@@ -132,14 +158,15 @@ export class ProjectFormComponent implements OnInit{
   }
 
   calculateBreakEvenPoint(): number {
-    const fixedCosts = this.projectForm.get('fixedCosts').value;
-    const variableCosts = this.projectForm.get('variableCosts').value;
-    const salePrice = this.projectForm.get('salePrice').value;
-  
-    if (salePrice - variableCosts === 0) {
-      throw new Error('Verkaufspreis pro Einheit darf nicht gleich den variablen Kosten pro Einheit sein');
-    }
-    return fixedCosts / (salePrice - variableCosts);
+    // const fixedCosts = this.projectForm.get('fixedCosts').value;
+    // const variableCosts = this.projectForm.get('variableCosts').value;
+    // const salePrice = this.projectForm.get('salePrice').value;
+    //
+    // if (salePrice - variableCosts === 0) {
+    //   throw new Error('Verkaufspreis pro Einheit darf nicht gleich den variablen Kosten pro Einheit sein');
+    // }
+    // return fixedCosts / (salePrice - variableCosts);
+    return 1;
   }
 
   breakEvenPoint: number;
@@ -166,5 +193,13 @@ export class ProjectFormComponent implements OnInit{
 
   get projectExpenses(): FormArray {
     return this.projectForm.get("projectExpenses") as FormArray;
+  }
+
+  get participants(): AbstractControl {
+    return this.projectForm.get("participants");
+  }
+
+  get duration(): AbstractControl {
+    return this.projectForm.get("duration");
   }
 }

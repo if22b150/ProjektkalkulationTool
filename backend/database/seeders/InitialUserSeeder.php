@@ -100,19 +100,29 @@ class InitialUserSeeder extends Seeder
 
         $projectType1 = new ProjectType([
             'name' => 'Lehrgänge',
-            'code' => 'LG'
+            'code' => 'LG',
+            'is_course' => true
         ]);
         $projectType1->save();
 
         $projectType2 = new ProjectType([
             'name' => 'Internes Projekt',
-            'code' => 'IP'
+            'code' => 'IP',
+            'is_course' => false
         ]);
         $projectType2->save();
 
         $projectType3 = new ProjectType([
             'name' => 'Förderprojekte',
-            'code' => 'FP'
+            'code' => 'FP',
+            'is_course' => false
+        ]);
+        $projectType3->save();
+
+        $projectType3 = new ProjectType([
+            'name' => 'Seminare',
+            'code' => 'SE',
+            'is_course' => true
         ]);
         $projectType3->save();
     }

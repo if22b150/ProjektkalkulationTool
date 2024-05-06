@@ -54,18 +54,18 @@
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-4 mb-2">
+      <div class="flex flex-wrap gap-4 mb-2" *ngIf="projectType.value.isCourse">
         <div>
-          <label for="participantCount" class="mb-1">Teilnehmeranzahl</label>
-          <input id="participantCount" type="number" class="w-full" pInputText formControlName="participantCount" placeholder="Teilnehmeranzahl">
-          <small *ngIf="participantCount?.errors?.required && submitted" class="p-error">
+          <label for="participants" class="mb-1">Teilnehmeranzahl</label>
+          <input id="participants" type="number" class="w-full" pInputText formControlName="participants" placeholder="Teilnehmeranzahl">
+          <small *ngIf="participants?.errors?.required && submitted" class="p-error">
             Teilnehmeranzahl ist erforderlich.
           </small>
         </div>
-      
+
         <div>
-          <label for="duration" class="mb-1">Dauer des Projekts</label>
-          <input id="duration" type="number" class="w-full" pInputText formControlName="duration" placeholder="Dauer">
+          <label for="duration" class="mb-1">Dauer des Projekts (in Tagen)</label>
+          <input id="duration" type="number" class="w-full" pInputText formControlName="duration" placeholder="Tage">
           <small *ngIf="duration?.errors?.required && submitted" class="p-error">
             Die Dauer des Projekts ist erforderlich.
           </small>
@@ -74,7 +74,7 @@
 
       <div class="mb-4">
         <label for="notes" class="mb-1">Anmerkungen</label>
-        <textarea rows="5" cols="30" pInputTextarea formControlName="notes"></textarea>
+        <textarea rows="5" cols="30" id="notes" pInputTextarea formControlName="notes"></textarea>
       </div>
 
 

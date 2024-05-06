@@ -43,11 +43,12 @@ class ProjectTypeRepository implements IProjectTypeRepository
         return $pt->save() ? $pt : null;
     }
 
-    public function create(string $name, string $code): ?ProjectType
+    public function create(string $name, string $code, bool $is_course): ?ProjectType
     {
         $pt = new ProjectType([
             'name' => $name,
-            'code' => $code
+            'code' => $code,
+            'is_course' => $is_course
         ]);
         return $this->save($pt);
     }

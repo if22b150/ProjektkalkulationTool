@@ -19,7 +19,7 @@ interface IProjectTypeRepository
 
     public function save(ProjectType $pt): ?ProjectType;
 //
-    public function create(string $name, string $code): ?ProjectType;
+    public function create(string $name, string $code, bool $is_course): ?ProjectType;
 
     public function update(int $id, string $name): ?ProjectType;
 }

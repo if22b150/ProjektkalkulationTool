@@ -13,6 +13,8 @@ export interface Project extends AModel {
   crossFaculty: boolean;
   notes?: string;
   costs?: number;
+  participants?: number;
+  duration?: number;
   projectType: ProjectType;
   lecturers: ProjectLecturer[];
   expenses: ProjectExpense[];

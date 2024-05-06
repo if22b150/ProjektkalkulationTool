@@ -23,7 +23,8 @@ class StoreProjectTypeRequest extends FormRequest
     public function rules() {
         return [
             'name' => ['required', 'string', 'unique:project_types,name'],
-            'code' => ['required', 'string']
+            'code' => ['required', 'string'],
+            'isCourse' => ['required', 'boolean']
         ];
     }
 }

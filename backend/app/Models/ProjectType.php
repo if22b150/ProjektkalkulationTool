@@ -13,6 +13,11 @@ class ProjectType extends Model
      */
     protected $fillable = [
         'name',
-        'code'
+        'code',
+        'is_course'
+    ];
+
+    protected $casts = [
+        'is_course' => 'boolean'
     ];
 }

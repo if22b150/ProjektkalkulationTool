@@ -19,6 +19,8 @@ return new class extends Migration
             $table->date('end');
             $table->text('notes')->nullable();
             $table->boolean('cross_faculty')->default(false);
+            $table->unsignedInteger('participants')->nullable();
+            $table->unsignedInteger('duration')->nullable();
         });
     }
 
@@ -35,6 +37,8 @@ return new class extends Migration
             $table->dropColumn('end');
             $table->dropColumn('notes');
             $table->dropColumn('cross_faculty');
+            $table->dropColumn('participants');
+            $table->dropColumn('duration');
         });
     }
 };

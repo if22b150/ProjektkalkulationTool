@@ -12,7 +12,8 @@ class ProjectTypeResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'code' => $this->code
+            'code' => $this->code,
+            'isCourse' => $this->is_course
         ];
     }
 }

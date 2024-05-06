@@ -32,6 +32,8 @@ class StoreProjectRequest extends FormRequest
             'end' => ['required', 'string'],
             'crossFaculty' => ['required', 'boolean'],
             'notes' => ['nullable', 'string'],
+            'participants' => ['nullable', 'integer'],
+            'duration' => ['nullable', 'integer'],
 
             'lecturers' => ['present', 'array'],
             'lecturers.*.id' => ['required', 'integer', 'exists:lecturers,id'],

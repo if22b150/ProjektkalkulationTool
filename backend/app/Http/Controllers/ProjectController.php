@@ -7,6 +7,7 @@ use App\Http\Resources\ProjectResource;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
 use App\Repositories\Interfaces\IProjectLecturerRepository;
 use App\Repositories\Interfaces\IProjectRepository;
+use App\Repositories\Interfaces\IProjectTypeRepository;
 use App\Utils\ProjectToCSV;
 use App\Utils\ProjectToPDF;
 use Carbon\Carbon;
@@ -18,7 +19,8 @@ class ProjectController extends Controller
 {
     public function __construct(protected IProjectRepository $projectRepository,
                                 protected IProjectLecturerRepository $projectLecturerRepository,
-                                protected IProjectExpenseRepository $projectExpenseRepository)
+                                protected IProjectExpenseRepository $projectExpenseRepository,
+                                protected IProjectTypeRepository $projectTypeRepository)
     {}
 
     public function index(int $facultyId)
@@ -36,6 +38,14 @@ class ProjectController extends Controller
 
     public function store(StoreProjectRequest $request, int $facultyId)
     {
+        $projectType = $this->projectTypeRepository->getOne($request->projectTypeId);
+        if($projectType->is_course) {
+            $request->validate([
+                'participants' => ['required', 'integer', 'min:1'],
+                'duration' => ['required', 'integer', 'min:1'],
+            ]);
+        }
+
         try {
             $project = $this->projectRepository->create(
                 $request->name,
@@ -47,6 +57,8 @@ class ProjectController extends Controller
                 Carbon::createFromFormat('Y-m-d', $request->end),
                 $request->crossFaculty,
                 $request->notes,
+                $request->participants,
+                $request->duration,
                 $request->projectTypeId,
                 $request->user()->id,
                 $facultyId

@@ -24,7 +24,7 @@ export class UpdateExpensesComponent {
 
   ngOnInit() {
     this.createForm = this.formBuilder.group({
-      name: [null, [Validators.required]]
+      name: [this.expense.name, [Validators.required]]
     });
   }
 
