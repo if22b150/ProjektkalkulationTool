@@ -12,6 +12,7 @@ class Faculty extends Model
      * @var array<int, string>
      */
     protected $fillable = [
-        'name'
+        'name',
+        'price_for_course_per_day'
     ];
 }

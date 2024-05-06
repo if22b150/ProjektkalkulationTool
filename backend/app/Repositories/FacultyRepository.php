@@ -43,18 +43,20 @@ class FacultyRepository implements IFacultyRepository
         return $faculty->save() ? $faculty : null;
     }
 
-    public function create($name): ?Faculty
+    public function create(string $name, int $price_for_course_per_day): ?Faculty
     {
         $faculty = new Faculty([
-            'name' => $name
+            'name' => $name,
+            'price_for_course_per_day' => $price_for_course_per_day
         ]);
         return $this->save($faculty);
     }
 
-    public function update(int $id, string $name): ?Faculty
+    public function update(int $id, string $name, int $price_for_course_per_day): ?Faculty
     {
         $faculty = $this->getOne($id);
         $faculty->name = $name;
+        $faculty->price_for_course_per_day = $price_for_course_per_day;
 
         return $this->save($faculty);
     }

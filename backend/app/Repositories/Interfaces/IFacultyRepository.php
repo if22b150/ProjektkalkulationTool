@@ -19,7 +19,7 @@ interface IFacultyRepository
 
     public function save(Faculty $faculty): ?Faculty;
 //
-    public function create(string $name): ?Faculty;
+    public function create(string $name, int $price_for_course_per_day): ?Faculty;
 
-    public function update(int $id, string $name): ?Faculty;
+    public function update(int $id, string $name, int $price_for_course_per_day): ?Faculty;
 }

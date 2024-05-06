@@ -11,7 +11,8 @@ class FacultyResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name
+            'name' => $this->name,
+            'priceForCoursePerDay' => $this->price_for_course_per_day
         ];
     }
 }

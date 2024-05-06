@@ -26,7 +26,8 @@ class UpdateFacultyRequest extends FormRequest
         $this->merge(['id' => $this->route('faculty')]);
 
         return [
-            'name' => ['required', 'string', Rule::unique('faculties', 'name')->ignore($faculty)]
+            'name' => ['required', 'string', Rule::unique('faculties', 'name')->ignore($faculty)],
+            'priceForCoursePerDay' => ['required', 'integer', 'min:1'],
         ];
     }
 }

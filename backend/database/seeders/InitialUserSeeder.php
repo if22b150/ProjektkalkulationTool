@@ -30,12 +30,14 @@ class InitialUserSeeder extends Seeder
         $admin->save();
 
         $faculty1 = new Faculty([
-           'name' => "Fakultät 1"
+           'name' => "Fakultät 1",
+            'price_for_course_per_day' => 150
         ]);
         $faculty1->save();
 
         $faculty2 = new Faculty([
-            'name' => "Fakultät 2"
+            'name' => "Fakultät 2",
+            'price_for_course_per_day' => 200
         ]);
         $faculty2->save();
 

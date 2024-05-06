@@ -27,7 +27,7 @@ class FacultyController extends Controller
 
     public function store(StoreFacultyRequest $request)
     {
-        return new FacultyResource($this->facultyRepository->create($request->name));
+        return new FacultyResource($this->facultyRepository->create($request->name, $request->priceForCoursePerDay));
     }
 
     public function update(UpdateFacultyRequest $request, int $id)
@@ -35,7 +35,7 @@ class FacultyController extends Controller
         if(!$this->facultyRepository->getOne($id))
             return response(null, 404);
 
-        return new FacultyResource($this->facultyRepository->update($id, $request->name));
+        return new FacultyResource($this->facultyRepository->update($id, $request->name, $request->priceForCoursePerDay));
     }
 
     public function destroy(int $id)
