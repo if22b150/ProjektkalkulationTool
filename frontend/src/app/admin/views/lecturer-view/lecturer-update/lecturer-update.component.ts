@@ -13,7 +13,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
   styleUrls: ['./lecturer-update.component.scss']
 })
 export class LecturerUpdateComponent {
-  @Input() lecturer: Lecturer;
+  @Input() lecturer: Lecturer | null;
   loading: boolean;
 
   createForm: FormGroup;
@@ -27,15 +27,20 @@ export class LecturerUpdateComponent {
 
   ngOnInit() {
     this.createForm = this.formBuilder.group({
-      name: [null, [Validators.required]],
-      hourlyRate: [null, [Validators.required]],
-      dailyRate: [null, [Validators.required]]
+      name: [this.lecturer?.name, [Validators.required]],
+      hourlyRate: [this.lecturer?.hourlyRate, [Validators.required]],
+      dailyRate: [this.lecturer?.dailyRate, [Validators.required]]
     });
     this.facultyService.getAll();
   }
 
   openDialog() {
     this.visible = true;
+    this.createForm = this.formBuilder.group({
+      name: [this.lecturer?.name, [Validators.required]],
+      hourlyRate: [this.lecturer?.hourlyRate, [Validators.required]],
+      dailyRate: [this.lecturer?.dailyRate, [Validators.required]]
+    });
   }
 
   closeDialog() {
