@@ -65,7 +65,7 @@ class ProjectController extends Controller
             );
 
             foreach ($request->lecturers as $lecturer) {
-                $this->projectLecturerRepository->create($project->id, $lecturer['id'], $lecturer['hours']);
+                $this->projectLecturerRepository->create($project->id, $lecturer['id'], $lecturer['hours'], $lecturer['daily']);
             }
             foreach ($request->expenses as $expense) {
                 $this->projectExpenseRepository->create($project->id, $expense['id'], $expense['costs']);

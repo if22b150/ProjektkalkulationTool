@@ -46,7 +46,8 @@ export class ProjectLecturersComponent implements OnInit {
         this.projectLecturers.push(this.formBuilder.group({
           id: [null],
           lecturer: [this.getProjectLecturerValue(projectLecturer), [Validators.required]],
-          hours: [projectLecturer.hours, [Validators.required, Validators.min(1)]]
+          hours: [projectLecturer.hours, [Validators.required, Validators.min(1)]],
+          daily: [projectLecturer.daily]
         }))
       })
     } else {
@@ -67,7 +68,8 @@ export class ProjectLecturersComponent implements OnInit {
     return this.formBuilder.group({
       id: [null],
       lecturer: [null, [Validators.required]],
-      hours: [null, [Validators.required]]
+      hours: [null, [Validators.required]],
+      daily: [false]
     })
   }
 
@@ -87,6 +89,10 @@ export class ProjectLecturersComponent implements OnInit {
 
   get crossFaculty(): boolean {
     return this.projectForm.get('crossFaculty').value;
+  }
+
+  daily(i: number): AbstractControl {
+    return this.projectLecturers.at(i).get("daily");
   }
 
   hours(i: number): AbstractControl {

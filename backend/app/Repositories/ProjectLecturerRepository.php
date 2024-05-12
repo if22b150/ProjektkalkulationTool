@@ -43,12 +43,13 @@ class ProjectLecturerRepository implements IProjectLecturerRepository
         return $projectLecturer->save() ? $projectLecturer : null;
     }
 
-    public function create(int $projectId, int $lecturerId, int $hours): ?ProjectLecturer
+    public function create(int $projectId, int $lecturerId, int $hours, bool $daily): ?ProjectLecturer
     {
         $projectLecturer = new ProjectLecturer([
             'hours' => $hours,
             'project_id' => $projectId,
             'lecturer_id' => $lecturerId,
+            'daily' => $daily
         ]);
         return $this->save($projectLecturer);
     }

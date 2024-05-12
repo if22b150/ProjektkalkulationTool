@@ -16,7 +16,12 @@ class ProjectLecturer extends Model
     protected $fillable = [
         'project_id',
         'lecturer_id',
-        'hours'
+        'hours',
+        'daily'
+    ];
+
+    protected $casts = [
+        'daily' => 'boolean'
     ];
 
     public function project() {

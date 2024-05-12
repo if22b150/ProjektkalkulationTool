@@ -8,6 +8,13 @@
         <input type="hidden" [value]="i" formControlName="id">
 
         <div class="flex flex-column align-items-start gap-1">
+          <label class="mb-2"
+                 for="{{project ? 'project-' + project.id + '-' + 'lecturer-' + i : 'new-project-lecturer-' + i}}">Tagessatz</label>
+          <p-inputSwitch inputId="{{project ? 'project-' + project.id + '-' + 'lecturer-' + i : 'new-project-lecturer-' + i}}"
+                         formControlName="daily" />
+        </div>
+
+        <div class="flex flex-column align-items-start gap-1">
           <label [for]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i">
             Vortragende/r
           </label>
@@ -32,9 +39,12 @@
         </div>
 
         <span class="p-float-label">
-          <p-inputNumber [inputId]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i" formControlName="hours" class="flex-grow-1" placeholder="h"></p-inputNumber>
+          <p-inputNumber [inputId]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i"
+                         formControlName="hours"
+                         class="flex-grow-1"
+                         placeholder="{{daily(i).value ? 'Tage' : 'h'}}" suffix="{{daily(i).value ? 'd' : 'h'}}"></p-inputNumber>
           <label [for]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
-            Stunden
+            {{ daily(i).value ? 'Tage' : 'Stunden' }}
           </label>
           <small *ngIf="hours(i)?.errors?.required && submitted" class="p-error">
             Stunden sind erforderlich.

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, finalize, Observable} from "rxjs";
 import {Project} from "../models/project.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
@@ -11,9 +11,13 @@ import {ProjectLecturer} from "../models/project-lecturer.model";
 })
 export class ProjectService {
   private _projects: BehaviorSubject<Project[]>;
+  private _loading: BehaviorSubject<boolean>;
 
   public get projects$(): Observable<Project[]> {
     return this._projects.asObservable();
+  }
+  public get loading$(): Observable<boolean> {
+    return this._loading.asObservable();
   }
 
   public get projects(): Project[] {
@@ -22,10 +26,13 @@ export class ProjectService {
 
   constructor(private http: HttpClient) {
     this._projects = new BehaviorSubject<Project[]>(null);
+    this._loading = new BehaviorSubject<boolean>(false);
   }
 
   getAllByFaculty(facultyId: number): void {
+    this._loading.next(true)
     this.http.get<Project[]>(environment.apiUrl + `faculties/${facultyId}/projects`)
+      .pipe(finalize(() => this._loading.next(false)))
       .subscribe(projects => this._projects.next(projects));
   }
 
@@ -46,7 +53,9 @@ export class ProjectService {
     notes: string,
     expenses: ProjectExpense[],
     lecturers: ProjectLecturer[],
-    costs: number
+    costs: number,
+    participants: number,
+    duration: number
   ): Observable<Project> {
     return this.http.post<Project>(
       environment.apiUrl + `faculties/${facultyId}/projects`,
@@ -61,8 +70,10 @@ export class ProjectService {
         crossFaculty,
         notes,
         expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs})),
-        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours})),
-        costs
+        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
+        costs,
+        participants,
+        duration
       });
   }
 

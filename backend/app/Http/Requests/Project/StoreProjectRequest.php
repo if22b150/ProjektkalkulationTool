@@ -38,6 +38,7 @@ class StoreProjectRequest extends FormRequest
             'lecturers' => ['present', 'array'],
             'lecturers.*.id' => ['required', 'integer', 'exists:lecturers,id'],
             'lecturers.*.hours' => ['required', 'integer'],
+            'lecturers.*.daily' => ['required', 'boolean'],
 
             'expenses' => ['present', 'array'],
             'expenses.*.id' => ['required', 'integer', 'exists:expenses,id'],

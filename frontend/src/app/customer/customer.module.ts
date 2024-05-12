@@ -25,6 +25,7 @@ import {CheckboxModule} from "primeng/checkbox";
 import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import { ExportButtonsComponent } from './components/projects/export-buttons/export-buttons.component';
+import {InputSwitchModule} from "primeng/inputswitch";
 
 @NgModule({
   providers: [
@@ -60,7 +61,8 @@ import { ExportButtonsComponent } from './components/projects/export-buttons/exp
     CheckboxModule,
     CalendarModule,
     InputTextareaModule,
-    SharedModule
+    SharedModule,
+    InputSwitchModule
   ]
 })
 export class CustomerModule { }

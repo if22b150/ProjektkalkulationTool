@@ -3,7 +3,7 @@
   <p-button routerLink="new-project" pRipple label="Projekt anlegen" class="p-button-outlined p-button-raised"></p-button>
 </div>
 
-<div class="grid" *ngIf="projectService.projects$|async; else loadingSpinner">
+<div class="grid" *ngIf="(projectService.projects$|async) && !(projectService.loading$|async); else loadingSpinner">
   <div *ngFor="let project of projectService.projects$|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2">
       <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">

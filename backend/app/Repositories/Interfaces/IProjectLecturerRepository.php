@@ -19,5 +19,5 @@ interface IProjectLecturerRepository
 
     public function save(ProjectLecturer $projectLecturer): ?ProjectLecturer;
 
-    public function create(int $projectId, int $lecturerId, int $hours): ?ProjectLecturer;
+    public function create(int $projectId, int $lecturerId, int $hours, bool $daily): ?ProjectLecturer;
 }

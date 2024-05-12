@@ -6,7 +6,7 @@ export default class Utils {
   static calculateProjectCosts(projectLecturers: ProjectLecturer[], projectExpenses: ProjectExpense[]) {
     let costs = 0;
     projectLecturers.forEach(projectLecturer => {
-      costs += projectLecturer.hours * projectLecturer.lecturer.hourlyRate;
+      costs += projectLecturer.hours * (projectLecturer.daily ? projectLecturer.lecturer.dailyRate : projectLecturer.lecturer.hourlyRate);
     });
     // newCosts += this.travelCosts.value;
     projectExpenses.forEach(projectExpense => {

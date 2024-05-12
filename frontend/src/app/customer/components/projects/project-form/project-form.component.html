@@ -28,7 +28,7 @@
         <div>
           <label for="name" class="mb-1">Projekttitel</label>
           <input id="name" type="text" class="w-full" pInputText formControlName="name" placeholder="Name">
-          <small *ngIf="name?.errors?.required && submitted" class="p-error">
+          <small *ngIf="name?.errors?.required && submitted" class="p-error w-full">
             Ein Titel ist erforderlich.
           </small>
         </div>
@@ -57,7 +57,7 @@
       <div class="flex flex-wrap gap-4 mb-2" *ngIf="projectType.value.isCourse">
         <div>
           <label for="participants" class="mb-1">Teilnehmeranzahl</label>
-          <input id="participants" type="number" class="w-full" pInputText formControlName="participants" placeholder="Teilnehmeranzahl">
+          <input id="participants" type="number" pInputText formControlName="participants" placeholder="Teilnehmeranzahl">
           <small *ngIf="participants?.errors?.required && submitted" class="p-error">
             Teilnehmeranzahl ist erforderlich.
           </small>
@@ -65,7 +65,7 @@
 
         <div>
           <label for="duration" class="mb-1">Dauer des Projekts (in Tagen)</label>
-          <input id="duration" type="number" class="w-full" pInputText formControlName="duration" placeholder="Tage">
+          <input id="duration" type="number" pInputText formControlName="duration" placeholder="Tage">
           <small *ngIf="duration?.errors?.required && submitted" class="p-error">
             Die Dauer des Projekts ist erforderlich.
           </small>
@@ -99,10 +99,6 @@
           </small>
         </div>
 
-        <div *ngIf="breakEvenPoint">
-          Break-Even-Punkt: {{ breakEvenPoint }}
-        </div>
-
         <div>
           <label for="lastname" class="mb-1">Nachname</label>
           <input id="lastname" type="text" pInputText formControlName="lastname" placeholder="Nachname">
@@ -122,7 +118,7 @@
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
       <p class="m-0 my-1 font-bold">Vortragende</p>
 
-      <div class="mb-2">
+      <div class="mb-3">
         <p-checkbox [binary]="true" formControlName="crossFaculty" inputId="crossFaculty" class="mr-2"></p-checkbox>
         <label for="crossFaculty">Fakultätsübergreifend</label>
       </div>

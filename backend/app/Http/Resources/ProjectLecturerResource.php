@@ -12,7 +12,8 @@ class ProjectLecturerResource extends JsonResource
         return [
             'projectId' => $this->project_id,
             'lecturer' => new LecturerResource($this->lecturer),
-            'hours' => $this->hours
+            'hours' => $this->hours,
+            'daily' => $this->daily
         ];
     }
 }

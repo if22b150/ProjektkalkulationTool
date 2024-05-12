@@ -67,7 +67,9 @@ export class NewProjectComponent implements OnInit{
       this.notes.value,
       this.projectExpenses.value,
       this.projectLecturers.value,
-      this.totalCost * 100
+      this.totalCost * 100,
+      this.participants.value,
+      this.duration.value
     )
       .pipe(
         finalize(() => this.loading = false)
@@ -126,5 +128,13 @@ export class NewProjectComponent implements OnInit{
 
   get projectExpenses(): FormArray {
     return this.newProjectForm.get("projectExpenses") as FormArray;
+  }
+
+  get participants(): AbstractControl {
+    return this.newProjectForm.get("participants");
+  }
+
+  get duration(): AbstractControl {
+    return this.newProjectForm.get("duration");
   }
 }
