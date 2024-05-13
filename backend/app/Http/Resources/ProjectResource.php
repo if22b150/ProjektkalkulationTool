@@ -26,7 +26,10 @@ class ProjectResource extends JsonResource
             'facultyId' => $this->faculty->id,
             'projectType' => new ProjectTypeResource($this->projectType),
             'lecturers' => ProjectLecturerResource::collection($this->lecturers),
-            'expenses' => ProjectExpenseResource::collection($this->expenses)
+            'expenses' => ProjectExpenseResource::collection($this->expenses),
+            'crossFaculties' => $this->faculties->map(function ($item, int $key) {
+                return $item->faculty;
+            })
         ];
     }
 }

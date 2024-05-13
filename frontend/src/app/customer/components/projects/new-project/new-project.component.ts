@@ -49,6 +49,7 @@ export class NewProjectComponent implements OnInit{
 
   create() {
     this.submitted = true;
+    console.log(this.newProjectForm)
     if(this.newProjectForm.invalid)
       return;
 
@@ -69,7 +70,8 @@ export class NewProjectComponent implements OnInit{
       this.projectLecturers.value,
       this.totalCost * 100,
       this.participants.value,
-      this.duration.value
+      this.duration.value,
+      this.crossFaculties.value
     )
       .pipe(
         finalize(() => this.loading = false)
@@ -136,5 +138,9 @@ export class NewProjectComponent implements OnInit{
 
   get duration(): AbstractControl {
     return this.newProjectForm.get("duration");
+  }
+
+  get crossFaculties(): FormArray {
+    return this.newProjectForm.get("crossFaculties") as FormArray;
   }
 }

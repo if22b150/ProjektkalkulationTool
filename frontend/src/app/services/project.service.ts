@@ -5,6 +5,7 @@ import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ProjectExpense} from "../models/project-expense.model";
 import {ProjectLecturer} from "../models/project-lecturer.model";
+import {Faculty} from "../models/faculty.model";
 
 @Injectable({
   providedIn: 'root'
@@ -55,7 +56,8 @@ export class ProjectService {
     lecturers: ProjectLecturer[],
     costs: number,
     participants: number,
-    duration: number
+    duration: number,
+    crossFaculties: Faculty[]
   ): Observable<Project> {
     return this.http.post<Project>(
       environment.apiUrl + `faculties/${facultyId}/projects`,
@@ -73,7 +75,8 @@ export class ProjectService {
         lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
         costs,
         participants,
-        duration
+        duration,
+        crossFaculties: crossFaculties.map(c => ({id: c.id}))
       });
   }
 

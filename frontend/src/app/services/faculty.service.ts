@@ -35,9 +35,9 @@ export class FacultyService {
     this._loading = new BehaviorSubject<boolean>(null);
   }
 
-  public getAll() {
+  public getAll(requestedByCustomer: boolean = false) {
     this._loading.next(true);
-    this.http.get<Faculty[]>(environment.adminApiUrl + 'faculties')
+    this.http.get<Faculty[]>((requestedByCustomer ? environment.apiUrl : environment.adminApiUrl) + 'faculties')
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe({
         next: (faculties) => {

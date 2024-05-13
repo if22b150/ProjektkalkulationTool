@@ -3,6 +3,7 @@ import { BehaviorSubject, finalize, Observable } from "rxjs";
 import { Lecturer } from "../models/lecturer.model";
 import { HttpClient } from "@angular/common/http";
 import { environment } from "../../environments/environment";
+import {Faculty} from "../models/faculty.model";
 
 @Injectable({
   providedIn: 'root'
@@ -18,8 +19,8 @@ export class LecturerService {
     return this._lecturers.value;
   }
 
-  public get lecturersGroupedByFaculty() {
-    return this.lecturers.reduce((acc, lecturer) => {
+  public getLecturersGroupedByFaculty(faculties: Faculty[]) {
+    return this.lecturers.filter(l => faculties.map(f => f.id).indexOf(l.faculty.id) !== -1).reduce((acc, lecturer) => {
       const existingFaculty = acc.find(item => item.value.id === lecturer.faculty.id);
       if (existingFaculty) {
         existingFaculty.items.push({label: lecturer.name, value: lecturer});

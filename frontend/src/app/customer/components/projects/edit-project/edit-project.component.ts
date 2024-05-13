@@ -5,13 +5,7 @@ import {ProjectService} from "../../../../services/project.service";
 import {finalize} from "rxjs";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Project} from "../../../../models/project.model";
-import {ProjectTypeService} from "../../../../services/project-type.service";
-import {ExpenseService} from "../../../../services/expense.service";
-import {LecturerService} from "../../../../services/lecturer.service";
 import {AbstractControl, FormArray, FormGroup} from "@angular/forms";
-import {ProjectExpense} from "../../../../models/project-expense.model";
-import {ProjectLecturer} from "../../../../models/project-lecturer.model";
-import Utils from "../../../../shared/utils";
 
 @Component({
   selector: 'app-edit-project',

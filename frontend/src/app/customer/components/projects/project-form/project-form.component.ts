@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProjectTypeService} from "../../../../services/project-type.service";
 import {Project} from "../../../../models/project.model";
@@ -9,9 +9,8 @@ import {ProjectLecturer} from "../../../../models/project-lecturer.model";
 import Utils from "../../../../shared/utils";
 import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
-import {Lecturer} from "../../../../models/lecturer.model";
 import {ProjectType} from "../../../../models/project-type.model";
-import {UserService} from "../../../../services/user.service";
+import {FacultyService} from "../../../../services/faculty.service";
 
 @Component({
   selector: 'app-project-form',
@@ -33,13 +32,15 @@ export class ProjectFormComponent implements OnInit{
   projectForm: FormGroup;
   totalCost: number = 0;
   dropDownLecturers;
+  dropDownFaculties = this.facultyService.faculties.filter(f => f.id != this.authService.user.faculty.id)
 
   constructor(private formBuilder: FormBuilder,
               public projectTypeService: ProjectTypeService,
               public projectService: ProjectService,
               public expenseService: ExpenseService,
               private authService: AuthService,
-              public lecturerService: LecturerService) {
+              public lecturerService: LecturerService,
+              private facultyService: FacultyService) {
 
   }
 
@@ -58,17 +59,18 @@ export class ProjectFormComponent implements OnInit{
       projectLecturers: this.formBuilder.array([]),
       participants: [this.project ? this.project.participants : null],
       duration: [this.project ? this.project.duration : null],
+      crossFaculties: [this.project ? this.getCrossFacultiesValue() : []]
     });
 
-    this.setLecturers();
+    this.setLecturers()
     this.setCourseValidators()
+
     // if(this.project)
     //   this.costChanges();
 
     this.projectForm.valueChanges.subscribe({
       next: (fg) => {
         this.formChangesEmitter.emit(this.projectForm);
-        this.breakEvenPoint = this.calculateBreakEvenPoint();
         this.costChanges();
       }
     });
@@ -79,6 +81,13 @@ export class ProjectFormComponent implements OnInit{
       }
     })
 
+    this.crossFaculties.valueChanges.subscribe({
+      next: (cf) => {
+        this.setLecturers();
+        console.log(cf)
+      }
+    })
+
     this.projectType.valueChanges.subscribe({
       next: (pt: ProjectType) => {
         this.setCourseValidators()
@@ -86,11 +95,29 @@ export class ProjectFormComponent implements OnInit{
     })
   }
 
+  getCrossFacultiesValue() {
+    return this.dropDownFaculties.filter(dropDownFaculty => this.project.crossFaculties.map(cross => cross.id).indexOf(dropDownFaculty.id) != -1)
+  }
+
+  initializeCrossFaculties() {
+    if (this.project) {
+      // // not needed until there is no editing of projects
+      // this.project.expenses.forEach((projectExpenses: ProjectExpense) => {
+      //   let expense = this.expenseService.expenses.find(e => e.id == projectExpenses.expense.id);
+      //   this.projectExpenses.push(this.formBuilder.group({
+      //     id: [projectExpenses.id],
+      //     expense: [expense, [Validators.required]],
+      //     costs: [projectExpenses.costs, [Validators.required, Validators.min(1)]]
+      //   }))
+      // })
+    }
+  }
+
   setLecturers() {
-    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.lecturersGroupedByFaculty : this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
+    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.getLecturersGroupedByFaculty([...(this.crossFaculties.value ?? []), ...[this.authService.user.faculty]]) : this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
     this.projectLecturers.controls.forEach(c => {
       // TODO: not working
-      c.get('lecturer').setValue(null);
+      // c.get('lecturer').setValue(null);
     });
   }
 
@@ -102,6 +129,8 @@ export class ProjectFormComponent implements OnInit{
       this.participants.clearValidators()
       this.duration.clearValidators()
     }
+    this.participants.updateValueAndValidity()
+    this.duration.updateValueAndValidity()
     this.projectForm.updateValueAndValidity()
   }
 
@@ -203,5 +232,9 @@ export class ProjectFormComponent implements OnInit{
 
   get duration(): AbstractControl {
     return this.projectForm.get("duration");
+  }
+
+  get crossFaculties(): AbstractControl {
+    return this.projectForm.get("crossFaculties");
   }
 }

@@ -118,9 +118,27 @@
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
       <p class="m-0 my-1 font-bold">Vortragende</p>
 
-      <div class="mb-3">
-        <p-checkbox [binary]="true" formControlName="crossFaculty" inputId="crossFaculty" class="mr-2"></p-checkbox>
-        <label for="crossFaculty">Fakultätsübergreifend</label>
+      <div class="mb-3 flex flex-wrap gap-4">
+        <div>
+          <p-checkbox [binary]="true" formControlName="crossFaculty" inputId="crossFaculty" class="mr-2"></p-checkbox>
+          <label for="crossFaculty">Fakultätsübergreifend</label>
+        </div>
+
+        <div *ngIf="crossFaculty.value" class="flex flex-column align-items-start gap-1">
+          <label for="crossFaculties">
+            Fakultäten
+          </label>
+
+          <p-multiSelect  id="crossFaculties"
+                          formControlName="crossFaculties"
+                          [options]="dropDownFaculties"
+                          optionLabel="name"
+                          [filter]="false"
+                          [style]="{'width':'200px'}"
+                          placeholder="Auswählen">
+          </p-multiSelect>
+
+        </div>
       </div>
 
       <app-project-lecturers [project]="project"

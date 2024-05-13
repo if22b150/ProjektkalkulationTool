@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
+use App\Repositories\Interfaces\IProjectFacultyRepository;
 use App\Repositories\Interfaces\IProjectLecturerRepository;
 use App\Repositories\Interfaces\IProjectRepository;
 use App\Repositories\Interfaces\IProjectTypeRepository;
@@ -14,12 +15,14 @@ use Carbon\Carbon;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
     public function __construct(protected IProjectRepository $projectRepository,
                                 protected IProjectLecturerRepository $projectLecturerRepository,
                                 protected IProjectExpenseRepository $projectExpenseRepository,
+                                protected IProjectFacultyRepository $projectFacultyRepository,
                                 protected IProjectTypeRepository $projectTypeRepository)
     {}
 
@@ -69,6 +72,9 @@ class ProjectController extends Controller
             }
             foreach ($request->expenses as $expense) {
                 $this->projectExpenseRepository->create($project->id, $expense['id'], $expense['costs']);
+            }
+            foreach ($request->crossFaculties as $f) {
+                $this->projectFacultyRepository->create($project->id, $f['id']);
             }
         } catch (\Exception) {
             if($project)

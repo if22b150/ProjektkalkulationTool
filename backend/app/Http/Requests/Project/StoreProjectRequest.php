@@ -42,7 +42,10 @@ class StoreProjectRequest extends FormRequest
 
             'expenses' => ['present', 'array'],
             'expenses.*.id' => ['required', 'integer', 'exists:expenses,id'],
-            'expenses.*.costs' => ['required', 'integer']
+            'expenses.*.costs' => ['required', 'integer'],
+
+            'crossFaculties' => ['present', 'array'],
+            'crossFaculties.*.id' => ['required', 'integer', 'exists:faculties,id'],
         ];
     }
 }

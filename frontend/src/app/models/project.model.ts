@@ -2,6 +2,7 @@ import {AModel} from "./a-model.model";
 import {ProjectLecturer} from "./project-lecturer.model";
 import {ProjectExpense} from "./project-expense.model";
 import {ProjectType} from "./project-type.model";
+import {Faculty} from "./faculty.model";
 
 export interface Project extends AModel {
   name: string;
@@ -18,4 +19,5 @@ export interface Project extends AModel {
   projectType: ProjectType;
   lecturers: ProjectLecturer[];
   expenses: ProjectExpense[];
+  crossFaculties: Faculty[];
 }

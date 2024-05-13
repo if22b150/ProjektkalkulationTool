@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('lecturers', [\App\Http\Controllers\LecturerController::class, 'index']);
     Route::get('expenses', [\App\Http\Controllers\ExpenseController::class, 'index']);
+    Route::get('faculties', [\App\Http\Controllers\FacultyController::class, 'index']);
     Route::get('project-types', [\App\Http\Controllers\ProjectTypeController::class, 'index']);
 });
 
