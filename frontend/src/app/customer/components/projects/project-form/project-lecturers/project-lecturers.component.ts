@@ -1,11 +1,9 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Project} from "../../../../../models/project.model";
 import {LecturerService} from "../../../../../services/lecturer.service";
-import {filter, take} from "rxjs";
 import {AuthService} from "../../../../../services/auth/auth.service";
 import {ProjectLecturer} from "../../../../../models/project-lecturer.model";
-import {Lecturer} from "../../../../../models/lecturer.model";
 
 @Component({
   selector: 'app-project-lecturers',
@@ -39,8 +37,6 @@ export class ProjectLecturersComponent implements OnInit {
   initializeLecturers() {
     this.projectLecturers.clear({emitEvent:false});
 
-    // TODO: Set lecturer doesnt show in dropdown
-
     if (this.project) {
       this.project.lecturers.forEach((projectLecturer: ProjectLecturer) => {
         this.projectLecturers.push(this.formBuilder.group({
@@ -58,7 +54,6 @@ export class ProjectLecturersComponent implements OnInit {
   getProjectLecturerValue(projectLecturer: ProjectLecturer) {
     if(this.crossFaculty) {
       let dropdownGroup = this.dropDownLecturers.find(d => d.value.id == projectLecturer.lecturer.faculty.id);
-      // console.log(dropdownGroup)
       return dropdownGroup.items.find(dl => dl.value.id == projectLecturer.lecturer.id);
     } else
       return this.dropDownLecturers.find(dl => projectLecturer.lecturer.id == dl.id);
@@ -79,23 +74,11 @@ export class ProjectLecturersComponent implements OnInit {
     });
   }
 
-  removeProjectLecturer(i: number) {
-    this.projectLecturers.removeAt(i);
-  }
-
   get projectLecturers(): FormArray {
     return this.projectForm.get("projectLecturers") as FormArray;
   }
 
   get crossFaculty(): boolean {
     return this.projectForm.get('crossFaculty').value;
-  }
-
-  daily(i: number): AbstractControl {
-    return this.projectLecturers.at(i).get("daily");
-  }
-
-  hours(i: number): AbstractControl {
-    return this.projectLecturers.at(i).get("hours");
   }
 }

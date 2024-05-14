@@ -26,6 +26,7 @@ import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
 import { ExportButtonsComponent } from './components/projects/export-buttons/export-buttons.component';
 import {InputSwitchModule} from "primeng/inputswitch";
+import { ProjectLecturerItemComponent } from './components/projects/project-form/project-lecturers/project-lecturer-item/project-lecturer-item.component';
 
 @NgModule({
   providers: [
@@ -40,7 +41,8 @@ import {InputSwitchModule} from "primeng/inputswitch";
     ProjectExpensesComponent,
     ProjectFormComponent,
     EditProjectComponent,
-    ExportButtonsComponent
+    ExportButtonsComponent,
+    ProjectLecturerItemComponent
   ],
   imports: [
     CommonModule,

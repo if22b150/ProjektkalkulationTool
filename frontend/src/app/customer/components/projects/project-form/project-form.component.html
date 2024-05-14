@@ -129,13 +129,14 @@
             Fakultäten
           </label>
 
-          <p-multiSelect  id="crossFaculties"
-                          formControlName="crossFaculties"
-                          [options]="dropDownFaculties"
-                          optionLabel="name"
-                          [filter]="false"
-                          [style]="{'width':'200px'}"
-                          placeholder="Auswählen">
+          <p-multiSelect #crossFacultySelect
+                         id="crossFaculties"
+                        formControlName="crossFaculties"
+                        [options]="dropDownFaculties"
+                        optionLabel="name"
+                        [filter]="false"
+                        [style]="{'width':'200px'}"
+                        placeholder="Auswählen">
           </p-multiSelect>
 
         </div>

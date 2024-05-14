@@ -1,4 +1,13 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ProjectTypeService} from "../../../../services/project-type.service";
 import {Project} from "../../../../models/project.model";
@@ -11,13 +20,15 @@ import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {ProjectType} from "../../../../models/project-type.model";
 import {FacultyService} from "../../../../services/faculty.service";
+import {MultiSelect} from "primeng/multiselect";
+import {Dropdown} from "primeng/dropdown";
 
 @Component({
   selector: 'app-project-form',
   templateUrl: './project-form.component.html',
   styleUrls: ['./project-form.component.scss']
 })
-export class ProjectFormComponent implements OnInit{
+export class ProjectFormComponent implements OnInit, AfterViewInit {
   @Output() formChangesEmitter: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
   @Output() costChangesEmitter: EventEmitter<number> = new EventEmitter<number>();
   @Output() submitEmitter: EventEmitter<void> = new EventEmitter<void>();
@@ -29,6 +40,8 @@ export class ProjectFormComponent implements OnInit{
   @Input() loading: boolean = false;
   @Input() exportOptions: boolean;
 
+  @ViewChild('crossFacultySelect') crossFacultySelect: MultiSelect
+
   projectForm: FormGroup;
   totalCost: number = 0;
   dropDownLecturers;
@@ -39,6 +52,7 @@ export class ProjectFormComponent implements OnInit{
               public projectService: ProjectService,
               public expenseService: ExpenseService,
               private authService: AuthService,
+              private ref: ChangeDetectorRef,
               public lecturerService: LecturerService,
               private facultyService: FacultyService) {
 
@@ -84,7 +98,6 @@ export class ProjectFormComponent implements OnInit{
     this.crossFaculties.valueChanges.subscribe({
       next: (cf) => {
         this.setLecturers();
-        console.log(cf)
       }
     })
 
@@ -95,30 +108,20 @@ export class ProjectFormComponent implements OnInit{
     })
   }
 
+  // Workaround
+  ngAfterViewInit() {
+    if(this.project && this.project.crossFaculty) {
+      this.crossFacultySelect.updateModel(this.getCrossFacultiesValue())
+      this.ref.detectChanges()
+    }
+  }
+
   getCrossFacultiesValue() {
     return this.dropDownFaculties.filter(dropDownFaculty => this.project.crossFaculties.map(cross => cross.id).indexOf(dropDownFaculty.id) != -1)
   }
 
-  initializeCrossFaculties() {
-    if (this.project) {
-      // // not needed until there is no editing of projects
-      // this.project.expenses.forEach((projectExpenses: ProjectExpense) => {
-      //   let expense = this.expenseService.expenses.find(e => e.id == projectExpenses.expense.id);
-      //   this.projectExpenses.push(this.formBuilder.group({
-      //     id: [projectExpenses.id],
-      //     expense: [expense, [Validators.required]],
-      //     costs: [projectExpenses.costs, [Validators.required, Validators.min(1)]]
-      //   }))
-      // })
-    }
-  }
-
   setLecturers() {
     this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.getLecturersGroupedByFaculty([...(this.crossFaculties.value ?? []), ...[this.authService.user.faculty]]) : this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
-    this.projectLecturers.controls.forEach(c => {
-      // TODO: not working
-      // c.get('lecturer').setValue(null);
-    });
   }
 
   setCourseValidators() {

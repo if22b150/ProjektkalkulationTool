@@ -1,0 +1,62 @@
+<div [formGroup]="projectForm">
+
+  <div class="flex align-items-start mb-2" formArrayName="projectLecturers">
+
+    <div class="flex align-items-end flex-wrap gap-4 mb-1 w-full" [formGroupName]="i">
+
+      <input type="hidden" [value]="i" formControlName="id">
+
+      <div class="flex flex-column align-items-start gap-1">
+        <label class="mb-2"
+               for="{{project ? 'project-' + project.id + '-' + 'lecturer-' + i : 'new-project-lecturer-' + i}}">Tagessatz</label>
+        <p-inputSwitch inputId="{{project ? 'project-' + project.id + '-' + 'lecturer-' + i : 'new-project-lecturer-' + i}}"
+                       formControlName="daily" />
+      </div>
+
+      <div class="flex flex-column align-items-start gap-1">
+        <label [for]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i">
+          Vortragende/r
+        </label>
+
+        <p-dropdown #lecturersDropdown
+                    [id]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
+                    formControlName="lecturer"
+                    [options]="dropDownLecturers"
+                    [optionLabel]="crossFaculty ? undefined : 'name'"
+                    [emptyMessage]="'Kein/e Vortragende/r mehr verfügbar'"
+                    [group]="crossFaculty"
+                    [style]="{'width':'200px'}"
+                    [autoDisplayFirst]="false">
+          <ng-template let-group pTemplate="group">
+            {{group.label}}
+          </ng-template>
+          <ng-template let-selected pTemplate="selectedItem">
+            <ng-container *ngIf="useOtherSelected">{{selected ? (selected.label + ((crossFaculty || selected.value.faculty.id != authService.user.faculty.id) ? ' (' + selected.value.faculty.name + ')'  : '')) : 'Auswählen'}}</ng-container>
+            <ng-container *ngIf="!useOtherSelected">{{selected ? (selected.name + ((crossFaculty || selected.faculty.id != authService.user.faculty.id) ? ' (' + selected.faculty.name + ')'  : '')) : 'Auswählen'}}</ng-container>
+          </ng-template>
+        </p-dropdown>
+
+      </div>
+
+      <span class="p-float-label">
+          <p-inputNumber [inputId]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i"
+                         formControlName="hours"
+                         class="flex-grow-1"
+                         placeholder="{{daily.value ? 'Tage' : 'h'}}" suffix="{{daily.value ? 'd' : 'h'}}"></p-inputNumber>
+          <label [for]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
+            {{ daily.value ? 'Tage' : 'Stunden' }}
+          </label>
+        <!--          <small *ngIf="hours?.errors?.required && submitted" class="p-error">-->
+        <!--            Stunden sind erforderlich.-->
+        <!--          </small>-->
+        </span>
+
+        <button pButton pRipple type="button" icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-outlined" (click)="removeProjectLecturer()"></button>
+
+
+    </div>
+
+  </div>
+
+</div>
