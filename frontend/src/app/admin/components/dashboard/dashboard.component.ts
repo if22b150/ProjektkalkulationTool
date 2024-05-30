@@ -35,11 +35,11 @@ export class DashboardComponent implements OnInit{
         icon: 'pi pi-fw pi-folder-open',
         routerLink: 'expenses'
       },
-      // {
-      //   label: 'Einstellungen',
-      //   icon: 'pi pi-fw pi-cog',
-      //   routerLink: 'settings'
-      // },
+      {
+        label: 'Projekte',
+        icon: 'pi pi-fw pi-cog',
+        routerLink: 'projects'
+      },
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',

@@ -34,6 +34,8 @@ import { UpdateFacultyComponent } from './views/faculty-view/update-faculty/upda
 import { UpdateExpensesComponent } from './views/expenses-view/update-expenses/update-expenses.component';
 import { LecturerUpdateComponent } from './views/lecturer-view/lecturer-update/lecturer-update.component';
 import {InputNumberModule} from "primeng/inputnumber";
+import { ProjectsComponent } from './components/projects/projects.component';
+import { ProjectsViewComponent } from './views/projects-view/projects-view.component';
 
 @NgModule({
   providers: [
@@ -56,7 +58,9 @@ import {InputNumberModule} from "primeng/inputnumber";
     LecturerDeleteComponent,
     UpdateFacultyComponent,
     UpdateExpensesComponent,
-    LecturerUpdateComponent
+    LecturerUpdateComponent,
+    ProjectsComponent,
+    ProjectsViewComponent
   ],
   imports: [
     CommonModule,
