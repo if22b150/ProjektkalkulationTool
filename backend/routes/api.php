@@ -34,6 +34,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
     Route::apiResource('users', \App\Http\Controllers\Admin\UserController::class)->except('update');
     Route::apiResource('expenses', \App\Http\Controllers\Admin\ExpenseController::class);
     Route::apiResource('project-types', \App\Http\Controllers\Admin\ProjectTypeController::class)->except('update');
+    Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only(['update','index','show']);
 });
 
 // faculty user routes

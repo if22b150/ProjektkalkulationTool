@@ -30,6 +30,13 @@ export class ProjectService {
     this._loading = new BehaviorSubject<boolean>(false);
   }
 
+  getAll(): void {
+    this._loading.next(true)
+    this.http.get<Project[]>(environment.adminApiUrl + `projects`)
+      .pipe(finalize(() => this._loading.next(false)))
+      .subscribe(projects => this._projects.next(projects));
+  }
+
   getAllByFaculty(facultyId: number): void {
     this._loading.next(true)
     this.http.get<Project[]>(environment.apiUrl + `faculties/${facultyId}/projects`)

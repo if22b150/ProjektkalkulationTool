@@ -6,7 +6,7 @@ import {UsersViewComponent} from "./views/users-view/users-view.component";
 import {FacultyViewComponent} from "./views/faculty-view/faculty-view.component";
 import { LecturerViewComponent } from './views/lecturer-view/lecturer-view.component';
 import { ExpensesViewComponent } from './views/expenses-view/expenses-view.component';
-import { ProjectsComponent } from './components/projects/projects.component';
+import {ProjectsViewComponent} from "./views/projects-view/projects-view.component";
 
 const routes: Routes = [
   {
@@ -18,7 +18,7 @@ const routes: Routes = [
       { path: 'settings', component: SettingsComponent },
       { path: 'lecturer', component: LecturerViewComponent},
       { path: 'expenses', component: ExpensesViewComponent },
-      { path: 'projects', component: ProjectsComponent },
+      { path: 'projects', component: ProjectsViewComponent },
       {path: '', redirectTo: '/admin/users', pathMatch: 'full'}
     ]
   }

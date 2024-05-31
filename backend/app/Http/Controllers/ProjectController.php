@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ERole;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
@@ -10,12 +11,10 @@ use App\Repositories\Interfaces\IProjectLecturerRepository;
 use App\Repositories\Interfaces\IProjectRepository;
 use App\Repositories\Interfaces\IProjectTypeRepository;
 use App\Utils\ProjectToCSV;
-use App\Utils\ProjectToPDF;
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
-use Barryvdh\DomPDF\Facade\Pdf;
-use Illuminate\Support\Facades\DB;
 
 class ProjectController extends Controller
 {
@@ -26,15 +25,18 @@ class ProjectController extends Controller
                                 protected IProjectTypeRepository $projectTypeRepository)
     {}
 
-    public function index(int $facultyId)
+    public function index(Request $request, int $facultyId)
     {
+        if(!$facultyId && $request->user()->role == ERole::ADMIN)
+            return ProjectResource::collection($this->projectRepository->getAll());
+
         return ProjectResource::collection($this->projectRepository->getWhere('faculty_id', $facultyId));
     }
 
-    public function show(int $facultyId, int $projectId)
+    public function show(Request $request, int $facultyId, int $projectId)
     {
         $project = $this->projectRepository->getOne($projectId);
-        if(!$project || $project->faculty_id != $facultyId)
+        if(!$project || $project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN)
             return response('Not found',404);
         return new ProjectResource($this->projectRepository->getOne($projectId));
     }

@@ -34,7 +34,6 @@ import { UpdateFacultyComponent } from './views/faculty-view/update-faculty/upda
 import { UpdateExpensesComponent } from './views/expenses-view/update-expenses/update-expenses.component';
 import { LecturerUpdateComponent } from './views/lecturer-view/lecturer-update/lecturer-update.component';
 import {InputNumberModule} from "primeng/inputnumber";
-import { ProjectsComponent } from './components/projects/projects.component';
 import { ProjectsViewComponent } from './views/projects-view/projects-view.component';
 
 @NgModule({
@@ -59,7 +58,6 @@ import { ProjectsViewComponent } from './views/projects-view/projects-view.compo
     UpdateFacultyComponent,
     UpdateExpensesComponent,
     LecturerUpdateComponent,
-    ProjectsComponent,
     ProjectsViewComponent
   ],
   imports: [
