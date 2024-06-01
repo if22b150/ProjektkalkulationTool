@@ -3,13 +3,22 @@ import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Project} from "../../../../models/project.model";
 import {finalize} from "rxjs";
+import {Button} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-export-buttons',
+  standalone: true,
+  imports: [
+    Button,
+    Ripple
+  ],
   template: `
     <div class="flex gap-2">
-      <p-button pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading" (click)="exportToCSV()"></p-button>
-      <p-button pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading" (click)="exportToPDF()"></p-button>
+      <p-button pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"
+                (click)="exportToCSV()"></p-button>
+      <p-button pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"
+                (click)="exportToPDF()"></p-button>
     </div>
   `
 })

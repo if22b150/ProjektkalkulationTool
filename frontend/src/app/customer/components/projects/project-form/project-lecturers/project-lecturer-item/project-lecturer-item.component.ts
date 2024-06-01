@@ -1,14 +1,29 @@
 import {AfterViewInit, Component, Input, OnInit, ViewChild} from '@angular/core';
 import {Project} from "../../../../../../models/project.model";
-import {AbstractControl, FormArray, FormBuilder, FormGroup} from "@angular/forms";
-import {Dropdown} from "primeng/dropdown";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule} from "@angular/forms";
+import {Dropdown, DropdownModule} from "primeng/dropdown";
 import {AuthService} from "../../../../../../services/auth/auth.service";
 import {LecturerService} from "../../../../../../services/lecturer.service";
 import {ProjectLecturer} from "../../../../../../models/project-lecturer.model";
+import {InputSwitchModule} from "primeng/inputswitch";
+import {InputNumberModule} from "primeng/inputnumber";
+import {ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
+import {NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-project-lecturer-item',
+  standalone: true,
   templateUrl: './project-lecturer-item.component.html',
+  imports: [
+    ReactiveFormsModule,
+    InputSwitchModule,
+    DropdownModule,
+    InputNumberModule,
+    ButtonDirective,
+    Ripple,
+    NgIf
+  ],
   styleUrls: ['./project-lecturer-item.component.scss']
 })
 export class ProjectLecturerItemComponent implements OnInit, AfterViewInit{
@@ -23,7 +38,7 @@ export class ProjectLecturerItemComponent implements OnInit, AfterViewInit{
 
   @ViewChild('lecturersDropdown') lecturersDropdown: Dropdown
 
-  useOtherSelected: boolean
+  useOtherSelected: boolean = false
 
   constructor(private formBuilder: FormBuilder,
               public authService: AuthService,
@@ -31,27 +46,32 @@ export class ProjectLecturerItemComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit() {
-    this.useOtherSelected = this.project != null
+    // this.useOtherSelected = this.project != null
   }
 
   // Workaround
   ngAfterViewInit() {
     if(this.project) {
-      this.lecturersDropdown.updateModel(this.project.crossFaculty ? this.getProjectLecturerValue() : {label: this.getProjectLecturerValue().name, value: this.getProjectLecturerValue()})
-      this.lecturersDropdown.onChange.subscribe({
-        next: () => {
-          this.useOtherSelected = false
-        }
-      })
+      console.log(this.dropDownLecturers)
+      console.log(this.getProjectLecturerValue())
+      console.log(this.useOtherSelected)
+      this.lecturersDropdown.updateModel(this.getProjectLecturerValue())
+      // this.lecturersDropdown.onChange.subscribe({
+      //   next: () => {
+      //     // this.useOtherSelected = false
+      //   }
+      // })
     }
   }
 
   getProjectLecturerValue() {
     if(this.crossFaculty) {
+      this.useOtherSelected = true
       let dropdownGroup = this.dropDownLecturers.find(d => d.value.id == this.projectLecturer.lecturer.faculty.id);
-      return dropdownGroup.items.find(dl => dl.value.id == this.projectLecturer.lecturer.id);
-    } else
+      return dropdownGroup.items.find(dl => dl.id == this.projectLecturer.lecturer.id);
+    } else {
       return this.dropDownLecturers.find(dl => this.projectLecturer.lecturer.id == dl.id);
+    }
   }
 
   removeProjectLecturer() {

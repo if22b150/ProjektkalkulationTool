@@ -1,6 +1,6 @@
 <div class="flex align-items-end gap-4 mb-3">
   <h1 class="m-0">Projekte</h1>
-  <p-button routerLink="new-project" pRipple label="Projekt anlegen" class="p-button-outlined p-button-raised"></p-button>
+  <p-button *ngIf="authService.user.role != ERole.ADMIN" routerLink="new-project" pRipple label="Projekt anlegen" class="p-button-outlined p-button-raised"></p-button>
 </div>
 
 <div class="grid" *ngIf="(projectService.projects$|async) && !(projectService.loading$|async); else loadingSpinner">

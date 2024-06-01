@@ -1,6 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {MegaMenuItem} from "primeng/api";
 import {AuthService} from "../../../services/auth/auth.service";
+import {ProjectService} from "../../../services/project.service";
+import {ExpenseService} from "../../../services/expense.service";
+import {LecturerService} from "../../../services/lecturer.service";
+import {FacultyService} from "../../../services/faculty.service";
+import {ProjectTypeService} from "../../../services/project-type.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -10,10 +15,21 @@ import {AuthService} from "../../../services/auth/auth.service";
 export class DashboardComponent implements OnInit{
   items: MegaMenuItem[] | undefined;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private projectService: ProjectService,
+              private expenseService: ExpenseService,
+              private lecturerService: LecturerService,
+              private projectTypeService: ProjectTypeService,
+              private facultyService: FacultyService) {
   }
 
   ngOnInit() {
+    this.projectService.getAll();
+    this.facultyService.getAll();
+    this.expenseService.getAll();
+    this.lecturerService.getAll();
+    this.projectTypeService.getAll();
+
     this.items = [
       {
         label: 'Users',

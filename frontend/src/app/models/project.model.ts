@@ -16,6 +16,7 @@ export interface Project extends AModel {
   costs?: number;
   participants?: number;
   duration?: number;
+  faculty: Faculty;
   projectType: ProjectType;
   lecturers: ProjectLecturer[];
   expenses: ProjectExpense[];

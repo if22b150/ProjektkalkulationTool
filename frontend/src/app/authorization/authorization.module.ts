@@ -10,7 +10,6 @@ import {ToastModule} from "primeng/toast";
 import {InputTextModule} from "primeng/inputtext";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
-import {SharedModule} from "../shared/shared.module";
 import { AuthContainerComponent } from './components/auth-container/auth-container.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 
@@ -25,7 +24,6 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
   ],
   imports: [
     CommonModule,
-    SharedModule,
     AuthorizationRoutingModule,
     ReactiveFormsModule,
     FormsModule,

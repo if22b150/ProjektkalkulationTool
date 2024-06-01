@@ -7,6 +7,7 @@ import {FacultyViewComponent} from "./views/faculty-view/faculty-view.component"
 import { LecturerViewComponent } from './views/lecturer-view/lecturer-view.component';
 import { ExpensesViewComponent } from './views/expenses-view/expenses-view.component';
 import {ProjectsViewComponent} from "./views/projects-view/projects-view.component";
+import {EditProjectComponent} from "../customer/components/projects/edit-project/edit-project.component";
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
       { path: 'lecturer', component: LecturerViewComponent},
       { path: 'expenses', component: ExpensesViewComponent },
       { path: 'projects', component: ProjectsViewComponent },
+      { path: 'projects/:id', component: EditProjectComponent },
       {path: '', redirectTo: '/admin/users', pathMatch: 'full'}
     ]
   }

@@ -11,7 +11,6 @@ import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
 import {MegaMenuModule} from "primeng/megamenu";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
-import {SharedModule} from "../shared/shared.module";
 import { SettingsComponent } from './components/settings/settings.component';
 import { UsersComponent } from './components/users/users.component';
 import { FacultiesComponent } from './components/faculties/faculties.component';
@@ -35,6 +34,8 @@ import { UpdateExpensesComponent } from './views/expenses-view/update-expenses/u
 import { LecturerUpdateComponent } from './views/lecturer-view/lecturer-update/lecturer-update.component';
 import {InputNumberModule} from "primeng/inputnumber";
 import { ProjectsViewComponent } from './views/projects-view/projects-view.component';
+import {LoadingSpinnerComponent} from "../shared/components/loading-spinner/loading-spinner.component";
+import {ProjectsComponent} from "../customer/components/projects/projects.component";
 
 @NgModule({
   providers: [
@@ -62,7 +63,6 @@ import { ProjectsViewComponent } from './views/projects-view/projects-view.compo
   ],
   imports: [
     CommonModule,
-    SharedModule,
     AdminRoutingModule,
     ReactiveFormsModule,
     FormsModule,
@@ -78,7 +78,9 @@ import { ProjectsViewComponent } from './views/projects-view/projects-view.compo
     TableModule,
     MultiSelectModule,
     DropdownModule,
-    InputNumberModule
+    InputNumberModule,
+    LoadingSpinnerComponent,
+    ProjectsComponent
   ]
 })
 export class AdminModule { }

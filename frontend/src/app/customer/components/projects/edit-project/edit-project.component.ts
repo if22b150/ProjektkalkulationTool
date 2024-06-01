@@ -6,10 +6,20 @@ import {finalize} from "rxjs";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Project} from "../../../../models/project.model";
 import {AbstractControl, FormArray, FormGroup} from "@angular/forms";
+import {ProjectFormComponent} from "../project-form/project-form.component";
+import {LoadingSpinnerComponent} from "../../../../shared/components/loading-spinner/loading-spinner.component";
+import {NgIf} from "@angular/common";
+import {ERole} from "../../../../models/user.model";
 
 @Component({
   selector: 'app-edit-project',
+  standalone: true,
   templateUrl: './edit-project.component.html',
+  imports: [
+    ProjectFormComponent,
+    LoadingSpinnerComponent,
+    NgIf
+  ],
   styleUrls: ['./edit-project.component.scss']
 })
 export class EditProjectComponent implements OnInit {
@@ -38,7 +48,10 @@ export class EditProjectComponent implements OnInit {
     }
 
     this.loading = true;
-    this.projectService.getOne(id, this.authService.user.faculty.id)
+    (this.authService.user.role == ERole.ADMIN ?
+      this.projectService.getOneAdmin(id) :
+      this.projectService.getOne(id, this.authService.user.faculty.id)
+    )
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: (project) => {

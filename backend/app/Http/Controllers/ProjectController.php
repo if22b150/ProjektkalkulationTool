@@ -25,7 +25,7 @@ class ProjectController extends Controller
                                 protected IProjectTypeRepository $projectTypeRepository)
     {}
 
-    public function index(Request $request, int $facultyId)
+    public function index(Request $request, int $facultyId = null)
     {
         if(!$facultyId && $request->user()->role == ERole::ADMIN)
             return ProjectResource::collection($this->projectRepository->getAll());
@@ -33,8 +33,12 @@ class ProjectController extends Controller
         return ProjectResource::collection($this->projectRepository->getWhere('faculty_id', $facultyId));
     }
 
-    public function show(Request $request, int $facultyId, int $projectId)
+    public function show(Request $request, int $facultyId, int $projectId = null)
     {
+        // for admin requests, there is not facultyId provided
+        if(!$projectId)
+            $projectId = $facultyId;
+
         $project = $this->projectRepository->getOne($projectId);
         if(!$project || $project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN)
             return response('Not found',404);

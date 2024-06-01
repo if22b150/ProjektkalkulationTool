@@ -22,17 +22,17 @@
                     [id]="!project ? 'new-project-lecturer-' + i : 'project-' + project.id + '-' + 'lecturer-' + i"
                     formControlName="lecturer"
                     [options]="dropDownLecturers"
-                    [optionLabel]="crossFaculty ? undefined : 'name'"
+                    [optionLabel]="'name'"
                     [emptyMessage]="'Kein/e Vortragende/r mehr verfügbar'"
                     [group]="crossFaculty"
-                    [style]="{'width':'200px'}"
-                    [autoDisplayFirst]="false">
+                    [style]="{'width':'200px'}">
           <ng-template let-group pTemplate="group">
             {{group.label}}
           </ng-template>
           <ng-template let-selected pTemplate="selectedItem">
-            <ng-container *ngIf="useOtherSelected">{{selected ? (selected.label + ((crossFaculty || selected.value.faculty.id != authService.user.faculty.id) ? ' (' + selected.value.faculty.name + ')'  : '')) : 'Auswählen'}}</ng-container>
-            <ng-container *ngIf="!useOtherSelected">{{selected ? (selected.name + ((crossFaculty || selected.faculty.id != authService.user.faculty.id) ? ' (' + selected.faculty.name + ')'  : '')) : 'Auswählen'}}</ng-container>
+<!--            <ng-container *ngIf="useOtherSelected">{{selected}}</ng-container>-->
+<!--            <ng-container *ngIf="useOtherSelected">{{selected ? (selected.label + ((crossFaculty || selected.value.faculty.id != authService.user.faculty.id) ? ' (' + selected.value.faculty.name + ')'  : '')) : 'Auswählen'}}</ng-container>-->
+            <ng-container >{{selected ? (selected.name + ((crossFaculty || selected.faculty.id != authService.user.faculty.id) ? ' (' + selected.faculty.name + ')'  : '')) : 'Auswählen'}}</ng-container>
           </ng-template>
         </p-dropdown>
 

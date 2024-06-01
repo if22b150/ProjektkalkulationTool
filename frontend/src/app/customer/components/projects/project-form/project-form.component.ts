@@ -8,7 +8,7 @@ import {
   Output,
   ViewChild
 } from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ProjectTypeService} from "../../../../services/project-type.service";
 import {Project} from "../../../../models/project.model";
 import {ExpenseService} from "../../../../services/expense.service";
@@ -20,12 +20,44 @@ import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {ProjectType} from "../../../../models/project-type.model";
 import {FacultyService} from "../../../../services/faculty.service";
-import {MultiSelect} from "primeng/multiselect";
-import {Dropdown} from "primeng/dropdown";
+import {MultiSelect, MultiSelectModule} from "primeng/multiselect";
+import {DropdownModule} from "primeng/dropdown";
+import {AsyncPipe, CurrencyPipe, NgIf} from "@angular/common";
+import {InputTextModule} from "primeng/inputtext";
+import {CalendarModule} from "primeng/calendar";
+import {InputTextareaModule} from "primeng/inputtextarea";
+import {ProjectExpensesComponent} from "./project-expenses/project-expenses.component";
+import {CheckboxModule} from "primeng/checkbox";
+import {ProjectLecturersComponent} from "./project-lecturers/project-lecturers.component";
+import {ExportButtonsComponent} from "../export-buttons/export-buttons.component";
+import {LoadingSpinnerComponent} from "../../../../shared/components/loading-spinner/loading-spinner.component";
+import {ToastModule} from "primeng/toast";
+import {Ripple} from "primeng/ripple";
+import {ERole} from "../../../../models/user.model";
+import {Faculty} from "../../../../models/faculty.model";
 
 @Component({
   selector: 'app-project-form',
+  standalone: true,
   templateUrl: './project-form.component.html',
+  imports: [
+    AsyncPipe,
+    ReactiveFormsModule,
+    DropdownModule,
+    InputTextModule,
+    NgIf,
+    CalendarModule,
+    InputTextareaModule,
+    ProjectExpensesComponent,
+    CheckboxModule,
+    MultiSelectModule,
+    ProjectLecturersComponent,
+    CurrencyPipe,
+    ExportButtonsComponent,
+    LoadingSpinnerComponent,
+    ToastModule,
+    Ripple
+  ],
   styleUrls: ['./project-form.component.scss']
 })
 export class ProjectFormComponent implements OnInit, AfterViewInit {
@@ -45,7 +77,8 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   projectForm: FormGroup;
   totalCost: number = 0;
   dropDownLecturers;
-  dropDownFaculties = this.facultyService.faculties.filter(f => f.id != this.authService.user.faculty.id)
+  dropDownFaculties;
+  faculty: Faculty;
 
   constructor(private formBuilder: FormBuilder,
               public projectTypeService: ProjectTypeService,
@@ -59,6 +92,9 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
+    this.faculty = this.authService.user.role == ERole.ADMIN ? this.project.faculty : this.authService.user.faculty
+    this.dropDownFaculties = this.facultyService.faculties.filter(f => f.id != this.faculty.id)
+
     this.projectForm = this.formBuilder.group({
       name: [this.project ? this.project.name : null, [Validators.required]],
       firstname: [this.project ? this.project.firstname : null, [Validators.required]],
@@ -121,7 +157,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   }
 
   setLecturers() {
-    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.getLecturersGroupedByFaculty([...(this.crossFaculties.value ?? []), ...[this.authService.user.faculty]]) : this.lecturerService.lecturers.filter(l => l.faculty.id == this.authService.user.faculty.id);
+    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.getLecturersGroupedByFaculty([...(this.crossFaculties.value ?? []), ...[this.faculty]]) : this.lecturerService.lecturers.filter(l => l.faculty.id == this.faculty.id);
   }
 
   setCourseValidators() {

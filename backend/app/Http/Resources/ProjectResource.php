@@ -23,7 +23,7 @@ class ProjectResource extends JsonResource
             'duration' => $this->duration,
             'crossFaculty' => $this->cross_faculty,
             'userId' => $this->user->id,
-            'facultyId' => $this->faculty->id,
+            'faculty' => new FacultyResource($this->faculty),
             'projectType' => new ProjectTypeResource($this->projectType),
             'lecturers' => ProjectLecturerResource::collection($this->lecturers),
             'expenses' => ProjectExpenseResource::collection($this->expenses),

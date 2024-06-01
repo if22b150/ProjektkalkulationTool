@@ -1,13 +1,25 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {Project} from "../../../../../models/project.model";
 import {LecturerService} from "../../../../../services/lecturer.service";
 import {AuthService} from "../../../../../services/auth/auth.service";
 import {ProjectLecturer} from "../../../../../models/project-lecturer.model";
+import {NgForOf} from "@angular/common";
+import {ProjectLecturerItemComponent} from "./project-lecturer-item/project-lecturer-item.component";
+import {ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-project-lecturers',
+  standalone: true,
   templateUrl: './project-lecturers.component.html',
+  imports: [
+    ReactiveFormsModule,
+    NgForOf,
+    ProjectLecturerItemComponent,
+    ButtonDirective,
+    Ripple
+  ],
   styleUrls: ['./project-lecturers.component.scss']
 })
 export class ProjectLecturersComponent implements OnInit {
@@ -54,7 +66,8 @@ export class ProjectLecturersComponent implements OnInit {
   getProjectLecturerValue(projectLecturer: ProjectLecturer) {
     if(this.crossFaculty) {
       let dropdownGroup = this.dropDownLecturers.find(d => d.value.id == projectLecturer.lecturer.faculty.id);
-      return dropdownGroup.items.find(dl => dl.value.id == projectLecturer.lecturer.id);
+      console.log(dropdownGroup)
+      return dropdownGroup.items.find(dl => dl.id == projectLecturer.lecturer.id);
     } else
       return this.dropDownLecturers.find(dl => projectLecturer.lecturer.id == dl.id);
   }

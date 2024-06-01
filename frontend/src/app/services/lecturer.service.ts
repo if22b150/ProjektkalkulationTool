@@ -23,9 +23,9 @@ export class LecturerService {
     return this.lecturers.filter(l => faculties.map(f => f.id).indexOf(l.faculty.id) !== -1).reduce((acc, lecturer) => {
       const existingFaculty = acc.find(item => item.value.id === lecturer.faculty.id);
       if (existingFaculty) {
-        existingFaculty.items.push({label: lecturer.name, value: lecturer});
+        existingFaculty.items.push(lecturer);
       } else {
-        acc.push({ label: lecturer.faculty.name, value: lecturer.faculty, items: [{label: lecturer.name, value: lecturer}] });
+        acc.push({ label: lecturer.faculty.name, value: lecturer.faculty, items: [lecturer] });
       }
       return acc;
     }, []);

@@ -1,14 +1,30 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {filter, take} from "rxjs";
 import {ExpenseService} from "../../../../../services/expense.service";
 import {AuthService} from "../../../../../services/auth/auth.service";
 import {Project} from "../../../../../models/project.model";
 import {ProjectExpense} from "../../../../../models/project-expense.model";
+import {AsyncPipe, NgForOf, NgIf} from "@angular/common";
+import {DropdownModule} from "primeng/dropdown";
+import {InputNumberModule} from "primeng/inputnumber";
+import {ButtonDirective} from "primeng/button";
+import {Ripple} from "primeng/ripple";
 
 @Component({
   selector: 'app-project-expenses',
+  standalone: true,
   templateUrl: './project-expenses.component.html',
+  imports: [
+    ReactiveFormsModule,
+    NgForOf,
+    DropdownModule,
+    AsyncPipe,
+    InputNumberModule,
+    ButtonDirective,
+    Ripple,
+    NgIf
+  ],
   styleUrls: ['./project-expenses.component.scss']
 })
 export class ProjectExpensesComponent implements OnInit{

@@ -48,6 +48,10 @@ export class ProjectService {
     return this.http.get<Project>(environment.apiUrl + `faculties/${facultyId}/projects/${id}`);
   }
 
+  getOneAdmin(id: number): Observable<Project> {
+    return this.http.get<Project>(environment.adminApiUrl + `projects/${id}`);
+  }
+
   create(
     facultyId: number,
     projectTypeId: number,

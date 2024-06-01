@@ -2,7 +2,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import {Lecturer} from "../../models/lecturer.model";
 
 @Pipe({
-  name: 'lecturersByFaculty'
+  name: 'lecturersByFaculty',
+  standalone: true
 })
 export class LecturersByFacultyPipe implements PipeTransform {
 
