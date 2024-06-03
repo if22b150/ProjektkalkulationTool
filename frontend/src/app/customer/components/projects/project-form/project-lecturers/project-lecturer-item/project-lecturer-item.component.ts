@@ -10,6 +10,8 @@ import {InputNumberModule} from "primeng/inputnumber";
 import {ButtonDirective} from "primeng/button";
 import {Ripple} from "primeng/ripple";
 import {NgIf} from "@angular/common";
+import {Faculty} from "../../../../../../models/faculty.model";
+import {ERole} from "../../../../../../models/user.model";
 
 @Component({
   selector: 'app-project-lecturer-item',
@@ -39,6 +41,7 @@ export class ProjectLecturerItemComponent implements OnInit, AfterViewInit{
   @ViewChild('lecturersDropdown') lecturersDropdown: Dropdown
 
   useOtherSelected: boolean = false
+  faculty: Faculty;
 
   constructor(private formBuilder: FormBuilder,
               public authService: AuthService,
@@ -46,21 +49,13 @@ export class ProjectLecturerItemComponent implements OnInit, AfterViewInit{
   }
 
   ngOnInit() {
-    // this.useOtherSelected = this.project != null
+    this.faculty = this.authService.user.role == ERole.ADMIN ? this.project.faculty : this.authService.user.faculty
   }
 
   // Workaround
   ngAfterViewInit() {
     if(this.project) {
-      console.log(this.dropDownLecturers)
-      console.log(this.getProjectLecturerValue())
-      console.log(this.useOtherSelected)
       this.lecturersDropdown.updateModel(this.getProjectLecturerValue())
-      // this.lecturersDropdown.onChange.subscribe({
-      //   next: () => {
-      //     // this.useOtherSelected = false
-      //   }
-      // })
     }
   }
 

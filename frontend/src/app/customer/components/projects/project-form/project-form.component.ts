@@ -63,6 +63,7 @@ import {Faculty} from "../../../../models/faculty.model";
 export class ProjectFormComponent implements OnInit, AfterViewInit {
   @Output() formChangesEmitter: EventEmitter<FormGroup> = new EventEmitter<FormGroup>();
   @Output() costChangesEmitter: EventEmitter<number> = new EventEmitter<number>();
+  @Output() revenueChangesEmitter: EventEmitter<number> = new EventEmitter<number>();
   @Output() submitEmitter: EventEmitter<void> = new EventEmitter<void>();
 
   @Input() project: Project = null;
@@ -76,6 +77,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   projectForm: FormGroup;
   totalCost: number = 0;
+  revenue?: number = null;
   dropDownLecturers;
   dropDownFaculties;
   faculty: Faculty;
@@ -174,13 +176,17 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   }
 
   costChanges() {
-    if(this.projectLecturers.valid && this.projectExpenses.valid)
-      this.calculateTotalCost();
-    else
-      this.totalCost = 0;
+    this.calculateTotalCost()
+    this.costChangesEmitter.emit(this.totalCost)
+    this.revenueChangesEmitter.emit(this.revenue)
   }
 
   calculateTotalCost() {
+    if(this.projectLecturers.invalid || this.projectExpenses.invalid) {
+      this.totalCost = 0;
+      return;
+    }
+
     let expenses: ProjectExpense[] = [];
     this.projectExpenses.controls.forEach(expense => {
       expenses.push({
@@ -199,7 +205,16 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
     });
 
     this.totalCost = Utils.calculateProjectCosts(lecturers, expenses);
-    this.costChangesEmitter.emit(this.totalCost);
+
+    if(!this.isCourse)
+      return;
+
+    if(this.participants.invalid) {
+      this.revenue = null
+      return
+    }
+
+    this.revenue = this.participants.value * this.faculty.priceForCoursePerDay * this.duration.value
   }
 
 
@@ -226,20 +241,6 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   get start(): AbstractControl {
     return this.projectForm.get("start");
   }
-
-  calculateBreakEvenPoint(): number {
-    // const fixedCosts = Utils.calculateProjectCosts(lecturers, expenses);
-    // // const variableCosts = this.projectForm.get('variableCosts').value;
-    // const salePrice = this.authService.user.faculty.priceForCoursePerDay * this.participants.value * this.duration.value;
-    //
-    // // if (salePrice - variableCosts === 0) {
-    // //   throw new Error('Verkaufspreis pro Einheit darf nicht gleich den variablen Kosten pro Einheit sein');
-    // // }
-    // return fixedCosts / salePrice;
-    return 1;
-  }
-
-  breakEvenPoint: number;
 
   get end(): AbstractControl {
     return this.projectForm.get("end");
@@ -275,5 +276,9 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   get crossFaculties(): AbstractControl {
     return this.projectForm.get("crossFaculties");
+  }
+
+  get isCourse(): boolean {
+    return (this.projectType.value as ProjectType).isCourse
   }
 }
