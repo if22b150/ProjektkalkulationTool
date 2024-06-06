@@ -175,6 +175,13 @@
     <app-export-buttons *ngIf="exportOptions" [project]="project"></app-export-buttons>
     <p-button pRipple [label]="submitLabel" [loading]="loading" (click)="submitEmitter.emit()"></p-button>
   </div>
+
+  <hr class="mt-4 mb-2">
+
+  <div *ngIf="authService.user.role == ERole.ADMIN" class="flex align-items-center gap-2 font-light font-italic	">
+    <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
+    <span>Hier beginnt der Bereich der nur als Admin sichtbar ist</span>
+  </div>
 </div>
 
 <ng-template #loadingSpinner>

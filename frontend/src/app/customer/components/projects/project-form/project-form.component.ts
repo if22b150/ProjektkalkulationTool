@@ -86,7 +86,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
               public projectTypeService: ProjectTypeService,
               public projectService: ProjectService,
               public expenseService: ExpenseService,
-              private authService: AuthService,
+              public authService: AuthService,
               private ref: ChangeDetectorRef,
               public lecturerService: LecturerService,
               private facultyService: FacultyService) {
@@ -281,4 +281,6 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   get isCourse(): boolean {
     return (this.projectType.value as ProjectType).isCourse
   }
+
+  protected readonly ERole = ERole;
 }
