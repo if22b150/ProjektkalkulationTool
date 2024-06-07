@@ -9,6 +9,7 @@ import {LoadingSpinnerComponent} from "../../../shared/components/loading-spinne
 import {ToastModule} from "primeng/toast";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ERole} from "../../../models/user.model";
+import { BadgeModule } from 'primeng/badge';
 
 @Component({
   selector: 'app-projects',
@@ -24,7 +25,8 @@ import {ERole} from "../../../models/user.model";
     NgForOf,
     LoadingSpinnerComponent,
     ToastModule,
-    NgIf
+    NgIf,
+    BadgeModule
   ],
   styleUrls: ['./projects.component.scss']
 })
