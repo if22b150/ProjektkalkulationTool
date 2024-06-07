@@ -34,7 +34,7 @@ class StoreProjectRequest extends FormRequest
             'notes' => ['nullable', 'string'],
             'participants' => ['nullable', 'integer'],
             'duration' => ['nullable', 'integer'],
-
+            'is_opened' => ['nullable', 'boolean'],
             'lecturers' => ['present', 'array'],
             'lecturers.*.id' => ['required', 'integer', 'exists:lecturers,id'],
             'lecturers.*.hours' => ['required', 'integer'],

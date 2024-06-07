@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit{
       },
       {
         label: 'Projekte',
-        icon: 'pi pi-fw pi-cog',
+        icon: 'pi pi-fw pi-briefcase',
         routerLink: 'projects'
       },
       {
