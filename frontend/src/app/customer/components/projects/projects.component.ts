@@ -36,5 +36,7 @@ export class ProjectsComponent {
               public authService: AuthService) {
   }
 
+  isOpened = true;
+
   protected readonly ERole = ERole;
 }

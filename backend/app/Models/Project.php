@@ -26,6 +26,7 @@ class Project extends Model
         'notes',
         'participants',
         'duration',
+        'is_opened',
         'contribution_margin_1',
         'contribution_margin_2'
     ];

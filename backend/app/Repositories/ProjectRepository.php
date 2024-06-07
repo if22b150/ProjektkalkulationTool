@@ -71,6 +71,7 @@ class ProjectRepository implements IProjectRepository
             'notes' => $notes,
             'participants' => $participants,
             'duration' => $duration,
+            'is_opened' => false,
             'project_type_id' => $projectTypeId,
             'user_id' => $userId,
             'faculty_id' => $facultyId
