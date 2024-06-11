@@ -36,6 +36,7 @@ import {InputNumberModule} from "primeng/inputnumber";
 import { ProjectsViewComponent } from './views/projects-view/projects-view.component';
 import {LoadingSpinnerComponent} from "../shared/components/loading-spinner/loading-spinner.component";
 import {ProjectsComponent} from "../customer/components/projects/projects.component";
+import { BadgeModule } from 'primeng/badge';
 
 @NgModule({
   providers: [

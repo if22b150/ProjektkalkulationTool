@@ -30,6 +30,6 @@ docker compose up
 docker compose exec backend bash
 php artisan key:generate
 php artisan jwt:secret
-php artisan migrate:fresh --seed
+ 
 php artisan storage:link
 ```

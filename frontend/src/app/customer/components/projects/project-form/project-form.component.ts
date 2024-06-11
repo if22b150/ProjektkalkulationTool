@@ -144,6 +144,11 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
         this.setCourseValidators()
       }
     })
+
+    if (this.authService.user.role == ERole.ADMIN)
+      this.project.is_opened = true;
+
+    console.log(this.project.is_opened)
   }
 
   // Workaround

@@ -1,5 +1,6 @@
 <div class="flex align-items-end gap-4 mb-3" >
   <h1 class="m-0">Projekte</h1>
+  
   <p-button *ngIf="authService.user.role != ERole.ADMIN" routerLink="new-project" pRipple label="Projekt anlegen" class="p-button-outlined p-button-raised"></p-button>
 </div>
 
@@ -7,14 +8,10 @@
   <div *ngFor="let project of projectService.projects$|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2">
        
-       <div *ngIf="!is_opened; else isOpenedContent" pBadge value="neu" severity="success" class="pitext-3xl surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer"
+       <div *ngIf="!project.is_opened && authService.user.role == ERole.ADMIN;" pBadge value="neu" severity="success"></div>
+       <div class="pitext-3xl surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer"
        [ngClass]="{'unopened-project': !project.opened}">
-
-       <ng-template #isOpenedContent>
-        <div class="pitext-3xl surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer"
-        [ngClass]="{'unopened-project': !project.opened}"></div>
-       </ng-template>
-
+       
         <a [routerLink]="'' + project.id" style="text-decoration: none">
           <span *ngIf="authService.user.role == ERole.ADMIN; else notAdminContent" class="block text-500 text-center font-medium mb-2">{{project.faculty.name}}</span>
           <ng-template #notAdminContent>

@@ -34,7 +34,8 @@ class Project extends Model
     protected $casts = [
         'start' => 'datetime:Y-m-d',
         'end' => 'datetime:Y-m-d',
-        'cross_faculty' => 'boolean'
+        'cross_faculty' => 'boolean',
+        'is_opened' => 'boolean',
     ];
 
     public function projectType() {
