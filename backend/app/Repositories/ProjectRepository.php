@@ -6,6 +6,7 @@ use App\Models\Project;
 use App\Repositories\Interfaces\IProjectRepository;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 
 class ProjectRepository implements IProjectRepository
 {
@@ -76,6 +77,7 @@ class ProjectRepository implements IProjectRepository
             'user_id' => $userId,
             'faculty_id' => $facultyId
         ]);
+
         return $this->save($project);
     }
 }

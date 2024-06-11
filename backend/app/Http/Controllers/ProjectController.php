@@ -15,6 +15,8 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Log;
+
 
 class ProjectController extends Controller
 {
@@ -54,6 +56,8 @@ class ProjectController extends Controller
                 'duration' => ['required', 'integer', 'min:1'],
             ]);
         }
+
+       
 
         try {
             $project = $this->projectRepository->create(
