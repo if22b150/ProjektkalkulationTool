@@ -28,10 +28,12 @@ class ProjectExpenseRepository implements IProjectExpenseRepository
         return ProjectExpense::where($column, $value)->get();
     }
 
-    public function delete(int $id): bool
-    {
-        return ProjectExpense::destroy($id) == 1;
-    }
+    public function delete(int $projectId, int $expenseId): bool
+        {
+            return ProjectExpense::where('project_id', $projectId)
+                                  ->where('expense_id', $expenseId)
+                                  ->delete() == 1;
+        }
 
     public function exists(int $id): bool
     {
@@ -52,4 +54,21 @@ class ProjectExpenseRepository implements IProjectExpenseRepository
         ]);
         return $this->save($projectExpense);
     }
+
+    public function update(int $projectId, int $expenseId, float $costs): ?ProjectExpense
+        {
+            $projectExpense = ProjectExpense::where('project_id', $projectId)
+                                            ->where('expense_id', $expenseId)
+                                            ->first();
+            if ($projectExpense) {
+                $projectExpense->costs = $costs;
+                return $this->save($projectExpense);
+            }
+            return null;
+        }
+
+    public function getExpenseIdsByProjectId(int $projectId): array
+        {
+            return ProjectExpense::where('project_id', $projectId)->pluck('expense_id')->toArray();
+        }
 }

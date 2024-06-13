@@ -13,7 +13,7 @@ interface IProjectExpenseRepository
 
     public function getWhere($column, $value, array $related = null): Collection;
 
-    public function delete(int $id): bool;
+    public function delete(int $projectId, int $expenseId): bool;
 
     public function exists(int $id): bool;
 

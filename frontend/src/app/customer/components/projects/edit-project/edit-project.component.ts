@@ -10,6 +10,8 @@ import {ProjectFormComponent} from "../project-form/project-form.component";
 import {LoadingSpinnerComponent} from "../../../../shared/components/loading-spinner/loading-spinner.component";
 import {NgIf} from "@angular/common";
 import {ERole} from "../../../../models/user.model";
+import {DatePipe} from "@angular/common";
+import {ProjectTypeService} from "../../../../services/project-type.service";
 
 @Component({
   selector: 'app-edit-project',
@@ -20,7 +22,8 @@ import {ERole} from "../../../../models/user.model";
     LoadingSpinnerComponent,
     NgIf
   ],
-  styleUrls: ['./edit-project.component.scss']
+  styleUrls: ['./edit-project.component.scss'],
+  providers: [DatePipe]
 })
 export class EditProjectComponent implements OnInit {
   loading: boolean;
@@ -33,7 +36,9 @@ export class EditProjectComponent implements OnInit {
               private router: Router,
               private messageService: MessageService,
               private authService: AuthService,
-              public projectService: ProjectService) {
+              public projectService: ProjectService,
+              private datePipe: DatePipe,
+              public projectTypeService: ProjectTypeService) {
   }
 
   ngOnInit() {
@@ -78,12 +83,38 @@ export class EditProjectComponent implements OnInit {
 
     this.loading = true;
 
-    // Fake request time
-    setTimeout(() => {
-      this.loading = false;
-    }, 1000);
-
-    this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt abgeschlossen'});
+    this.projectService.update(
+      this.project.id,
+      this.authService.user.faculty.id,
+      this.projectType.value.id,
+      this.name.value,
+      this.datePipe.transform(this.start.value, 'YYYY-MM-dd'),
+      this.datePipe.transform(this.end.value, 'YYYY-MM-dd'),
+      this.firstname.value,
+      this.lastname.value,
+      this.email.value,
+      this.crossFaculty.value,
+      this.notes.value,
+      this.projectExpenses.value,
+      this.projectLecturers.value,
+      this.totalCost * 100,
+      this.participants.value,
+      this.duration.value,
+      this.crossFaculties.value
+    )
+      .pipe(
+        finalize(() => this.loading = false)
+      )
+      .subscribe({
+        next: project  => {
+          this.router.navigate(['/projects']).then(() => {
+            setTimeout(() => {
+              this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt wurde erfolgreich gespeichert'});
+            },1);
+            this.projectService.getAllByFaculty(this.authService.user.faculty.id)
+          })
+        }
+      });
   }
 
   get name(): AbstractControl {
@@ -114,6 +145,10 @@ export class EditProjectComponent implements OnInit {
     return this.editProjectForm.get("crossFaculty");
   }
 
+  get notes(): AbstractControl {
+    return this.editProjectForm.get("notes");
+  }
+
   get projectType(): AbstractControl {
     return this.editProjectForm.get("projectType");
   }
@@ -124,5 +159,17 @@ export class EditProjectComponent implements OnInit {
 
   get projectExpenses(): FormArray {
     return this.editProjectForm.get("projectExpenses") as FormArray;
+  }
+
+  get participants(): AbstractControl {
+    return this.editProjectForm.get("participants");
+  }
+
+  get duration(): AbstractControl {
+    return this.editProjectForm.get("duration");
+  }
+
+  get crossFaculties(): FormArray {
+    return this.editProjectForm.get("crossFaculties") as FormArray;
   }
 }

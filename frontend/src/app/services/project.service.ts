@@ -91,6 +91,70 @@ export class ProjectService {
       });
   }
 
+  update(
+    projectId: number,
+    facultyId: number,
+    projectTypeId: number,
+    name: string,
+    start: string,
+    end: string,
+    firstname: string,
+    lastname: string,
+    email: string,
+    crossFaculty: boolean,
+    notes: string,
+    expenses: ProjectExpense[],
+    lecturers: ProjectLecturer[],
+    costs: number,
+    participants: number,
+    duration: number,
+    crossFaculties: Faculty[]
+  ): Observable<Project> {
+    
+    let project = [
+        projectId,
+        projectTypeId,
+        facultyId,
+        name,
+        start,
+        end,
+        firstname,
+        lastname,
+        email,
+        crossFaculty,
+        notes,
+        expenses.map(e =>({id: e.expense.id, costs: e.costs})),
+        lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
+        costs,
+        participants,
+        duration,
+        crossFaculties.map(c => ({id: c.id}))
+    ]
+
+    console.log(project)
+    return this.http.put<Project>(
+      environment.apiUrl + `faculties/${facultyId}/projects/${projectId}`,
+      {
+        projectId,
+        facultyId,
+        projectTypeId,
+        name,
+        start,
+        end,
+        firstname,
+        lastname,
+        email,
+        crossFaculty,
+        notes,
+        expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs})),
+        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
+        costs,
+        participants,
+        duration,
+        crossFaculties: crossFaculties.map(c => ({id: c.id}))
+      });
+  }
+
   exportToCSV(facultyId: number, project: Project): Observable<any> {
     return this.http.get(environment.apiUrl + `faculties/${facultyId}/projects/${project.id}/csv`);
   }

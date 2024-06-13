@@ -49,7 +49,6 @@ export class NewProjectComponent implements OnInit{
 
   create() {
     this.submitted = true;
-    console.log(this.newProjectForm)
     if(this.newProjectForm.invalid)
       return;
 

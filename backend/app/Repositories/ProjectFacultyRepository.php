@@ -28,9 +28,11 @@ class ProjectFacultyRepository implements IProjectFacultyRepository
         return ProjectFaculty::where($column, $value)->get();
     }
 
-    public function delete(int $id): bool
+    public function delete(int $projectId, int $facultyId): bool
     {
-        return ProjectFaculty::destroy($id) == 1;
+        return ProjectFaculty::where('project_id', $projectId)
+                              ->where('faculty_id', $facultyId)
+                              ->delete() == 1;
     }
 
     public function exists(int $id): bool
@@ -50,5 +52,21 @@ class ProjectFacultyRepository implements IProjectFacultyRepository
             'faculty_id' => $facultyId,
         ]);
         return $this->save($projectFaculty);
+    }
+
+    public function update(int $projectId, int $facultyId): ?ProjectFaculty
+    {
+        $projectFaculty = ProjectFaculty::where('project_id', $projectId)
+                                        ->where('faculty_id', $facultyId)
+                                        ->first();
+        if ($projectFaculty) {
+            return $this->save($projectFaculty);
+        }
+        return null;
+    }
+
+    public function getFacultyIdsByProjectId(int $projectId): array
+    {
+        return ProjectFaculty::where('project_id', $projectId)->pluck('faculty_id')->toArray();
     }
 }

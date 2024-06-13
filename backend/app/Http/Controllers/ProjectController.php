@@ -57,8 +57,6 @@ class ProjectController extends Controller
             ]);
         }
 
-       
-
         try {
             $project = $this->projectRepository->create(
                 $request->name,
@@ -93,6 +91,51 @@ class ProjectController extends Controller
 
         return new ProjectResource($this->projectRepository->getOne($project->id));
     }
+
+    public function update(StoreProjectRequest $request, int $facultyId, int $projectId)
+        {
+
+            $projectType = $this->projectTypeRepository->getOne($request->projectTypeId);
+            if($projectType->is_course) {
+                $request->validate([
+                    'participants' => ['required', 'integer', 'min:1'],
+                    'duration' => ['required', 'integer', 'min:1'],
+                ]);
+            }
+
+            Log::info("project id:" . $projectId);
+            if(!$this->projectRepository->getOne($projectId))
+                       return response("Gibs nd ...", 404);
+
+            try {
+                $project = $this->projectRepository->update(
+                $request->projectId,
+                $request->name,
+                $request->costs,
+                $request->firstname,
+                $request->lastname,
+                $request->email,
+                Carbon::createFromFormat('Y-m-d', $request->start),
+                Carbon::createFromFormat('Y-m-d', $request->end),
+                $request->crossFaculty,
+                $request->notes,
+                $request->participants,
+                $request->duration,
+                $request->projectTypeId,
+                $request->user()->id,
+                $facultyId,
+                );
+
+                $this->_updateLecturers($request->lecturers, $projectId);
+                $this->_updateExpenses($request->expenses, $projectId);
+                $this->_updateCrossFaculties($request->crossFaculties, $projectId);
+            } catch (\Exception) {
+    //            if($project)
+    //                $this->projectRepository->delete($project->$projectId);
+            }
+
+            return new ProjectResource($this->projectRepository->getOne($project->id));
+        }
 
     public function destroy(int $id)
     {
@@ -151,5 +194,74 @@ class ProjectController extends Controller
         $project->save();
     }
 
+
+    private function _updateLecturers(array $lecturers, $projectId)
+    {
+        $currentLecturerIds = $this->projectLecturerRepository->getLecturerIdsByProjectId($projectId);
+        $newLecturerIds = array_map(function($lecturer) { return $lecturer['id']; }, $lecturers);
+
+        // Löschen von nicht mehr existierenden Lecturers
+        $lecturersToDelete = array_diff($currentLecturerIds, $newLecturerIds);
+        foreach ($lecturersToDelete as $lecturerId) {
+            $this->projectLecturerRepository->delete($projectId, $lecturerId);
+        }
+
+        // Hinzufügen oder Aktualisieren von Lecturers
+        foreach ($lecturers as $lecturer) {
+            if (in_array($lecturer['id'], $currentLecturerIds)) {
+                // Existierenden Lecturer aktualisieren
+                $this->projectLecturerRepository->update($projectId, $lecturer['id'], $lecturer['hours'], $lecturer['daily']);
+            } else {
+                // Neuen Lecturer hinzufügen
+                $this->projectLecturerRepository->create($projectId, $lecturer['id'], $lecturer['hours'], $lecturer['daily']);
+            }
+        }
+    }
+
+    private function _updateExpenses(array $expenses, $projectId)
+    {
+        $currentExpenseIds = $this->projectExpenseRepository->getExpenseIdsByProjectId($projectId);
+        $newExpenseIds = array_map(function($expense) { return $expense['id']; }, $expenses);
+
+        // Löschen von nicht mehr existierenden Expenses
+        $expensesToDelete = array_diff($currentExpenseIds, $newExpenseIds);
+        foreach ($expensesToDelete as $expenseId) {
+            $this->projectExpenseRepository->delete($projectId, $expenseId);
+        }
+
+        // Hinzufügen oder Aktualisieren von Expenses
+        foreach ($expenses as $expense) {
+            if (in_array($expense['id'], $currentExpenseIds)) {
+                // Existierende Expense aktualisieren
+                $this->projectExpenseRepository->update($projectId, $expense['id'], $expense['costs']);
+            } else {
+                // Neue Expense hinzufügen
+                $this->projectExpenseRepository->create($projectId, $expense['id'], $expense['costs']);
+            }
+        }
+    }
+
+    private function _updateCrossFaculties(array $faculties, $projectId)
+    {
+        $currentFacultyIds = $this->projectFacultyRepository->getFacultyIdsByProjectId($projectId);
+        $newFacultyIds = array_map(function($f) { return $f['id']; }, $faculties);
+
+        // Löschen von nicht mehr existierenden Faculties
+        $facultiesToDelete = array_diff($currentFacultyIds, $newFacultyIds);
+        foreach ($facultiesToDelete as $facultyId) {
+            $this->projectFacultyRepository->delete($projectId, $facultyId);
+        }
+
+        // Hinzufügen oder Aktualisieren von Faculties
+        foreach ($faculties as $f) {
+            if (in_array($f['id'], $currentFacultyIds)) {
+                // Existierende Faculty aktualisieren (falls nötig)
+                $this->projectFacultyRepository->update($projectId, $f['id']);
+            } else {
+                // Neue Faculty hinzufügen
+                $this->projectFacultyRepository->create($projectId, $f['id']);
+            }
+        }
+    }
 }
 

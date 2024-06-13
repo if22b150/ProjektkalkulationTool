@@ -146,9 +146,12 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
     })
 
     if (this.authService.user.role == ERole.ADMIN)
-      this.project.is_opened = true;
+      this.updateProjectIsOpenedStatus();
 
-    console.log(this.project.is_opened)
+  }
+
+  updateProjectIsOpenedStatus() {
+      
   }
 
   // Workaround

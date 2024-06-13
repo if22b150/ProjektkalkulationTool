@@ -78,6 +78,46 @@ class ProjectRepository implements IProjectRepository
             'faculty_id' => $facultyId
         ]);
 
+
         return $this->save($project);
     }
+
+    public function update(int $id,
+                         string $name,
+                         int $costs,
+                         string $firstname,
+                         string $lastname,
+                         string $email,
+                         DateTime $start,
+                         DateTime $end,
+                         bool $crossFaculty,
+                         ?string $notes,
+                         ?int $participants,
+                         ?int $duration,
+                         int $projectTypeId,
+                         int $userId,
+                         int $facultyId): ?Project
+        {
+
+            $project = $this->getOne($id);
+            Log::info("Updated project NARREE: " . $project);
+            $project->name = $name;
+            $project->costs = $costs;
+            $project->firstname = $firstname;
+            $project->lastname = $lastname;
+            $project->email = $email;
+            $project->start = $start;
+            $project->end = $end;
+            $project->cross_faculty = $crossFaculty;
+            $project->notes = $notes;
+            $project->participants = $participants;
+            $project->duration = $duration;
+            $project->project_type_id = $projectTypeId;
+            $project->user_id = $userId;
+            $project->faculty_id = $facultyId;
+
+            Log::info("After it got filled: " . $project);
+
+            return $this->save($project);
+        }
 }

@@ -28,10 +28,12 @@ class ProjectLecturerRepository implements IProjectLecturerRepository
         return ProjectLecturer::where($column, $value)->get();
     }
 
-    public function delete(int $id): bool
-    {
-        return ProjectLecturer::destroy($id) == 1;
-    }
+    public function delete(int $projectId, int $lecturerId): bool
+        {
+            return ProjectLecturer::where('project_id', $projectId)
+                                  ->where('lecturer_id', $lecturerId)
+                                  ->delete() == 1;
+        }
 
     public function exists(int $id): bool
     {
@@ -52,5 +54,23 @@ class ProjectLecturerRepository implements IProjectLecturerRepository
             'daily' => $daily
         ]);
         return $this->save($projectLecturer);
+    }
+
+    public function update(int $projectId, int $lecturerId, int $hours, bool $daily): ?ProjectLecturer
+        {
+            $projectLecturer = ProjectLecturer::where('project_id', $projectId)
+                                              ->where('lecturer_id', $lecturerId)
+                                              ->first();
+            if ($projectLecturer) {
+                $projectLecturer->hours = $hours;
+                $projectLecturer->daily = $daily;
+                return $this->save($projectLecturer);
+            }
+            return null;
+        }
+
+    public function getLecturerIdsByProjectId(int $projectId): array
+    {
+        return ProjectLecturer::where('project_id', $projectId)->pluck('lecturer_id')->toArray();
     }
 }
