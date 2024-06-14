@@ -85,7 +85,7 @@ export class EditProjectComponent implements OnInit {
 
     this.projectService.update(
       this.project.id,
-      this.authService.user.faculty.id,
+      this.project.faculty.id,
       this.projectType.value.id,
       this.name.value,
       this.datePipe.transform(this.start.value, 'YYYY-MM-dd'),

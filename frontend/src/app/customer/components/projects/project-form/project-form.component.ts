@@ -114,11 +114,13 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       crossFaculties: [this.project ? this.getCrossFacultiesValue() : []]
     });
 
+    if (this.authService.user.role == ERole.ADMIN && this.project.is_opened == false) 
+      this.updateProjectIsOpenedStatus();
+        
+    
+
     this.setLecturers()
     this.setCourseValidators()
-
-    // if(this.project)
-    //   this.costChanges();
 
     this.projectForm.valueChanges.subscribe({
       next: (fg) => {
@@ -151,7 +153,12 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   }
 
   updateProjectIsOpenedStatus() {
-      
+      this.projectService.updateIsOpened(this.project.id, this.project.faculty.id, true)
+      .subscribe({
+        next:  () => {
+          this.projectService.getAllByFaculty(this.authService.user.faculty.id)
+        }
+      });
   }
 
   // Workaround

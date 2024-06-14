@@ -100,7 +100,6 @@ class ProjectRepository implements IProjectRepository
         {
 
             $project = $this->getOne($id);
-            Log::info("Updated project NARREE: " . $project);
             $project->name = $name;
             $project->costs = $costs;
             $project->firstname = $firstname;
@@ -116,8 +115,13 @@ class ProjectRepository implements IProjectRepository
             $project->user_id = $userId;
             $project->faculty_id = $facultyId;
 
-            Log::info("After it got filled: " . $project);
+            return $this->save($project);
+        }
 
+        public function updateIsOpen(int $id, int $facultyId, bool $isOpened): ?Project
+        {
+            $project = $this->getOne($id);
+            $project->is_opened = $isOpened;
             return $this->save($project);
         }
 }

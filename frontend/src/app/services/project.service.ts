@@ -110,28 +110,7 @@ export class ProjectService {
     duration: number,
     crossFaculties: Faculty[]
   ): Observable<Project> {
-    
-    let project = [
-        projectId,
-        projectTypeId,
-        facultyId,
-        name,
-        start,
-        end,
-        firstname,
-        lastname,
-        email,
-        crossFaculty,
-        notes,
-        expenses.map(e =>({id: e.expense.id, costs: e.costs})),
-        lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
-        costs,
-        participants,
-        duration,
-        crossFaculties.map(c => ({id: c.id}))
-    ]
 
-    console.log(project)
     return this.http.put<Project>(
       environment.apiUrl + `faculties/${facultyId}/projects/${projectId}`,
       {
@@ -153,6 +132,12 @@ export class ProjectService {
         duration,
         crossFaculties: crossFaculties.map(c => ({id: c.id}))
       });
+  }
+
+  updateIsOpened(projectId: number, facultyId:number, isOpened: boolean) {
+    console.log("projectId: " + projectId + " + facultyId: "+ facultyId+" isOpened: " + isOpened)
+    
+    return this.http.put<Project>(environment.apiUrl + `faculties/${facultyId}/projects/${projectId}/isOpened`, {projectId, facultyId, isOpened});
   }
 
   exportToCSV(facultyId: number, project: Project): Observable<any> {
