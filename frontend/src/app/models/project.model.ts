@@ -22,4 +22,5 @@ export interface Project extends AModel {
   lecturers: ProjectLecturer[];
   expenses: ProjectExpense[];
   crossFaculties: Faculty[];
+  priceForCoursePerDayOverride?: number;
 }

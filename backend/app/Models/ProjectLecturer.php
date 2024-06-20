@@ -17,7 +17,9 @@ class ProjectLecturer extends Model
         'project_id',
         'lecturer_id',
         'hours',
-        'daily'
+        'daily',
+        'hourly_rate_override',
+        'daily_rate_override'
     ];
 
     protected $casts = [

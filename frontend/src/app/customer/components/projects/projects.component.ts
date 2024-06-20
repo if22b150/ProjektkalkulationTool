@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {ProjectService} from "../../../services/project.service";
 import {Button} from "primeng/button";
-import {AsyncPipe, CurrencyPipe, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, CurrencyPipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
 import {ExportButtonsComponent} from "./export-buttons/export-buttons.component";
@@ -26,7 +26,8 @@ import { BadgeModule } from 'primeng/badge';
     LoadingSpinnerComponent,
     ToastModule,
     NgIf,
-    BadgeModule
+    BadgeModule,
+    NgClass
   ],
   styleUrls: ['./projects.component.scss']
 })

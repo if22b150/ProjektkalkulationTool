@@ -15,21 +15,23 @@ use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 
 
 class ProjectController extends Controller
 {
-    public function __construct(protected IProjectRepository $projectRepository,
+    public function __construct(protected IProjectRepository         $projectRepository,
                                 protected IProjectLecturerRepository $projectLecturerRepository,
-                                protected IProjectExpenseRepository $projectExpenseRepository,
-                                protected IProjectFacultyRepository $projectFacultyRepository,
-                                protected IProjectTypeRepository $projectTypeRepository)
-    {}
+                                protected IProjectExpenseRepository  $projectExpenseRepository,
+                                protected IProjectFacultyRepository  $projectFacultyRepository,
+                                protected IProjectTypeRepository     $projectTypeRepository)
+    {
+    }
 
     public function index(Request $request, int $facultyId = null)
     {
-        if(!$facultyId && $request->user()->role == ERole::ADMIN)
+        if (!$facultyId && $request->user()->role == ERole::ADMIN)
             return ProjectResource::collection($this->projectRepository->getAll());
 
         return ProjectResource::collection($this->projectRepository->getWhere('faculty_id', $facultyId));
@@ -38,19 +40,19 @@ class ProjectController extends Controller
     public function show(Request $request, int $facultyId, int $projectId = null)
     {
         // for admin requests, there is not facultyId provided
-        if(!$projectId)
+        if (!$projectId)
             $projectId = $facultyId;
 
         $project = $this->projectRepository->getOne($projectId);
-        if(!$project || $project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN)
-            return response('Not found',404);
+        if (!$project || $project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN)
+            return response('Not found', 404);
         return new ProjectResource($this->projectRepository->getOne($projectId));
     }
 
     public function store(StoreProjectRequest $request, int $facultyId)
     {
         $projectType = $this->projectTypeRepository->getOne($request->projectTypeId);
-        if($projectType->is_course) {
+        if ($projectType->is_course) {
             $request->validate([
                 'participants' => ['required', 'integer', 'min:1'],
                 'duration' => ['required', 'integer', 'min:1'],
@@ -58,6 +60,7 @@ class ProjectController extends Controller
         }
 
         try {
+            DB::beginTransaction();
             $project = $this->projectRepository->create(
                 $request->name,
                 $request->costs,
@@ -84,30 +87,28 @@ class ProjectController extends Controller
             foreach ($request->crossFaculties as $f) {
                 $this->projectFacultyRepository->create($project->id, $f['id']);
             }
-        } catch (\Exception) {
-            if($project)
-                $this->projectRepository->delete($project->id);
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response('Project could not be created: ' . $e->getMessage(), 500);
         }
 
         return new ProjectResource($this->projectRepository->getOne($project->id));
     }
 
     public function update(StoreProjectRequest $request, int $facultyId, int $projectId)
-        {
+    {
+        $projectType = $this->projectTypeRepository->getOne($request->projectTypeId);
+        if ($projectType->is_course) {
+            $request->validate([
+                'participants' => ['required', 'integer', 'min:1'],
+                'duration' => ['required', 'integer', 'min:1'],
+            ]);
+        }
 
-            $projectType = $this->projectTypeRepository->getOne($request->projectTypeId);
-            if($projectType->is_course) {
-                $request->validate([
-                    'participants' => ['required', 'integer', 'min:1'],
-                    'duration' => ['required', 'integer', 'min:1'],
-                ]);
-            }
-
-            if(!$this->projectRepository->getOne($projectId))
-                       return response("Gibs nd ...", 404);
-
-            try {
-                $project = $this->projectRepository->update(
+        try {
+            DB::beginTransaction();
+            $project = $this->projectRepository->update(
                 $request->projectId,
                 $request->name,
                 $request->costs,
@@ -121,24 +122,25 @@ class ProjectController extends Controller
                 $request->participants,
                 $request->duration,
                 $request->projectTypeId,
-                $request->user()->id,
-                $facultyId,
-                );
+                $request->priceForCoursePerDayOverride
+            );
 
-                $this->_updateLecturers($request->lecturers, $projectId);
-                $this->_updateExpenses($request->expenses, $projectId);
-                $this->_updateCrossFaculties($request->crossFaculties, $projectId);
-            } catch (\Exception) {
-    //            if($project)
-    //                $this->projectRepository->delete($project->$projectId);
-            }
+            $this->_updateLecturers($request->lecturers, $projectId);
+            $this->_updateExpenses($request->expenses, $projectId);
+            $this->_updateCrossFaculties($request->crossFaculties, $projectId);
 
-            return new ProjectResource($this->projectRepository->getOne($project->id));
+            DB::commit();
+        } catch (\Exception $e) {
+            DB::rollBack();
+            return response('Project could not be updated: ' . $e->getMessage(), 500);
         }
+
+        return new ProjectResource($this->projectRepository->getOne($project->id));
+    }
 
     public function isOpened(StoreProjectRequest $request, int $facultyId, int $projectId)
     {
-        if(!$this->projectRepository->getOne($projectId))
+        if (!$this->projectRepository->getOne($projectId))
             return response("Gibs nd ...", 404);
 
         Log::info('Dies ist eine Info-Nachricht: ' . $request->getContent());
@@ -156,7 +158,7 @@ class ProjectController extends Controller
 
     public function destroy(int $id)
     {
-        if(!$this->projectRepository->getOne($id))
+        if (!$this->projectRepository->getOne($id))
             return response(null, 404);
 
         $this->projectRepository->delete($id);
@@ -167,8 +169,8 @@ class ProjectController extends Controller
     public function exportToCSV(int $facultyId, int $projectId)
     {
         $project = $this->projectRepository->getOne($projectId);
-        if(!$project || $project->faculty_id != $facultyId)
-            return response('Not found',404);
+        if (!$project || $project->faculty_id != $facultyId)
+            return response('Not found', 404);
         $response['csv_string'] = ProjectToCSV::getProjectCSVString($this->projectRepository->getOne($project->id));
         return $response;
     }
@@ -176,8 +178,8 @@ class ProjectController extends Controller
     public function exportToPDF(int $facultyId, int $projectId)
     {
         $project = $this->projectRepository->getOne($projectId);
-        if(!$project || $project->faculty_id != $facultyId)
-            return response('Not found',404);
+        if (!$project || $project->faculty_id != $facultyId)
+            return response('Not found', 404);
 
         $pdf = App::make('dompdf.wrapper');
 
@@ -195,27 +197,17 @@ class ProjectController extends Controller
 
         return new Response($response, 200, array(
             'Content-Type' => 'application/pdf',
-            'Content-Disposition' =>  'attachment; filename="x.pdf"'
+            'Content-Disposition' => 'attachment; filename="x.pdf"'
         ));
-    }
-
-    protected function calculateContributionMargins(Project $project)
-    {
-        // Beispielhafte Logik, passe diese an deine Bedürfnisse an
-        $variableCosts = $project->expenses()->sum('cost');
-        $fixedCosts = 0; // Define how you obtain the fixed costs
-        $revenue = 0; // Auch hier musst du definieren, wie du an die Einnahmen kommst
-
-        $project->contribution_margin_1 = $revenue - $variableCosts;
-        $project->contribution_margin_2 = $project->contribution_margin_1 - $fixedCosts;
-        $project->save();
     }
 
 
     private function _updateLecturers(array $lecturers, $projectId)
     {
         $currentLecturerIds = $this->projectLecturerRepository->getLecturerIdsByProjectId($projectId);
-        $newLecturerIds = array_map(function($lecturer) { return $lecturer['id']; }, $lecturers);
+        $newLecturerIds = array_map(function ($lecturer) {
+            return $lecturer['id'];
+        }, $lecturers);
 
         // Löschen von nicht mehr existierenden Lecturers
         $lecturersToDelete = array_diff($currentLecturerIds, $newLecturerIds);
@@ -227,7 +219,14 @@ class ProjectController extends Controller
         foreach ($lecturers as $lecturer) {
             if (in_array($lecturer['id'], $currentLecturerIds)) {
                 // Existierenden Lecturer aktualisieren
-                $this->projectLecturerRepository->update($projectId, $lecturer['id'], $lecturer['hours'], $lecturer['daily']);
+                $this->projectLecturerRepository->update(
+                    $projectId,
+                    $lecturer['id'],
+                    $lecturer['hours'],
+                    $lecturer['daily'],
+                    $lecturer['hourlyRateOverride'],
+                    $lecturer['dailyRateOverride']
+                );
             } else {
                 // Neuen Lecturer hinzufügen
                 $this->projectLecturerRepository->create($projectId, $lecturer['id'], $lecturer['hours'], $lecturer['daily']);
@@ -238,7 +237,9 @@ class ProjectController extends Controller
     private function _updateExpenses(array $expenses, $projectId)
     {
         $currentExpenseIds = $this->projectExpenseRepository->getExpenseIdsByProjectId($projectId);
-        $newExpenseIds = array_map(function($expense) { return $expense['id']; }, $expenses);
+        $newExpenseIds = array_map(function ($expense) {
+            return $expense['id'];
+        }, $expenses);
 
         // Löschen von nicht mehr existierenden Expenses
         $expensesToDelete = array_diff($currentExpenseIds, $newExpenseIds);
@@ -261,7 +262,9 @@ class ProjectController extends Controller
     private function _updateCrossFaculties(array $faculties, $projectId)
     {
         $currentFacultyIds = $this->projectFacultyRepository->getFacultyIdsByProjectId($projectId);
-        $newFacultyIds = array_map(function($f) { return $f['id']; }, $faculties);
+        $newFacultyIds = array_map(function ($f) {
+            return $f['id'];
+        }, $faculties);
 
         // Löschen von nicht mehr existierenden Faculties
         $facultiesToDelete = array_diff($currentFacultyIds, $newFacultyIds);

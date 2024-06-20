@@ -1,14 +1,10 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractControl, FormArray, FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AbstractControl, FormArray, FormGroup} from "@angular/forms";
 import { MessageService } from 'primeng/api';
 import {ExpenseService} from "../../../../services/expense.service";
 import {ProjectTypeService} from "../../../../services/project-type.service";
-import {filter, finalize, isEmpty, take} from "rxjs";
+import {finalize} from "rxjs";
 import {LecturerService} from "../../../../services/lecturer.service";
-import Utils from "../../../../shared/utils";
-import {Project} from "../../../../models/project.model";
-import {ProjectExpense} from "../../../../models/project-expense.model";
-import {ProjectLecturer} from "../../../../models/project-lecturer.model";
 import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Router} from "@angular/router";

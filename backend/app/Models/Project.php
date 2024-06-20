@@ -27,8 +27,9 @@ class Project extends Model
         'participants',
         'duration',
         'is_opened',
-        'contribution_margin_1',
-        'contribution_margin_2'
+        'contribution_margin_1', // TODO: remove
+        'contribution_margin_2', // TODO: remove
+        'price_for_course_per_day_override'
     ];
 
     protected $casts = [

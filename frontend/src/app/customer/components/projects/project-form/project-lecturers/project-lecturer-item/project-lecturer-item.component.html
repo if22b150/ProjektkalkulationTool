@@ -44,13 +44,33 @@
           <label [for]="!project ? 'new-project-hours-' + i : 'new-project-' + project.id + '-' + 'hours-' + i">
             {{ daily.value ? 'Tage' : 'Stunden' }}
           </label>
-        <!--          <small *ngIf="hours?.errors?.required && submitted" class="p-error">-->
-        <!--            Stunden sind erforderlich.-->
-        <!--          </small>-->
-        </span>
+          <small *ngIf="hours?.errors?.required && submitted" class="p-error">
+            Stunden sind erforderlich.
+          </small>
+      </span>
 
-        <button pButton pRipple type="button" icon="pi pi-trash"
-                class="p-button-rounded p-button-danger p-button-outlined" (click)="removeProjectLecturer()"></button>
+      <span class="p-float-label" *ngIf="(authService.user$|async)?.role == ERole.ADMIN && !daily.value">
+          <p-inputNumber [inputId]="!project ? 'new-project-hourly-rate-override-' + i : 'new-project-' + project.id + '-' + 'hourly-rate-override-' + i"
+                         formControlName="hourlyRateOverride"
+                         class="flex-grow-1"
+                         suffix="€"></p-inputNumber>
+          <label [for]="!project ? 'new-project-hourly-rate-override-' + i : 'new-project-' + project.id + '-' + 'hourly-rate-override-' + i">
+            Stundensatz <span *ngIf="lecturer.value.hourlyRate != hourlyRateOverride.value">(standardmäßig {{ lecturer.value.hourlyRate }}€)</span>
+          </label>
+      </span>
+
+      <span class="p-float-label" *ngIf="(authService.user$|async)?.role == ERole.ADMIN && daily.value">
+          <p-inputNumber [inputId]="!project ? 'new-project-daily-rate-override-' + i : 'new-project-' + project.id + '-' + 'daily-rate-override-' + i"
+                         formControlName="dailyRateOverride"
+                         class="flex-grow-1"
+                         suffix="€"></p-inputNumber>
+          <label [for]="!project ? 'new-project-daily-rate-override-' + i : 'new-project-' + project.id + '-' + 'daily-rate-override-' + i">
+            Tagessatz <span *ngIf="lecturer.value.dailyRate != dailyRateOverride.value">(standardmäßig {{ lecturer.value.dailyRate }}€)</span>
+          </label>
+      </span>
+
+      <button pButton pRipple type="button" icon="pi pi-trash"
+              class="p-button-rounded p-button-danger p-button-outlined" (click)="removeProjectLecturer()"></button>
 
 
     </div>

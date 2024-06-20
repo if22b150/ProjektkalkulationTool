@@ -30,7 +30,8 @@ class ProjectResource extends JsonResource
             'expenses' => ProjectExpenseResource::collection($this->expenses),
             'crossFaculties' => $this->faculties->map(function ($item, int $key) {
                 return $item->faculty;
-            })
+            }),
+            'priceForCoursePerDayOverride' => $this->price_for_course_per_day_override
         ];
     }
 }

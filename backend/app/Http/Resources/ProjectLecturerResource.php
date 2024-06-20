@@ -13,7 +13,9 @@ class ProjectLecturerResource extends JsonResource
             'projectId' => $this->project_id,
             'lecturer' => new LecturerResource($this->lecturer),
             'hours' => $this->hours,
-            'daily' => $this->daily
+            'daily' => $this->daily,
+            'hourlyRateOverride' => $this->hourly_rate_override,
+            'dailyRateOverride' => $this->daily_rate_override,
         ];
     }
 }

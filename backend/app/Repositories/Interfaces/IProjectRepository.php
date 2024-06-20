@@ -34,6 +34,23 @@ interface IProjectRepository
         ?int $duration,
         int $projectTypeId,
         int $userId,
-        int $facultyId
+        int $facultyId,
+    ): ?Project;
+
+    public function update(
+        int $id,
+        string $name,
+        int $costs,
+        string $firstname,
+        string $lastname,
+        string $email,
+        DateTime $start,
+        DateTime $end,
+        bool $crossFaculty,
+        ?string $notes,
+        ?int $participants,
+        ?int $duration,
+        int $projectTypeId,
+        ?int $priceForCoursePerDayOverride
     ): ?Project;
 }

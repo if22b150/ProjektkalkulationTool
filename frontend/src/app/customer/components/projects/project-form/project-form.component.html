@@ -1,21 +1,21 @@
 <div *ngIf="(projectTypeService.projectTypes$|async)
               && (expenseService.expenses$|async)
               && (lecturerService.lecturers$|async); else loadingSpinner"
-     style="max-width: 800px">
+     style="max-width: 1000px">
 
-  <h1>{{title}}</h1>
+  <h1>{{ title }}</h1>
   <form [formGroup]="projectForm">
 
     <div class="p-fluid">
 
-      <div class="flex flex-wrap gap-4 mb-2">
+      <div class="flex flex-wrap gap-4 mb-4">
         <div>
           <label for="projectType" class="mb-1">
             Projektart
           </label>
 
           <p-dropdown id="projectType" formControlName="projectType"
-                      [options]="projectTypeService.projectTypes$|async" optionLabel="name"  placeholder="Auswählen">
+                      [options]="projectTypeService.projectTypes$|async" optionLabel="name" placeholder="Auswählen">
             <ng-template let-projectType pTemplate="item">
               <div class="flex align-items-center gap-2">
                 <div>{{ projectType.name }}</div>
@@ -34,7 +34,7 @@
         </div>
       </div>
 
-      <div class="flex flex-wrap gap-4 mb-2">
+      <div class="flex flex-wrap gap-4 mb-4">
         <div>
           <label for="start" class="mb-1">Startdatum</label>
           <p-calendar formControlName="start"
@@ -55,22 +55,40 @@
       </div>
 
       <div class="flex flex-wrap gap-4 mb-2" *ngIf="projectType.value.isCourse">
-        <div>
+        <div class="flex flex-column">
           <label for="participants" class="mb-1">Teilnehmeranzahl</label>
-          <input id="participants" type="number" pInputText formControlName="participants" placeholder="Teilnehmeranzahl">
+          <input id="participants" type="number" pInputText formControlName="participants"
+                 placeholder="Teilnehmeranzahl">
           <small *ngIf="participants?.errors?.required && submitted" class="p-error">
             Teilnehmeranzahl ist erforderlich.
           </small>
         </div>
 
-        <div>
+        <div class="flex flex-column">
           <label for="duration" class="mb-1">Dauer des Projekts (in Tagen)</label>
           <input id="duration" type="number" pInputText formControlName="duration" placeholder="Tage">
           <small *ngIf="duration?.errors?.required && submitted" class="p-error">
             Die Dauer des Projekts ist erforderlich.
           </small>
         </div>
+
+        <div class="mb-4 flex">
+          <div class="flex flex-column"
+               *ngIf="(authService.user$|async)?.role == ERole.ADMIN && projectType.value.isCourse">
+            <label class="mb-1"
+              [for]="!project ? 'new-project-daily-rate-override-' + i : 'new-project-' + project.id + '-' + 'daily-rate-override-' + i">
+              Preis pro Tag <small *ngIf="priceForCoursePerDayOverride.value != project.faculty.priceForCoursePerDay">(standardmäßig {{ project.faculty.priceForCoursePerDay }}
+              €)</small>
+            </label>
+            <p-inputNumber inputId="priceForCoursePerDayOverride"
+                           formControlName="priceForCoursePerDayOverride"
+                           class="flex-grow-1"
+                           suffix="€"></p-inputNumber>
+          </div>
+        </div>
+
       </div>
+
 
       <div class="mb-4">
         <label for="notes" class="mb-1">Anmerkungen</label>
@@ -80,7 +98,7 @@
 
       <p class="m-0 my-1 font-bold">Ansprechperson</p>
 
-      <div class="mb-2 flex">
+      <div class="flex flex-wrap gap-4 mb-4">
         <div>
           <label for="email" class="mb-1">E-Mail</label>
           <input id="email" type="text" pInputText formControlName="email" placeholder="E-Mail">
@@ -88,9 +106,7 @@
             Eine E-Mail ist erforderlich.
           </small>
         </div>
-      </div>
 
-      <div class="flex flex-wrap gap-4 mb-4">
         <div>
           <label for="firstname" class="mb-1">Vorname</label>
           <input id="firstname" type="text" pInputText formControlName="firstname" placeholder="Vorname">
@@ -112,7 +128,8 @@
 
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
       <p class="m-0 my-1 font-bold">Aufwände</p>
-      <app-project-expenses [project]="project" [projectForm]="projectForm" [submitted]="submitted"></app-project-expenses>
+      <app-project-expenses [project]="project" [projectForm]="projectForm"
+                            [submitted]="submitted"></app-project-expenses>
     </div>
 
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
@@ -131,12 +148,12 @@
 
           <p-multiSelect #crossFacultySelect
                          id="crossFaculties"
-                        formControlName="crossFaculties"
-                        [options]="dropDownFaculties"
-                        optionLabel="name"
-                        [filter]="false"
-                        [style]="{'width':'200px'}"
-                        placeholder="Auswählen">
+                         formControlName="crossFaculties"
+                         [options]="dropDownFaculties"
+                         optionLabel="name"
+                         [filter]="false"
+                         [style]="{'width':'200px'}"
+                         placeholder="Auswählen">
           </p-multiSelect>
 
         </div>
@@ -154,20 +171,22 @@
 
   <div class="flex justify-content-between mb-2">
     <div>
-      <div *ngIf="isCourse && revenue" class="flex align-items-center gap-2 text-2xl {{revenue > totalCost ? 'text-primary' : (revenue == totalCost ? 'text-orange-500' : 'text-red-500')}}">
+      <div *ngIf="isCourse && revenue"
+           class="flex align-items-center gap-2 text-2xl {{revenue > totalCost ? 'text-primary' : (revenue == totalCost ? 'text-orange-500' : 'text-red-500')}}">
         <i *ngIf="revenue > totalCost" style="font-size: 2rem" class="pi pi-check-circle"></i>
         <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
         <i *ngIf="revenue < totalCost" style="font-size: 2rem" class="pi pi-exclamation-triangle"></i>
 
-        <span>Aktuell ist das Projekt {{revenue > totalCost ? 'gewinnbringend.' : (revenue == totalCost ? 'genau kostendeckend.' : 'nicht kostendeckend!')}}</span>
+        <span>{{ revenue > totalCost ? 'Gewinnbringend' : (revenue == totalCost ? 'Kostendeckend' : 'Nicht kostendeckend!') }}</span>
       </div>
     </div>
 
 
     <div class="flex flex-column align-items-end text-lg">
       <h4 class="m-0">Gesamtkosten</h4>
-      <p class="m-0">{{totalCost|currency:"EUR"}}</p>
-      <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige Kosten: {{project.costs|currency:"EUR"}})</p>
+      <p class="m-0">{{ totalCost|currency:"EUR" }}</p>
+      <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige
+        Kosten: {{ project.costs|currency:"EUR" }})</p>
     </div>
   </div>
 
@@ -176,12 +195,17 @@
     <p-button pRipple [label]="submitLabel" [loading]="loading" (click)="submitEmitter.emit()"></p-button>
   </div>
 
-  <hr class="mt-4 mb-2">
+  <div *ngIf="(authService.user$|async)?.role == ERole.ADMIN">
 
-  <div *ngIf="authService.user.role == ERole.ADMIN" class="flex align-items-center gap-2 font-light font-italic	">
-    <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
-    <span>Hier beginnt der Bereich der nur als Admin sichtbar ist</span>
+    <hr class="mt-4 mb-2">
+
+    <div class="flex align-items-center gap-2 font-light font-italic	">
+      <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
+      <span>Hier beginnt der Bereich der nur als Admin sichtbar ist</span>
+    </div>
+
   </div>
+
 </div>
 
 <ng-template #loadingSpinner>

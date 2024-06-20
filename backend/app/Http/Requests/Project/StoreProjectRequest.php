@@ -35,10 +35,13 @@ class StoreProjectRequest extends FormRequest
             'participants' => ['nullable', 'integer'],
             'duration' => ['nullable', 'integer'],
             'is_opened' => ['nullable', 'boolean'],
+            'priceForCoursePerDayOverride' => ['nullable', 'integer'],
             'lecturers' => ['present', 'array'],
             'lecturers.*.id' => ['required', 'integer', 'exists:lecturers,id'],
             'lecturers.*.hours' => ['required', 'integer'],
             'lecturers.*.daily' => ['required', 'boolean'],
+            'lecturers.*.hourlyRateOverride' => ['nullable', 'integer'],
+            'lecturers.*.dailyRateOverride' => ['nullable', 'integer'],
 
             'expenses' => ['present', 'array'],
             'expenses.*.id' => ['required', 'integer', 'exists:expenses,id'],

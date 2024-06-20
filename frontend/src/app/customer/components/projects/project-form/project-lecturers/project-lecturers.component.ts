@@ -55,7 +55,9 @@ export class ProjectLecturersComponent implements OnInit {
           id: [null],
           lecturer: [this.getProjectLecturerValue(projectLecturer), [Validators.required]],
           hours: [projectLecturer.hours, [Validators.required, Validators.min(1)]],
-          daily: [projectLecturer.daily]
+          daily: [projectLecturer.daily],
+          hourlyRateOverride: [projectLecturer.hourlyRateOverride ?? projectLecturer.lecturer.hourlyRate],
+          dailyRateOverride: [projectLecturer.dailyRateOverride ?? projectLecturer.lecturer.dailyRate],
         }))
       })
     } else {
@@ -77,7 +79,9 @@ export class ProjectLecturersComponent implements OnInit {
       id: [null],
       lecturer: [null, [Validators.required]],
       hours: [null, [Validators.required]],
-      daily: [false]
+      daily: [false],
+      hourlyRateOverride: [null],
+      dailyRateOverride: [null],
     })
   }
 

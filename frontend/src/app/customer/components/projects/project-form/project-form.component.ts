@@ -35,6 +35,7 @@ import {ToastModule} from "primeng/toast";
 import {Ripple} from "primeng/ripple";
 import {ERole} from "../../../../models/user.model";
 import {Faculty} from "../../../../models/faculty.model";
+import {InputNumberModule} from "primeng/inputnumber";
 
 @Component({
   selector: 'app-project-form',
@@ -56,7 +57,8 @@ import {Faculty} from "../../../../models/faculty.model";
     ExportButtonsComponent,
     LoadingSpinnerComponent,
     ToastModule,
-    Ripple
+    Ripple,
+    InputNumberModule
   ],
   styleUrls: ['./project-form.component.scss']
 })
@@ -90,7 +92,6 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
               private ref: ChangeDetectorRef,
               public lecturerService: LecturerService,
               private facultyService: FacultyService) {
-
   }
 
   ngOnInit() {
@@ -111,13 +112,12 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       projectLecturers: this.formBuilder.array([]),
       participants: [this.project ? this.project.participants : null],
       duration: [this.project ? this.project.duration : null],
-      crossFaculties: [this.project ? this.getCrossFacultiesValue() : []]
+      crossFaculties: [this.project ? this.getCrossFacultiesValue() : []],
+      priceForCoursePerDayOverride: [this.project ? (this.project.priceForCoursePerDayOverride ?? this.project.faculty.priceForCoursePerDay) : this.faculty.priceForCoursePerDay]
     });
 
-    if (this.authService.user.role == ERole.ADMIN && this.project.is_opened == false) 
+    if (this.authService.user.role == ERole.ADMIN && this.project.is_opened == false)
       this.updateProjectIsOpenedStatus();
-        
-    
 
     this.setLecturers()
     this.setCourseValidators()
@@ -202,24 +202,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    let expenses: ProjectExpense[] = [];
-    this.projectExpenses.controls.forEach(expense => {
-      expenses.push({
-        costs: expense.get('costs').value || 0,
-        expense: expense.get('expense').value
-      });
-    });
-
-    let lecturers: ProjectLecturer[] = [];
-    this.projectLecturers.controls.forEach(lecturer => {
-      lecturers.push({
-        hours: lecturer.get('hours').value || 0,
-        lecturer: lecturer.get('lecturer').value,
-        daily: lecturer.get('daily').value,
-      });
-    });
-
-    this.totalCost = Utils.calculateProjectCosts(lecturers, expenses);
+    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value);
 
     if(!this.isCourse)
       return;
@@ -229,7 +212,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       return
     }
 
-    this.revenue = this.participants.value * this.faculty.priceForCoursePerDay * this.duration.value
+    this.revenue = this.participants.value * (this.priceForCoursePerDayOverride.value ?? this.faculty.priceForCoursePerDay) * this.duration.value
   }
 
 
@@ -291,6 +274,10 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   get crossFaculties(): AbstractControl {
     return this.projectForm.get("crossFaculties");
+  }
+
+  get priceForCoursePerDayOverride(): AbstractControl {
+    return this.projectForm.get("priceForCoursePerDayOverride");
   }
 
   get isCourse(): boolean {

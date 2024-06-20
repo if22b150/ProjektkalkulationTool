@@ -5,4 +5,6 @@ export interface ProjectLecturer {
   lecturer: Lecturer;
   hours: number;
   daily: boolean;
+  hourlyRateOverride?: number;
+  dailyRateOverride?: number;
 }

@@ -108,7 +108,8 @@ export class ProjectService {
     costs: number,
     participants: number,
     duration: number,
-    crossFaculties: Faculty[]
+    crossFaculties: Faculty[],
+    priceForCoursePerDayOverride?: number
   ): Observable<Project> {
 
     return this.http.put<Project>(
@@ -126,17 +127,18 @@ export class ProjectService {
         crossFaculty,
         notes,
         expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs})),
-        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
+        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily, hourlyRateOverride: l.hourlyRateOverride, dailyRateOverride: l.dailyRateOverride})),
         costs,
         participants,
         duration,
-        crossFaculties: crossFaculties.map(c => ({id: c.id}))
+        crossFaculties: crossFaculties.map(c => ({id: c.id})),
+        priceForCoursePerDayOverride
       });
   }
 
   updateIsOpened(projectId: number, facultyId:number, isOpened: boolean) {
     console.log("projectId: " + projectId + " + facultyId: "+ facultyId+" isOpened: " + isOpened)
-    
+
     return this.http.put<Project>(environment.apiUrl + `faculties/${facultyId}/projects/${projectId}/isOpened`, {projectId, facultyId, isOpened});
   }
 

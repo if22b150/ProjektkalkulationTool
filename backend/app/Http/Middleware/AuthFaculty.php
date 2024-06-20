@@ -18,8 +18,11 @@ class AuthFaculty
     public function handle(Request $request, Closure $next) {
         $user = $request->user();
 
+        if($user->role == ERole::ADMIN)
+            return $next($request);
+
         // Only admins are allowed to access these routes
-        if ($user->role != ERole::FACULTY || $user->faculty->id != $request->route()->facultyId)
+        if ($user->faculty->id != $request->route()->facultyId)
             return response(null, 404);
 
         return $next($request);

@@ -27,6 +27,7 @@ import {ProjectTypeService} from "../../../../services/project-type.service";
 })
 export class EditProjectComponent implements OnInit {
   loading: boolean;
+  updateLoading: boolean;
   project: Project;
   submitted: boolean;
   editProjectForm: FormGroup;
@@ -76,12 +77,16 @@ export class EditProjectComponent implements OnInit {
     this.editProjectForm = fg;
   }
 
+  costChanges(costs: number) {
+    this.totalCost = costs;
+  }
+
   update() {
     this.submitted = true;
     if(this.editProjectForm.invalid)
       return;
 
-    this.loading = true;
+    this.updateLoading = true;
 
     this.projectService.update(
       this.project.id,
@@ -100,19 +105,16 @@ export class EditProjectComponent implements OnInit {
       this.totalCost * 100,
       this.participants.value,
       this.duration.value,
-      this.crossFaculties.value
+      this.crossFaculties.value,
+      this.priceForCoursePerDayOverride.value
     )
       .pipe(
-        finalize(() => this.loading = false)
+        finalize(() => this.updateLoading = false)
       )
       .subscribe({
         next: project  => {
-          this.router.navigate(['/projects']).then(() => {
-            setTimeout(() => {
-              this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt wurde erfolgreich gespeichert'});
-            },1);
-            this.projectService.getAllByFaculty(this.authService.user.faculty.id)
-          })
+          this.project = project
+          this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projektänderungen wurden erfolgreich gespeichert'});
         }
       });
   }
@@ -171,5 +173,9 @@ export class EditProjectComponent implements OnInit {
 
   get crossFaculties(): FormArray {
     return this.editProjectForm.get("crossFaculties") as FormArray;
+  }
+
+  get priceForCoursePerDayOverride(): AbstractControl {
+    return this.editProjectForm.get("priceForCoursePerDayOverride");
   }
 }

@@ -1,4 +1,4 @@
-<div style="max-width: 800px" *ngIf="!loading && project; else loadingSpinner">
+<div *ngIf="!loading && project; else loadingSpinner">
   <app-project-form [submitted]="submitted"
                     (formChangesEmitter)="formChanges($event)"
                     [project]="project"
@@ -6,7 +6,8 @@
                     [title]="project.name"
                     (submitEmitter)="update()"
                     [exportOptions]="true"
-                    [loading]="loading">
+                    (costChangesEmitter)="costChanges($event)"
+                    [loading]="updateLoading">
   </app-project-form>
 </div>
 
