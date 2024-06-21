@@ -33,8 +33,15 @@
     <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">
 
       <a [routerLink]="'' + project.id" style="text-decoration: none">
-        <span *ngIf="authService.user.role == ERole.ADMIN; else notAdminContent"
-              class="block text-500 text-center font-medium mb-2">{{ project.faculty.name }}</span>
+        <div *ngIf="authService.user.role == ERole.ADMIN; else notAdminContent"
+             class="flex flex-column mb-2">
+          <span class="block text-500 text-center font-medium mb-2">
+            {{ project.faculty.name }}
+          </span>
+          <p-badge [value]="project.projectType.name" severity="info" />
+        </div>
+
+
         <ng-template #notAdminContent>
           <span class="block text-500 text-center font-medium mb-2">{{ project.projectType.name }}</span>
         </ng-template>
