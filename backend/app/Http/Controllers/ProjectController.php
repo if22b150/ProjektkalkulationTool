@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\ERole;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
+use App\Repositories\Interfaces\IOtherExpenseRepository;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
 use App\Repositories\Interfaces\IProjectFacultyRepository;
 use App\Repositories\Interfaces\IProjectLecturerRepository;
@@ -25,6 +26,7 @@ class ProjectController extends Controller
                                 protected IProjectLecturerRepository $projectLecturerRepository,
                                 protected IProjectExpenseRepository  $projectExpenseRepository,
                                 protected IProjectFacultyRepository  $projectFacultyRepository,
+                                protected IOtherExpenseRepository    $otherExpenseRepository,
                                 protected IProjectTypeRepository     $projectTypeRepository)
     {
     }
@@ -128,6 +130,7 @@ class ProjectController extends Controller
             $this->_updateLecturers($request->lecturers, $projectId);
             $this->_updateExpenses($request->expenses, $projectId);
             $this->_updateCrossFaculties($request->crossFaculties, $projectId);
+            $this->_updateOtherExpenses($request->otherExpenses, $projectId);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -255,6 +258,31 @@ class ProjectController extends Controller
             } else {
                 // Neue Expense hinzufügen
                 $this->projectExpenseRepository->create($projectId, $expense['id'], $expense['costs']);
+            }
+        }
+    }
+
+    private function _updateOtherExpenses(array $otherExpenses, $projectId)
+    {
+        $currentOtherExpenseIds = $this->otherExpenseRepository->getOtherExpenseIdsByProjectId($projectId);
+        $newOtherExpenseIds = array_map(function ($oe) {
+            return $oe['id'];
+        }, $otherExpenses);
+
+        // Löschen von nicht mehr existierenden Expenses
+        $expensesToDelete = array_diff($currentOtherExpenseIds, $newOtherExpenseIds);
+        foreach ($expensesToDelete as $expenseId) {
+            $this->otherExpenseRepository->delete($expenseId);
+        }
+
+        // Hinzufügen oder Aktualisieren von Expenses
+        foreach ($otherExpenses as $expense) {
+            if (in_array($expense['id'], $currentOtherExpenseIds)) {
+                // Existierende Expense aktualisieren
+                $this->otherExpenseRepository->update($expense['id'],$expense['name'], $expense['costs']);
+            } else {
+                // Neue Expense hinzufügen
+                $this->otherExpenseRepository->create($expense['name'], $expense['costs'],$projectId);
             }
         }
     }

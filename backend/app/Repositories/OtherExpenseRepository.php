@@ -54,4 +54,22 @@ class OtherExpenseRepository implements IOtherExpenseRepository
         ]);
         return $this->save($otherExpense);
     }
+
+    public function getOtherExpenseIdsByProjectId(int $projectId): array
+    {
+        return OtherExpense::where('project_id', $projectId)->pluck('id')->toArray();
+    }
+
+    public function update(int      $id,
+                           string   $name,
+                           int      $costs): ?OtherExpense
+    {
+        $updated = OtherExpense::where('id', $id)
+            ->update([
+                'costs' => $costs,
+                'name' => $name
+            ]);
+
+        return $updated ? $this->getOne($id) : null;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Models\OtherExpense;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProjectResource extends JsonResource
@@ -31,7 +32,8 @@ class ProjectResource extends JsonResource
             'crossFaculties' => $this->faculties->map(function ($item, int $key) {
                 return $item->faculty;
             }),
-            'priceForCoursePerDayOverride' => $this->price_for_course_per_day_override
+            'priceForCoursePerDayOverride' => $this->price_for_course_per_day_override,
+            'otherExpenses' => OtherExpenseResource::collection($this->otherExpenses)
         ];
     }
 }

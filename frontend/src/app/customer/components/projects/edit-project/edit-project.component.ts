@@ -106,7 +106,8 @@ export class EditProjectComponent implements OnInit {
       this.participants.value,
       this.duration.value,
       this.crossFaculties.value,
-      this.priceForCoursePerDayOverride.value
+      this.priceForCoursePerDayOverride.value,
+      this.otherExpenses.value
     )
       .pipe(
         finalize(() => this.updateLoading = false)
@@ -177,5 +178,9 @@ export class EditProjectComponent implements OnInit {
 
   get priceForCoursePerDayOverride(): AbstractControl {
     return this.editProjectForm.get("priceForCoursePerDayOverride");
+  }
+
+  get otherExpenses(): FormArray {
+    return this.editProjectForm.get("otherExpenses") as FormArray;
   }
 }

@@ -3,6 +3,7 @@ import {ProjectLecturer} from "./project-lecturer.model";
 import {ProjectExpense} from "./project-expense.model";
 import {ProjectType} from "./project-type.model";
 import {Faculty} from "./faculty.model";
+import {OtherExpense} from "./other-expense.model";
 
 export interface Project extends AModel {
   name: string;
@@ -23,4 +24,5 @@ export interface Project extends AModel {
   expenses: ProjectExpense[];
   crossFaculties: Faculty[];
   priceForCoursePerDayOverride?: number;
+  otherExpenses: OtherExpense[];
 }

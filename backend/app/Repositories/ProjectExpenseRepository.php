@@ -9,7 +9,8 @@ use Illuminate\Database\Eloquent\Collection;
 class ProjectExpenseRepository implements IProjectExpenseRepository
 {
     public function __construct()
-    {}
+    {
+    }
 
     public function getOne(int $id): ?ProjectExpense
     {
@@ -23,17 +24,17 @@ class ProjectExpenseRepository implements IProjectExpenseRepository
 
     public function getWhere($column, $value, array $related = null): Collection
     {
-        if($related)
+        if ($related)
             return ProjectExpense::where($column, $value)->where([$related])->get();
         return ProjectExpense::where($column, $value)->get();
     }
 
     public function delete(int $projectId, int $expenseId): bool
-        {
-            return ProjectExpense::where('project_id', $projectId)
-                                  ->where('expense_id', $expenseId)
-                                  ->delete() == 1;
-        }
+    {
+        return ProjectExpense::where('project_id', $projectId)
+                ->where('expense_id', $expenseId)
+                ->delete() == 1;
+    }
 
     public function exists(int $id): bool
     {
@@ -56,19 +57,20 @@ class ProjectExpenseRepository implements IProjectExpenseRepository
     }
 
     public function update(int $projectId, int $expenseId, float $costs): ?ProjectExpense
-        {
-            $projectExpense = ProjectExpense::where('project_id', $projectId)
-                                            ->where('expense_id', $expenseId)
-                                            ->first();
-            if ($projectExpense) {
-                $projectExpense->costs = $costs;
-                return $this->save($projectExpense);
-            }
-            return null;
-        }
+    {
+        $updated = ProjectExpense::where('project_id', $projectId)
+            ->where('expense_id', $expenseId)
+            ->update([
+                'costs' => $costs
+            ]);
+
+        return $updated ? ProjectExpense::where('project_id', $projectId)
+            ->where('expense_id', $expenseId)
+            ->first() : null;
+    }
 
     public function getExpenseIdsByProjectId(int $projectId): array
-        {
-            return ProjectExpense::where('project_id', $projectId)->pluck('expense_id')->toArray();
-        }
+    {
+        return ProjectExpense::where('project_id', $projectId)->pluck('expense_id')->toArray();
+    }
 }

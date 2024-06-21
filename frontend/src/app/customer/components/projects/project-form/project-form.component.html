@@ -167,7 +167,24 @@
 
   </form>
 
-  <hr class="my-3">
+  <div *ngIf="(authService.user$|async)?.role == ERole.ADMIN">
+
+    <hr class="my-4">
+
+    <div class="flex align-items-center gap-2 text-lg	 font-light font-italic mb-4">
+      <i class="pi pi-info-circle"></i>
+      <span>Hier beginnt der Bereich der nur als Admin sichtbar ist</span>
+    </div>
+
+    <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
+      <p class="m-0 mt-1 mb-4 font-bold">Zusätzliche Aufwände</p>
+      <app-project-other-expenses [project]="project" [projectForm]="projectForm"
+                                  [submitted]="submitted"></app-project-other-expenses>
+    </div>
+
+  </div>
+
+  <hr class="my-4">
 
   <div class="flex justify-content-between mb-2">
     <div>
@@ -193,17 +210,6 @@
   <div class="flex justify-content-end mt-4 gap-4">
     <app-export-buttons *ngIf="exportOptions" [project]="project"></app-export-buttons>
     <p-button pRipple [label]="submitLabel" [loading]="loading" (click)="submitEmitter.emit()"></p-button>
-  </div>
-
-  <div *ngIf="(authService.user$|async)?.role == ERole.ADMIN">
-
-    <hr class="mt-4 mb-2">
-
-    <div class="flex align-items-center gap-2 font-light font-italic	">
-      <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
-      <span>Hier beginnt der Bereich der nur als Admin sichtbar ist</span>
-    </div>
-
   </div>
 
 </div>

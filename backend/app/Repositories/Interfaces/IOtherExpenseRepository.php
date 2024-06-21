@@ -24,4 +24,10 @@ interface IOtherExpenseRepository
         int $costs,
         int $projectId
     ): ?OtherExpense;
+
+    public function getOtherExpenseIdsByProjectId(int $projectId): array;
+
+    public function update(int      $id,
+                           string   $name,
+                           int      $costs): ?OtherExpense;
 }

@@ -6,6 +6,7 @@ import {environment} from "../../environments/environment";
 import {ProjectExpense} from "../models/project-expense.model";
 import {ProjectLecturer} from "../models/project-lecturer.model";
 import {Faculty} from "../models/faculty.model";
+import {OtherExpense} from "../models/other-expense.model";
 
 @Injectable({
   providedIn: 'root'
@@ -82,7 +83,7 @@ export class ProjectService {
         email,
         crossFaculty,
         notes,
-        expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs})),
+        expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs * 100})),
         lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily})),
         costs,
         participants,
@@ -109,7 +110,8 @@ export class ProjectService {
     participants: number,
     duration: number,
     crossFaculties: Faculty[],
-    priceForCoursePerDayOverride?: number
+    priceForCoursePerDayOverride: number | null,
+    otherExpenses: OtherExpense[]
   ): Observable<Project> {
 
     return this.http.put<Project>(
@@ -126,13 +128,14 @@ export class ProjectService {
         email,
         crossFaculty,
         notes,
-        expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs})),
-        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily, hourlyRateOverride: l.hourlyRateOverride, dailyRateOverride: l.dailyRateOverride})),
+        expenses: expenses.map(e =>({id: e.expense.id, costs: e.costs * 100})),
+        lecturers: lecturers.map(l =>({id: l.lecturer.id, hours: l.hours, daily: l.daily, hourlyRateOverride: l.hourlyRateOverride ? l.hourlyRateOverride * 100 : null, dailyRateOverride: l.dailyRateOverride ? l.dailyRateOverride * 100 : null})),
         costs,
         participants,
         duration,
         crossFaculties: crossFaculties.map(c => ({id: c.id})),
-        priceForCoursePerDayOverride
+        priceForCoursePerDayOverride,
+        otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, costs: oe.costs * 100})),
       });
   }
 

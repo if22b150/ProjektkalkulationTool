@@ -13,8 +13,6 @@ import {ProjectTypeService} from "../../../../services/project-type.service";
 import {Project} from "../../../../models/project.model";
 import {ExpenseService} from "../../../../services/expense.service";
 import {LecturerService} from "../../../../services/lecturer.service";
-import {ProjectExpense} from "../../../../models/project-expense.model";
-import {ProjectLecturer} from "../../../../models/project-lecturer.model";
 import Utils from "../../../../shared/utils";
 import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
@@ -36,6 +34,7 @@ import {Ripple} from "primeng/ripple";
 import {ERole} from "../../../../models/user.model";
 import {Faculty} from "../../../../models/faculty.model";
 import {InputNumberModule} from "primeng/inputnumber";
+import {ProjectOtherExpensesComponent} from "./project-other-expenses/project-other-expenses.component";
 
 @Component({
   selector: 'app-project-form',
@@ -58,7 +57,8 @@ import {InputNumberModule} from "primeng/inputnumber";
     LoadingSpinnerComponent,
     ToastModule,
     Ripple,
-    InputNumberModule
+    InputNumberModule,
+    ProjectOtherExpensesComponent
   ],
   styleUrls: ['./project-form.component.scss']
 })
@@ -113,11 +113,9 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       participants: [this.project ? this.project.participants : null],
       duration: [this.project ? this.project.duration : null],
       crossFaculties: [this.project ? this.getCrossFacultiesValue() : []],
-      priceForCoursePerDayOverride: [this.project ? (this.project.priceForCoursePerDayOverride ?? this.project.faculty.priceForCoursePerDay) : this.faculty.priceForCoursePerDay]
+      priceForCoursePerDayOverride: [this.project ? (this.project.priceForCoursePerDayOverride ?? this.project.faculty.priceForCoursePerDay) : this.faculty.priceForCoursePerDay],
+      otherExpenses: this.formBuilder.array([]),
     });
-
-    if (this.authService.user.role == ERole.ADMIN && this.project.is_opened == false)
-      this.updateProjectIsOpenedStatus();
 
     this.setLecturers()
     this.setCourseValidators()
@@ -147,18 +145,6 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       }
     })
 
-    if (this.authService.user.role == ERole.ADMIN)
-      this.updateProjectIsOpenedStatus();
-
-  }
-
-  updateProjectIsOpenedStatus() {
-      this.projectService.updateIsOpened(this.project.id, this.project.faculty.id, true)
-      .subscribe({
-        next:  () => {
-          this.projectService.getAllByFaculty(this.authService.user.faculty.id)
-        }
-      });
   }
 
   // Workaround
@@ -202,7 +188,8 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value);
+    let otherExpenses = this.authService.user.role == ERole.ADMIN ? this.otherExpenses.value : this.project.otherExpenses
+    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value, otherExpenses);
 
     if(!this.isCourse)
       return;
@@ -282,6 +269,10 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   get isCourse(): boolean {
     return (this.projectType.value as ProjectType).isCourse
+  }
+
+  get otherExpenses(): FormArray {
+    return this.projectForm.get("otherExpenses") as FormArray;
   }
 
   protected readonly ERole = ERole;

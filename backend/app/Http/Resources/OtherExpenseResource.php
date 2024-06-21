@@ -4,14 +4,14 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class ProjectExpenseResource extends JsonResource
+class OtherExpenseResource extends JsonResource
 {
 
     public function toArray($request)
     {
         return [
-            'projectId' => $this->project_id,
-            'expense' => new ExpenseResource($this->expense),
+            'id' => $this->id,
+            'name' => $this->name,
             'costs' => $this->costs / 100
         ];
     }

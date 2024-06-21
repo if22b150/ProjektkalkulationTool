@@ -68,7 +68,6 @@ export class ProjectLecturersComponent implements OnInit {
   getProjectLecturerValue(projectLecturer: ProjectLecturer) {
     if(this.crossFaculty) {
       let dropdownGroup = this.dropDownLecturers.find(d => d.value.id == projectLecturer.lecturer.faculty.id);
-      console.log(dropdownGroup)
       return dropdownGroup.items.find(dl => dl.id == projectLecturer.lecturer.id);
     } else
       return this.dropDownLecturers.find(dl => projectLecturer.lecturer.id == dl.id);

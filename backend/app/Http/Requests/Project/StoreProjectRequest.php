@@ -47,6 +47,11 @@ class StoreProjectRequest extends FormRequest
             'expenses.*.id' => ['required', 'integer', 'exists:expenses,id'],
             'expenses.*.costs' => ['required', 'integer'],
 
+            'otherExpenses' => ['nullable', 'array'],
+            'otherExpenses.*.id' => ['nullable', 'integer'],
+            'otherExpenses.*.costs' => ['required', 'integer'],
+            'otherExpenses.*.name' => ['required', 'string'],
+
             'crossFaculties' => ['present', 'array'],
             'crossFaculties.*.id' => ['required', 'integer', 'exists:faculties,id'],
         ];
