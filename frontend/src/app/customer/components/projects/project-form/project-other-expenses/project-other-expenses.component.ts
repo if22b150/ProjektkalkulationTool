@@ -10,6 +10,7 @@ import {AuthService} from "../../../../../services/auth/auth.service";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {InputTextModule} from "primeng/inputtext";
 import {OtherExpense} from "../../../../../models/other-expense.model";
+import {CheckboxModule} from "primeng/checkbox";
 
 @Component({
   selector: 'app-project-other-expenses',
@@ -24,7 +25,8 @@ import {OtherExpense} from "../../../../../models/other-expense.model";
     ReactiveFormsModule,
     Ripple,
     FloatLabelModule,
-    InputTextModule
+    InputTextModule,
+    CheckboxModule
   ],
   templateUrl: './project-other-expenses.component.html',
   styleUrl: './project-other-expenses.component.scss'
@@ -48,7 +50,8 @@ export class ProjectOtherExpensesComponent implements OnInit {
         this.otherExpenses.push(this.formBuilder.group({
           id: [oe.id],
           name: [oe.name, [Validators.required]],
-          costs: [oe.costs, [Validators.required, Validators.min(1)]]
+          costs: [oe.costs, [Validators.required, Validators.min(1)]],
+          perParticipant: [oe.perParticipant]
         }))
       })
     } else {
@@ -60,7 +63,8 @@ export class ProjectOtherExpensesComponent implements OnInit {
     return this.formBuilder.group({
       id: [null],
       name: [null, [Validators.required]],
-      costs: [null, [Validators.required, Validators.min(1)]]
+      costs: [null, [Validators.required, Validators.min(1)]],
+      perParticipant: [false]
     })
   }
 
@@ -84,5 +88,9 @@ export class ProjectOtherExpensesComponent implements OnInit {
 
   costs(i: number): AbstractControl {
     return this.otherExpenses.at(i).get("costs");
+  }
+
+  perParticipant(i: number): AbstractControl {
+    return this.otherExpenses.at(i).get("perParticipant");
   }
 }

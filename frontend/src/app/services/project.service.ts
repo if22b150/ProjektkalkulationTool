@@ -141,7 +141,7 @@ export class ProjectService {
         duration,
         crossFaculties: crossFaculties.map(c => ({id: c.id})),
         priceForCoursePerDayOverride,
-        otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, costs: oe.costs * 100})),
+        otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, perParticipant: oe.perParticipant, costs: oe.costs * 100})),
       });
   }
 

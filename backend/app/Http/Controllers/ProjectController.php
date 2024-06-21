@@ -283,10 +283,10 @@ class ProjectController extends Controller
         foreach ($otherExpenses as $expense) {
             if (in_array($expense['id'], $currentOtherExpenseIds)) {
                 // Existierende Expense aktualisieren
-                $this->otherExpenseRepository->update($expense['id'],$expense['name'], $expense['costs']);
+                $this->otherExpenseRepository->update($expense['id'],$expense['name'], $expense['costs'], $expense['perParticipant']);
             } else {
                 // Neue Expense hinzufügen
-                $this->otherExpenseRepository->create($expense['name'], $expense['costs'],$projectId);
+                $this->otherExpenseRepository->create($expense['name'], $expense['costs'], $expense['perParticipant'], $projectId);
             }
         }
     }

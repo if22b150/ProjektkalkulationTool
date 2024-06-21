@@ -76,7 +76,7 @@
           <div class="flex flex-column"
                *ngIf="(authService.user$|async)?.role == ERole.ADMIN && projectType.value.isCourse">
             <label class="mb-1"
-              [for]="!project ? 'new-project-daily-rate-override-' + i : 'new-project-' + project.id + '-' + 'daily-rate-override-' + i">
+                   [for]="!project ? 'new-project-daily-rate-override-' + i : 'new-project-' + project.id + '-' + 'daily-rate-override-' + i">
               Preis pro Tag <small *ngIf="priceForCoursePerDayOverride.value != project.faculty.priceForCoursePerDay">(standardmäßig {{ project.faculty.priceForCoursePerDay }}
               €)</small>
             </label>
@@ -173,7 +173,7 @@
 
     <div class="flex align-items-center gap-2 text-lg	 font-light font-italic mb-4">
       <i class="pi pi-info-circle"></i>
-      <span>Hier beginnt der Bereich der nur als Admin sichtbar ist</span>
+      <span>Dieser Bereich ist nur als Admin sichtbar</span>
     </div>
 
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
@@ -182,14 +182,36 @@
                                   [submitted]="submitted"></app-project-other-expenses>
     </div>
 
+    <div class="flex justify-content-end">
+      <div class="font-light text-right flex gap-5">
+        <div *ngIf="projectType.value.isCourse && revenue">
+          <div>Einnahmen</div>
+          <div class="text-sm">
+            <div>Preis pro Tag<span class="mx-1">x</span>Tage<span class="mx-1">x</span> Teilnehmer</div>
+            <div>{{ priceForCoursePerDayOverride.value | currency: "EUR" }}<span class="mx-1">x</span>{{ duration.value }}<span class="mx-1">x</span>{{ participants.value }}</div>
+          </div>
+          <strong>{{ revenue | currency: "EUR" }}</strong>
+        </div>
+
+        <div>
+          <div>Kosten</div>
+          <div class="text-sm">
+            <div>Aufwände<span class="ml-3">{{ Utils.getExpenseCosts(projectExpenses.value) | currency: "EUR" }}</span></div>
+            <div>Vortragende<span class="ml-3">{{ Utils.getLecturersCosts(projectLecturers.value) | currency: "EUR" }}</span></div>
+            <div>Zusätzliche Aufwände<span class="ml-3">{{ Utils.getOtherExpenseCosts(otherExpenses.value, participants.value) | currency: "EUR" }}</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 
-  <hr class="my-4">
+  <hr class="mb-2">
 
   <div class="flex justify-content-between mb-2">
     <div>
       <div *ngIf="isCourse && revenue"
-           class="flex align-items-center gap-2 text-2xl {{revenue > totalCost ? 'text-primary' : (revenue == totalCost ? 'text-orange-500' : 'text-red-500')}}">
+           class="flex align-items-center gap-2 text-3xl {{revenue > totalCost ? 'text-primary' : (revenue == totalCost ? 'text-orange-500' : 'text-red-500')}}">
         <i *ngIf="revenue > totalCost" style="font-size: 2rem" class="pi pi-check-circle"></i>
         <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
         <i *ngIf="revenue < totalCost" style="font-size: 2rem" class="pi pi-exclamation-triangle"></i>
@@ -200,10 +222,12 @@
 
 
     <div class="flex flex-column align-items-end text-lg">
+
       <h4 class="m-0">Gesamtkosten</h4>
       <p class="m-0">{{ totalCost|currency:"EUR" }}</p>
       <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige
         Kosten: {{ project.costs|currency:"EUR" }})</p>
+
     </div>
   </div>
 

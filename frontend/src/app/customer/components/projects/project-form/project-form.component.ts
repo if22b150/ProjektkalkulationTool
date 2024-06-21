@@ -189,7 +189,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
     }
 
     let otherExpenses = this.authService.user.role == ERole.ADMIN ? this.otherExpenses.value : this.project.otherExpenses
-    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value, otherExpenses);
+    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value, otherExpenses, this.participants.value);
 
     if(!this.isCourse)
       return;
@@ -276,4 +276,5 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   }
 
   protected readonly ERole = ERole;
+  protected readonly Utils = Utils;
 }

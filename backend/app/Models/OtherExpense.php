@@ -14,7 +14,12 @@ class OtherExpense extends Model
     protected $fillable = [
         'name',
         'costs',
+        'per_participant',
         'project_id'
+    ];
+
+    protected $casts = [
+        'per_participant' => 'boolean',
     ];
 
     public function project() {

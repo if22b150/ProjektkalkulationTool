@@ -22,6 +22,7 @@ interface IOtherExpenseRepository
     public function create(
         string $name,
         int $costs,
+        bool $perParticipant,
         int $projectId
     ): ?OtherExpense;
 
@@ -29,5 +30,6 @@ interface IOtherExpenseRepository
 
     public function update(int      $id,
                            string   $name,
-                           int      $costs): ?OtherExpense;
+                           int      $costs,
+                           bool     $perParticipant): ?OtherExpense;
 }

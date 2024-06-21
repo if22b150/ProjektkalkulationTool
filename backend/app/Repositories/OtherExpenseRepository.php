@@ -45,11 +45,13 @@ class OtherExpenseRepository implements IOtherExpenseRepository
 
     public function create(string $name,
                            int $costs,
+                           bool $perParticipant,
                            int $projectId): ?OtherExpense
     {
         $otherExpense = new OtherExpense([
             'name' => $name,
             'costs' => $costs,
+            'per_participant' => $perParticipant,
             'project_id' => $projectId
         ]);
         return $this->save($otherExpense);
@@ -62,12 +64,14 @@ class OtherExpenseRepository implements IOtherExpenseRepository
 
     public function update(int      $id,
                            string   $name,
-                           int      $costs): ?OtherExpense
+                           int      $costs,
+                           bool     $perParticipant): ?OtherExpense
     {
         $updated = OtherExpense::where('id', $id)
             ->update([
                 'costs' => $costs,
-                'name' => $name
+                'name' => $name,
+                'per_participant' => $perParticipant,
             ]);
 
         return $updated ? $this->getOne($id) : null;

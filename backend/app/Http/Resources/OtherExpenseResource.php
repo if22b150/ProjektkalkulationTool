@@ -12,7 +12,8 @@ class OtherExpenseResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'costs' => $this->costs / 100
+            'costs' => $this->costs / 100,
+            'perParticipant' => $this->per_participant
         ];
     }
 }

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {ProjectService} from "../../../../services/project.service";
-import {finalize} from "rxjs";
+import {filter, finalize} from "rxjs";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Project} from "../../../../models/project.model";
 import {AbstractControl, FormArray, FormGroup} from "@angular/forms";
@@ -58,12 +58,15 @@ export class EditProjectComponent implements OnInit {
       this.projectService.getOneAdmin(id) :
       this.projectService.getOne(id, this.authService.user.faculty.id)
     )
-      .pipe(finalize(() => this.loading = false))
+      .pipe(
+        finalize(() => this.loading = false)
+      )
       .subscribe({
         next: (project) => {
           this.project = project;
           // to update isOpened
-          this.projectService.addUpdatedProject(project)
+          if(this.projectService.projects)
+            this.projectService.addUpdatedProject(project)
         },
         error: () => {
           this.router.navigate(['/projects']).then(() => {
