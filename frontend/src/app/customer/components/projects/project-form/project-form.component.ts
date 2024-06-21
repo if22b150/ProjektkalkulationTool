@@ -35,6 +35,7 @@ import {ERole} from "../../../../models/user.model";
 import {Faculty} from "../../../../models/faculty.model";
 import {InputNumberModule} from "primeng/inputnumber";
 import {ProjectOtherExpensesComponent} from "./project-other-expenses/project-other-expenses.component";
+import {CalculationsComponent} from "./calculations/calculations.component";
 
 @Component({
   selector: 'app-project-form',
@@ -58,7 +59,8 @@ import {ProjectOtherExpensesComponent} from "./project-other-expenses/project-ot
     ToastModule,
     Ripple,
     InputNumberModule,
-    ProjectOtherExpensesComponent
+    ProjectOtherExpensesComponent,
+    CalculationsComponent
   ],
   styleUrls: ['./project-form.component.scss']
 })
@@ -83,6 +85,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   dropDownLecturers;
   dropDownFaculties;
   faculty: Faculty;
+  showDetailedCalculations: boolean = false
 
   constructor(private formBuilder: FormBuilder,
               public projectTypeService: ProjectTypeService,
