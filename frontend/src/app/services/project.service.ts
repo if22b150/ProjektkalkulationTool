@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, finalize, Observable} from "rxjs";
+import {BehaviorSubject, filter, finalize, map, Observable} from "rxjs";
 import {Project} from "../models/project.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
@@ -7,6 +7,7 @@ import {ProjectExpense} from "../models/project-expense.model";
 import {ProjectLecturer} from "../models/project-lecturer.model";
 import {Faculty} from "../models/faculty.model";
 import {OtherExpense} from "../models/other-expense.model";
+import {ProjectType} from "../models/project-type.model";
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,14 @@ export class ProjectService {
     let updated = this.projects.map(p => p.id == project.id ? project : p);
     console.log(updated);
     this._projects.next(updated);
+  }
+
+  public filteredProjects$(projectType: ProjectType, faculty: Faculty): Observable<Project[]> {
+    return this._projects.asObservable().pipe(
+      map(projects => projects.filter((project) => {
+        return (projectType == null || project.projectType.id === projectType.id) && (faculty == null || project.faculty.id === faculty.id)
+      }))
+    );
   }
 
   constructor(private http: HttpClient) {

@@ -11,6 +11,14 @@ import {AuthService} from "../../../services/auth/auth.service";
 import {ERole} from "../../../models/user.model";
 import { BadgeModule } from 'primeng/badge';
 import {TooltipModule} from "primeng/tooltip";
+import {DropdownModule} from "primeng/dropdown";
+import {PaginatorModule} from "primeng/paginator";
+import {ReactiveFormsModule} from "@angular/forms";
+import {ProjectTypeService} from "../../../services/project-type.service";
+import {ProjectType} from "../../../models/project-type.model";
+import {FloatLabelModule} from "primeng/floatlabel";
+import {Faculty} from "../../../models/faculty.model";
+import {FacultyService} from "../../../services/faculty.service";
 
 @Component({
   selector: 'app-projects',
@@ -29,13 +37,21 @@ import {TooltipModule} from "primeng/tooltip";
     NgIf,
     BadgeModule,
     NgClass,
-    TooltipModule
+    TooltipModule,
+    DropdownModule,
+    PaginatorModule,
+    ReactiveFormsModule,
+    FloatLabelModule
   ],
   styleUrls: ['./projects.component.scss']
 })
 export class ProjectsComponent {
+  projectTypeFilter: ProjectType;
+  facultyFilter: Faculty;
 
   constructor(public projectService: ProjectService,
+              public projectTypeService: ProjectTypeService,
+              public facultyService: FacultyService,
               public authService: AuthService) {
   }
 

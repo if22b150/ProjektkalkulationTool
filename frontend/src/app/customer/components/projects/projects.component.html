@@ -5,9 +5,48 @@
             class="p-button-outlined p-button-raised"></p-button>
 </div>
 
+<div>
+
+  <div class="mt-4 flex gap-4">
+
+    <p-floatLabel *ngIf="(authService.user$|async).role == ERole.ADMIN">
+      <p-dropdown
+        [(ngModel)]="facultyFilter"
+        [options]="facultyService.faculties$|async" optionLabel="name"
+        inputId="facultyFilter">
+        <ng-template let-faculty pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div>{{ faculty.name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <label for="facultyFilter">Fakultät</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+      <p-dropdown
+        [(ngModel)]="projectTypeFilter"
+        [options]="projectTypeService.projectTypes$|async" optionLabel="name"
+        inputId="projectTypeFilter">
+        <ng-template let-projectType pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div>{{ projectType.name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <label for="projectTypeFilter">Projektart</label>
+    </p-floatLabel>
+
+    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null" />
+
+  </div>
+
+</div>
+
 <div style="margin-top: 2em;" class="grid"
      *ngIf="(projectService.projects$|async) && !(projectService.loading$|async); else loadingSpinner">
-  <div *ngFor="let project of projectService.projects$|async"
+  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">Keine Projekte vorhanden.</div>
+  <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
     <div *ngIf="!project.isOpened && authService.user.role == ERole.ADMIN;"
