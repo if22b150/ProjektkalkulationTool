@@ -26,6 +26,12 @@ export class ProjectService {
     return this._projects.value;
   }
 
+  public addUpdatedProject(project: Project): void {
+    let updated = this.projects.map(p => p.id == project.id ? project : p);
+    console.log(updated);
+    this._projects.next(updated);
+  }
+
   constructor(private http: HttpClient) {
     this._projects = new BehaviorSubject<Project[]>(null);
     this._loading = new BehaviorSubject<boolean>(false);
@@ -137,12 +143,6 @@ export class ProjectService {
         priceForCoursePerDayOverride,
         otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, costs: oe.costs * 100})),
       });
-  }
-
-  updateIsOpened(projectId: number, facultyId:number, isOpened: boolean) {
-    console.log("projectId: " + projectId + " + facultyId: "+ facultyId+" isOpened: " + isOpened)
-
-    return this.http.put<Project>(environment.apiUrl + `faculties/${facultyId}/projects/${projectId}/isOpened`, {projectId, facultyId, isOpened});
   }
 
   exportToCSV(facultyId: number, project: Project): Observable<any> {

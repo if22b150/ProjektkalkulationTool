@@ -39,7 +39,6 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
 
 // faculty user routes
 Route::middleware(['auth:sanctum', 'auth.faculty'])->prefix('faculties/{facultyId}')->name('faculties.')->group(function () {
-    Route::patch('projects/{projectId}/isOpened', [\App\Http\Controllers\ProjectController::class, 'isOpened']);
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only(['store','index','show','update']);
     Route::get('projects/{projectId}/csv', [\App\Http\Controllers\ProjectController::class, 'exportToCSV']);
     Route::get('projects/{projectId}/pdf', [\App\Http\Controllers\ProjectController::class, 'exportToPDF']);

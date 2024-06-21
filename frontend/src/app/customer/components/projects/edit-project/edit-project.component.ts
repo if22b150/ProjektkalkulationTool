@@ -62,6 +62,8 @@ export class EditProjectComponent implements OnInit {
       .subscribe({
         next: (project) => {
           this.project = project;
+          // to update isOpened
+          this.projectService.addUpdatedProject(project)
         },
         error: () => {
           this.router.navigate(['/projects']).then(() => {
@@ -115,6 +117,7 @@ export class EditProjectComponent implements OnInit {
       .subscribe({
         next: project  => {
           this.project = project
+          this.projectService.addUpdatedProject(project)
           this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projektänderungen wurden erfolgreich gespeichert'});
         }
       });

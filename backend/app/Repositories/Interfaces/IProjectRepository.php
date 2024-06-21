@@ -53,4 +53,6 @@ interface IProjectRepository
         int $projectTypeId,
         ?int $priceForCoursePerDayOverride
     ): ?Project;
+
+    public function updateIsOpened(int $id, bool $isOpened): ?Project;
 }

@@ -46,8 +46,12 @@ class ProjectController extends Controller
             $projectId = $facultyId;
 
         $project = $this->projectRepository->getOne($projectId);
-        if (!$project || $project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN)
+        if (!$project || ($project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN))
             return response('Not found', 404);
+
+        if($request->user()->role == ERole::ADMIN && !$project->is_opened)
+            $this->projectRepository->updateIsOpened($projectId, true);
+
         return new ProjectResource($this->projectRepository->getOne($projectId));
     }
 

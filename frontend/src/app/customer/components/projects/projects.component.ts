@@ -10,6 +10,7 @@ import {ToastModule} from "primeng/toast";
 import {AuthService} from "../../../services/auth/auth.service";
 import {ERole} from "../../../models/user.model";
 import { BadgeModule } from 'primeng/badge';
+import {TooltipModule} from "primeng/tooltip";
 
 @Component({
   selector: 'app-projects',
@@ -27,7 +28,8 @@ import { BadgeModule } from 'primeng/badge';
     ToastModule,
     NgIf,
     BadgeModule,
-    NgClass
+    NgClass,
+    TooltipModule
   ],
   styleUrls: ['./projects.component.scss']
 })

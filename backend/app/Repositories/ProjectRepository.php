@@ -116,7 +116,7 @@ class ProjectRepository implements IProjectRepository
         return $this->save($project);
     }
 
-    public function updateIsOpen(int $id, int $facultyId, bool $isOpened): ?Project
+    public function updateIsOpened(int $id, bool $isOpened): ?Project
     {
         $project = $this->getOne($id);
         $project->is_opened = $isOpened;
