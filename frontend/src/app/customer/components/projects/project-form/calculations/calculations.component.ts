@@ -3,7 +3,7 @@ import {ProjectExpense} from "../../../../../models/project-expense.model";
 import {ProjectLecturer} from "../../../../../models/project-lecturer.model";
 import {OtherExpense} from "../../../../../models/other-expense.model";
 import Utils from "../../../../../shared/utils";
-import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
+import {CurrencyPipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 
 @Component({
   selector: 'app-calculations',
@@ -11,7 +11,8 @@ import {CurrencyPipe, NgForOf, NgIf} from "@angular/common";
   imports: [
     CurrencyPipe,
     NgIf,
-    NgForOf
+    NgForOf,
+    DecimalPipe
   ],
   templateUrl: './calculations.component.html',
   styleUrl: './calculations.component.scss'

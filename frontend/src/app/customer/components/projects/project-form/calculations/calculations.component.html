@@ -54,8 +54,8 @@
 <!--        <span></span>-->
 <!--      </div>-->
       <div class="flex gap-3">
-        <span>Anzahl TN</span>
-        <span>{{ participants }}</span>
+        <span>Dauer</span>
+        <span>{{ duration }}</span>
       </div>
       <hr class="w-full">
       <div class="flex gap-3">
@@ -73,7 +73,7 @@
       </div>
       <div class="flex gap-3">
         <span>DBU 1</span>
-        <span>{{ dbU1 }} %</span>
+        <span>{{ dbU1 | number : '1.2-2' }} %</span>
       </div>
       <div class="flex gap-3">
         <span>- Kfix</span>
@@ -86,7 +86,7 @@
       </div>
       <div class="flex gap-3">
         <span>DBU 2</span>
-        <span>{{ dbU2 }} %</span>
+        <span>{{ dbU2 | number : '1.2-2' }} %</span>
       </div>
     </div>
   </div>
