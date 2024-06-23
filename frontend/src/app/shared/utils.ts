@@ -4,7 +4,7 @@ import {OtherExpense} from "../models/other-expense.model";
 
 export default class Utils {
   static calculateProjectCosts(projectLecturers: ProjectLecturer[], projectExpenses: ProjectExpense[], otherExpenses: OtherExpense[], participants: number) {
-    return this.getLecturersCosts(projectLecturers) + this.getExpenseCosts(projectExpenses) + this.getOtherExpenseCosts(otherExpenses, participants)
+    return this.getLecturersCosts(projectLecturers) + this.getExpenseCosts(projectExpenses) + (otherExpenses ? this.getOtherExpenseCosts(otherExpenses, participants) : 0)
   }
 
   static getExpenseCosts(projectExpenses: ProjectExpense[]): number {

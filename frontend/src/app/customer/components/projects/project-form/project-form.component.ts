@@ -191,7 +191,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       return;
     }
 
-    let otherExpenses = this.authService.user.role == ERole.ADMIN ? this.otherExpenses.value : this.project.otherExpenses
+    let otherExpenses = this.authService.user.role == ERole.ADMIN ? this.otherExpenses.value : (this.project ? this.project.otherExpenses : null)
     this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value, otherExpenses, this.participants.value);
 
     if(!this.isCourse)
