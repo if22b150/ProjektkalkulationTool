@@ -13,7 +13,7 @@ class ProjectResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'costs' => $this->costs/100,
+            'costs' => $this->costs / 100,
             'firstname' => $this->firstname,
             'lastname' => $this->lastname,
             'email' => $this->email,
@@ -32,7 +32,7 @@ class ProjectResource extends JsonResource
             'crossFaculties' => $this->faculties->map(function ($item, int $key) {
                 return $item->faculty;
             }),
-            'priceForCoursePerDayOverride' => $this->price_for_course_per_day_override,
+            'priceForCoursePerDayOverride' => $this->price_for_course_per_day_override ? $this->price_for_course_per_day_override / 100 : null,
             'otherExpenses' => OtherExpenseResource::collection($this->otherExpenses)
         ];
     }

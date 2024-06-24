@@ -12,8 +12,8 @@ class LecturerResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'hourlyRate' => $this->hourly_rate,
-            'dailyRate' => $this->daily_rate,
+            'hourlyRate' => $this->hourly_rate / 100,
+            'dailyRate' => $this->daily_rate / 100,
             'faculty' => new FacultyResource($this->faculty)
         ];
     }

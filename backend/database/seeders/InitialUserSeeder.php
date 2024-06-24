@@ -31,13 +31,13 @@ class InitialUserSeeder extends Seeder
 
         $faculty1 = new Faculty([
            'name' => "Fakultät 1",
-            'price_for_course_per_day' => 150
+            'price_for_course_per_day' => 15000
         ]);
         $faculty1->save();
 
         $faculty2 = new Faculty([
             'name' => "Fakultät 2",
-            'price_for_course_per_day' => 200
+            'price_for_course_per_day' => 20000
         ]);
         $faculty2->save();
 
@@ -63,24 +63,24 @@ class InitialUserSeeder extends Seeder
 
         $lecturer1 = new Lecturer([
             'name' => 'Fak Ltg.',
-            'hourly_rate' => 55,
-            'daily_rate' => 440,
+            'hourly_rate' => 5500,
+            'daily_rate' => 44000,
             'faculty_id' => 1
         ]);
         $lecturer1->save();
 
         $lecturer2 = new Lecturer([
             'name' => 'Dep Ltg.',
-            'hourly_rate' => 50,
-            'daily_rate' => 400,
+            'hourly_rate' => 5000,
+            'daily_rate' => 40000,
             'faculty_id' => 1
         ]);
         $lecturer2->save();
 
         $lecturer3 = new Lecturer([
             'name' => 'KF Ltg.',
-            'hourly_rate' => 45,
-            'daily_rate' => 360,
+            'hourly_rate' => 4500,
+            'daily_rate' => 36000,
             'faculty_id' => 2
         ]);
         $lecturer3->save();

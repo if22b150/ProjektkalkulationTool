@@ -192,7 +192,7 @@ class ProjectController extends Controller
         return $response;
     }
 
-    public function exportToPDF(int $facultyId, int $projectId)
+    public function exportToPDF(Request $request, int $facultyId, int $projectId)
     {
         $project = $this->projectRepository->getOne($projectId);
         if (!$project || $project->faculty_id != $facultyId)
@@ -204,18 +204,13 @@ class ProjectController extends Controller
 
         $view = view('pdf.project-pdf', [
             'project' => $project,
-            'costs' => $costs
+            'costs' => $costs,
+            'forAdmin' => $request->user()->role == ERole::ADMIN
         ]);
         $view->render();
         $pdf->loadHTML($view);
 
-        $response['pdf_string'] = $pdf->output();
-//        return $response;
-
-        return new Response($response, 200, array(
-            'Content-Type' => 'application/pdf',
-            'Content-Disposition' => 'attachment; filename="x.pdf"'
-        ));
+        return $pdf->download('project.pdf');
     }
 
 

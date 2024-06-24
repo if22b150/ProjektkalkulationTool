@@ -153,7 +153,7 @@ export class ProjectService {
         participants,
         duration,
         crossFaculties: crossFaculties.map(c => ({id: c.id})),
-        priceForCoursePerDayOverride,
+        priceForCoursePerDayOverride: priceForCoursePerDayOverride * 100,
         otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, perParticipant: oe.perParticipant, costs: oe.costs * 100})),
       });
   }
@@ -163,6 +163,8 @@ export class ProjectService {
   }
 
   exportToPDF(facultyId: number, project: Project): Observable<any> {
-    return this.http.get(environment.apiUrl + `faculties/${facultyId}/projects/${project.id}/pdf`);
+    return this.http.get(environment.apiUrl + `faculties/${facultyId}/projects/${project.id}/pdf`, {
+      responseType: 'blob' // Important to set the response type to 'blob'
+    });
   }
 }

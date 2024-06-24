@@ -60,8 +60,8 @@ export class LecturerService {
   create(name: string, hourlyRate: number, dailyRate: number, facultyId: number): Observable<Lecturer> {
     const data = {
       name: name,
-      hourlyRate: hourlyRate,
-      dailyRate: dailyRate
+      hourlyRate: hourlyRate * 100,
+      dailyRate: dailyRate * 100
     }
     return this.http.post<Lecturer>(environment.adminApiUrl + `faculties/${facultyId}/lecturers`, data);
   }
@@ -70,8 +70,8 @@ export class LecturerService {
     const data = {
       id: id,
       name: name,
-      hourlyRate: hourlyRate,
-      dailyRate: dailyRate,
+      hourlyRate: hourlyRate * 100,
+      dailyRate: dailyRate * 100,
       facultyId: facultyId,
     }
     return this.http.put<any>(environment.adminApiUrl + `faculties/${facultyId}/lecturers/${id}`, data);

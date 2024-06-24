@@ -5,6 +5,7 @@ import {Project} from "../../../../models/project.model";
 import {finalize} from "rxjs";
 import {Button} from "primeng/button";
 import {Ripple} from "primeng/ripple";
+import {Faculty} from "../../../../models/faculty.model";
 
 @Component({
   selector: 'app-export-buttons',
@@ -25,6 +26,7 @@ import {Ripple} from "primeng/ripple";
 export class ExportButtonsComponent {
   loading: boolean;
   @Input() project: Project;
+  @Input() faculty: Faculty;
 
   constructor(private projectService: ProjectService,
               private authService: AuthService) {
@@ -32,7 +34,7 @@ export class ExportButtonsComponent {
 
   exportToCSV() {
     this.loading = true;
-    this.projectService.exportToCSV(this.authService.user.faculty.id, this.project)
+    this.projectService.exportToCSV(this.faculty.id, this.project)
       .pipe(finalize(() => this.loading = false))
       .subscribe((response: any) => {
         this.downloadCsv(response.csv_string, 'project_' + this.project.id + '.csv');
@@ -41,10 +43,10 @@ export class ExportButtonsComponent {
 
   exportToPDF() {
     this.loading = true;
-    this.projectService.exportToPDF(this.authService.user.faculty.id, this.project)
+    this.projectService.exportToPDF(this.faculty.id, this.project)
       .pipe(finalize(() => this.loading = false))
       .subscribe((response: any) => {
-        this.downloadPDF(response.pdf_string, 'project_' + this.project.id + '.pdf');
+        this.downloadPDF(response, 'project_' + this.project.id + '.pdf');
       })
   }
 
@@ -61,16 +63,16 @@ export class ExportButtonsComponent {
     document.body.removeChild(link);
   }
 
-  private downloadPDF(data: string, fileName: string) {
+  private downloadPDF(data: any, fileName: string) {
     const blob = new Blob([data], {type: 'application/pdf;'});
 
-    // For other browsers
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.setAttribute('download', fileName);
-    link.style.display = 'none';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = fileName;
+    document.body.appendChild(a);
+    a.click();
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
   }
 }
