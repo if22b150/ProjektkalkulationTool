@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Enums\ERole;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
+use App\Mail\NewProjectMail;
+use App\Repositories\Interfaces\INotificationRepository;
 use App\Repositories\Interfaces\IOtherExpenseRepository;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
 use App\Repositories\Interfaces\IProjectFacultyRepository;
@@ -18,6 +20,7 @@ use Illuminate\Http\Response;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Mail;
 
 
 class ProjectController extends Controller
@@ -27,6 +30,7 @@ class ProjectController extends Controller
                                 protected IProjectExpenseRepository  $projectExpenseRepository,
                                 protected IProjectFacultyRepository  $projectFacultyRepository,
                                 protected IOtherExpenseRepository    $otherExpenseRepository,
+                                protected INotificationRepository   $notificationRepository,
                                 protected IProjectTypeRepository     $projectTypeRepository)
     {
     }
@@ -93,6 +97,12 @@ class ProjectController extends Controller
             foreach ($request->crossFaculties as $f) {
                 $this->projectFacultyRepository->create($project->id, $f['id']);
             }
+
+            foreach ($this->notificationRepository->getAll() as $notification) {
+                if($notification->activated)
+                    Mail::to($notification->email)->send(new NewProjectMail($project));
+            }
+
             DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();

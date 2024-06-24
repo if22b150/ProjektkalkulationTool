@@ -223,7 +223,7 @@
 
   <div class="flex justify-content-between mb-2">
     <div>
-      <div *ngIf="isCourse && revenue"
+      <div *ngIf="isCourse && revenue && totalCost"
            class="flex align-items-center gap-2 text-3xl {{revenue > totalCost ? 'text-primary' : (revenue == totalCost ? 'text-orange-500' : 'text-red-500')}}">
         <i *ngIf="revenue > totalCost" style="font-size: 2rem" class="pi pi-check-circle"></i>
         <i *ngIf="revenue == totalCost" style="font-size: 2rem" class="pi pi-info-circle"></i>
@@ -237,7 +237,7 @@
     <div class="flex flex-column align-items-end text-lg">
 
       <h4 class="m-0">Gesamtkosten</h4>
-      <p class="m-0">{{ totalCost|currency:"EUR" }}</p>
+      <p class="m-0">{{ totalCost ? (totalCost|currency:"EUR") : '-' }}</p>
       <p *ngIf="project && project.costs != totalCost" class="font-light m-0">(vorherige
         Kosten: {{ project.costs|currency:"EUR" }})</p>
 

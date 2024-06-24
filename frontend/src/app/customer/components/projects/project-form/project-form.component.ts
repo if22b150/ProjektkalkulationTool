@@ -80,7 +80,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   @ViewChild('crossFacultySelect') crossFacultySelect: MultiSelect
 
   projectForm: FormGroup;
-  totalCost: number = 0;
+  totalCost?: number = null;
   revenue?: number = null;
   dropDownLecturers;
   dropDownFaculties;
@@ -187,7 +187,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   calculateTotalCost() {
     if(this.projectLecturers.invalid || this.projectExpenses.invalid) {
-      this.totalCost = 0;
+      this.totalCost = null;
       return;
     }
 

@@ -27,6 +27,10 @@ export class ProjectService {
     return this._projects.value;
   }
 
+  public set projects(projects: Project[]) {
+    this._projects.next(projects);
+  }
+
   public addUpdatedProject(project: Project): void {
     let updated = this.projects.map(p => p.id == project.id ? project : p);
     console.log(updated);

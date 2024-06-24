@@ -77,9 +77,13 @@ export class NewProjectComponent implements OnInit{
             setTimeout(() => {
               this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projekt wurde gespeichert'});
             },1);
-            this.projectService.getAllByFaculty(this.authService.user.faculty.id)
+            let projects = this.projectService.projects
+            projects.push(project);
+            this.projectService.projects = projects
+            // this.projectService.getAllByFaculty(this.authService.user.faculty.id)
           })
-        }
+        },
+        error: err => this.messageService.add({severity:'error', summary:'Fehler', detail:'Projekt konnte nicht gespeichert werden'})
       });
   }
 
