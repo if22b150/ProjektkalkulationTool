@@ -11,7 +11,6 @@ import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
 import {MegaMenuModule} from "primeng/megamenu";
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
-import { SettingsComponent } from './components/settings/settings.component';
 import { UsersComponent } from './components/users/users.component';
 import { FacultiesComponent } from './components/faculties/faculties.component';
 import {CardModule} from "primeng/card";
@@ -44,7 +43,6 @@ import { BadgeModule } from 'primeng/badge';
   ],
   declarations: [
     DashboardComponent,
-    SettingsComponent,
     UsersComponent,
     FacultiesComponent,
     FacultyViewComponent,

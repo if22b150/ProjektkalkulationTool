@@ -57,6 +57,11 @@ export class DashboardComponent implements OnInit{
         routerLink: 'projects'
       },
       {
+        label: 'Benachrichtigungen',
+        icon: 'pi pi-fw pi-envelope',
+        routerLink: 'notifications'
+      },
+      {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
         // routerLink: ['..', '..'],

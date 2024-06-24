@@ -22,7 +22,7 @@ return new class extends Migration
 
         // Insert initial entry
         DB::table('notifications')->insert([
-            'email' => 'amdin@technikum-wien.at',
+            'email' => 'admin@technikum-wien.at',
             'activated' => true,
             'created_at' => now(),
             'updated_at' => now(),
