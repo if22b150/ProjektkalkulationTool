@@ -7,6 +7,7 @@ use App\Repositories\FacultyRepository;
 use App\Repositories\Interfaces\IExpenseRepository;
 use App\Repositories\Interfaces\IFacultyRepository;
 use App\Repositories\Interfaces\ILecturerRepository;
+use App\Repositories\Interfaces\INotificationRepository;
 use App\Repositories\Interfaces\IOtherExpenseRepository;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
 use App\Repositories\Interfaces\IProjectFacultyRepository;
@@ -15,6 +16,7 @@ use App\Repositories\Interfaces\IProjectRepository;
 use App\Repositories\Interfaces\IProjectTypeRepository;
 use App\Repositories\Interfaces\IUserRepository;
 use App\Repositories\LecturerRepository;
+use App\Repositories\NotificationRepository;
 use App\Repositories\OtherExpenseRepository;
 use App\Repositories\ProjectExpenseRepository;
 use App\Repositories\ProjectFacultyRepository;
@@ -42,6 +44,7 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(IProjectExpenseRepository::class, ProjectExpenseRepository::class);
         $this->app->bind(IProjectFacultyRepository::class, ProjectFacultyRepository::class);
         $this->app->bind(IOtherExpenseRepository::class, OtherExpenseRepository::class);
+        $this->app->bind(INotificationRepository::class, NotificationRepository::class);
     }
 
     /**
