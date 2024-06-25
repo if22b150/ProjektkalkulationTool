@@ -33,7 +33,8 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.facultyService.getAll();
     this.createForm = this.formBuilder.group({
-      name: [null, [Validators.required]]
+      email: [null, [Validators.required, Validators.email]],
+      faculty: [null, Validators.required]
     });
   }
 
@@ -47,14 +48,13 @@ export class UsersComponent implements OnInit {
   }
 
   submit() {
-    this.nameValue = this.name.value
     this.submitted = true;
     if (this.createForm.invalid)
       return;
 
     this.loading = true;
 
-    this.userService.create(this.name.value, this.faculty.id)
+    this.userService.create(this.createForm.value.email, this.createForm.value.faculty.id)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: (response: User) => {
@@ -92,8 +92,12 @@ export class UsersComponent implements OnInit {
     pdfMake.createPdf(documentDefinition).download(`Zugangsdaten`);
   }
 
-  get name(): AbstractControl {
-    return this.createForm.get('name');
+  get email(): AbstractControl {
+    return this.createForm.get('email');
+  }
+
+  get facultyControl(): AbstractControl {
+    return this.createForm.get('faculty');
   }
 
   selectedFaculty(incomingfaculty: any) {
