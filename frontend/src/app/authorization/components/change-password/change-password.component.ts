@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, Validators, ValidatorFn, ValidationErrors } from "@angular/forms";
-import { AuthService } from "../../../services/auth/auth.service";
-import { MessageService } from "primeng/api";
-import { ActivatedRoute, Router } from "@angular/router";
-import { finalize } from "rxjs";
-import { ERole } from "../../../models/user.model";
+import {Component} from '@angular/core';
+import {AbstractControl, FormBuilder, FormGroup, Validators, ValidatorFn, ValidationErrors} from "@angular/forms";
+import {AuthService} from "../../../services/auth/auth.service";
+import {MessageService} from "primeng/api";
+import {Router} from "@angular/router";
+import {finalize} from "rxjs";
 
 @Component({
   selector: 'app-change-password',
@@ -17,13 +16,14 @@ export class ChangePasswordComponent {
   submitted: boolean;
 
   constructor(private fb: FormBuilder,
-    private authService: AuthService,
-    private messageService: MessageService,
-    private router: Router) { }
+              private authService: AuthService,
+              private messageService: MessageService,
+              private router: Router) {
+  }
 
   ngOnInit(): void {
     this.cpForm = this.fb.group({
-      email: [{ value: this.authService.user.email, disabled: true }],
+      email: [{value: this.authService.user.email, disabled: true}],
       password: [null, [Validators.required, this.passwordValidator()]],
       passwordConfirmation: [null, [Validators.required, this.confirmPasswordValidator()]]
     }, {
@@ -57,7 +57,7 @@ export class ChangePasswordComponent {
             });
           },
           error: (e) => {
-            this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Es ist ein Fehler aufgetreten.' });
+            this.messageService.add({severity: 'error', summary: 'Fehler', detail: 'Es ist ein Fehler aufgetreten.'});
           }
         }
       )
@@ -71,27 +71,28 @@ export class ChangePasswordComponent {
     return this.cpForm.get('passwordConfirmation');
   }
 
-private passwordValidator(): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const value: string = control.value;
+  private passwordValidator(): ValidatorFn {
+    return (control: AbstractControl): ValidationErrors | null => {
+      const value: string = control.value;
 
-    if (!value) {
-      return null;
-    }
+      if (!value) {
+        return null;
+      }
 
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
-    const valid = regex.test(value);
+      const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+      const valid = regex.test(value);
 
-    return valid ? null : { invalidPassword: true };
-  };
-}
+      console.log(valid)
+      return valid ? null : {invalidPassword: true};
+    };
+  }
 
   private confirmPasswordValidator(): ValidatorFn {
     return (control: AbstractControl): ValidationErrors | null => {
       const password = this.cpForm?.get('password')?.value;
       const confirmPassword = control.value;
 
-      return password === confirmPassword ? null : { passwordMismatch: true };
+      return password === confirmPassword ? null : {passwordMismatch: true};
     };
   }
 
@@ -99,6 +100,6 @@ private passwordValidator(): ValidatorFn {
     const password = control.get('password');
     const confirmPassword = control.get('passwordConfirmation');
 
-    return password && confirmPassword && password.value === confirmPassword.value ? null : { passwordMismatch: true };
+    return password && confirmPassword && password.value === confirmPassword.value ? null : {passwordMismatch: true};
   }
 }
