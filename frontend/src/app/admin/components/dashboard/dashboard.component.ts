@@ -6,6 +6,7 @@ import {ExpenseService} from "../../../services/expense.service";
 import {LecturerService} from "../../../services/lecturer.service";
 import {FacultyService} from "../../../services/faculty.service";
 import {ProjectTypeService} from "../../../services/project-type.service";
+import { ProjectCategoryService } from 'src/app/services/project-category.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,8 @@ export class DashboardComponent implements OnInit{
               private expenseService: ExpenseService,
               private lecturerService: LecturerService,
               private projectTypeService: ProjectTypeService,
-              private facultyService: FacultyService) {
+              private facultyService: FacultyService,
+              private projectCategoryService: ProjectCategoryService) {
   }
 
   ngOnInit() {
@@ -29,6 +31,7 @@ export class DashboardComponent implements OnInit{
     this.expenseService.getAll();
     this.lecturerService.getAll();
     this.projectTypeService.getAll();
+    this.projectCategoryService.getAll();
 
     this.items = [
       {
@@ -50,6 +53,11 @@ export class DashboardComponent implements OnInit{
         label: 'Aufwände',
         icon: 'pi pi-fw pi-folder-open',
         routerLink: 'expenses'
+      },
+      {
+        label: 'Projektarten',
+        icon: 'pi pi-fw pi-folder',
+        routerLink: 'projectCategory'
       },
       {
         label: 'Projekte',

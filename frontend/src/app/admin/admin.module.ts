@@ -36,6 +36,9 @@ import { ProjectsViewComponent } from './views/projects-view/projects-view.compo
 import {LoadingSpinnerComponent} from "../shared/components/loading-spinner/loading-spinner.component";
 import {ProjectsComponent} from "../customer/components/projects/projects.component";
 import { BadgeModule } from 'primeng/badge';
+import { UpdateProjectCategoryComponent } from './views/project-category-view/update-project-category/update-project-category.component';
+import { ProjectCategoryComponent } from './components/project-category/project-category.component';
+import { ProjectCategoryViewComponent } from './views/project-category-view/project-category-view.component';
 
 @NgModule({
   providers: [
@@ -58,7 +61,10 @@ import { BadgeModule } from 'primeng/badge';
     UpdateFacultyComponent,
     UpdateExpensesComponent,
     LecturerUpdateComponent,
-    ProjectsViewComponent
+    ProjectsViewComponent,
+    ProjectCategoryComponent,
+    ProjectCategoryViewComponent,
+    UpdateProjectCategoryComponent
   ],
   imports: [
     CommonModule,
@@ -79,7 +85,7 @@ import { BadgeModule } from 'primeng/badge';
     DropdownModule,
     InputNumberModule,
     LoadingSpinnerComponent,
-    ProjectsComponent
+    ProjectsComponent,
   ]
 })
 export class AdminModule { }

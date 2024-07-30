@@ -8,6 +8,7 @@ import { ExpensesViewComponent } from './views/expenses-view/expenses-view.compo
 import {ProjectsViewComponent} from "./views/projects-view/projects-view.component";
 import {EditProjectComponent} from "../customer/components/projects/edit-project/edit-project.component";
 import {NotificationsViewComponent} from "./views/notifications-view/notifications-view.component";
+import { ProjectCategoryViewComponent } from './views/project-category-view/project-category-view.component';
 
 const routes: Routes = [
   {
@@ -21,6 +22,7 @@ const routes: Routes = [
       { path: 'expenses', component: ExpensesViewComponent },
       { path: 'projects', component: ProjectsViewComponent },
       { path: 'projects/:id', component: EditProjectComponent },
+      { path: 'projectCategory', component: ProjectCategoryViewComponent},
       {path: '', redirectTo: '/admin/users', pathMatch: 'full'}
     ]
   }
