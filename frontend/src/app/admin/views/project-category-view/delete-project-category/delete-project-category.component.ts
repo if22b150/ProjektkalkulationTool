@@ -6,8 +6,8 @@ import { ProjectCategoryService } from 'src/app/services/project-category.servic
 @Component({
   selector: 'app-delete-project-category',
   template: `
-  <p-button icon="pi pi-trash" styleClass="p-button-danger" [loading]="loading" (click)="delete()"></p-button>
-`,
+    <p-button icon="pi pi-trash" styleClass="p-button-danger" [loading]="loading" (click)="delete()"></p-button>
+  `,
 })
 export class DeleteProjectCategoryComponent {
   @Input() projectCategory: ProjectCategory;

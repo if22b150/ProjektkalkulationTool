@@ -79,6 +79,14 @@ export class LoginComponent implements OnInit {
       )
   }
 
+  resetPasswort() {
+    this.router.navigate(['/auth/email-reset']).then(() => {
+      setTimeout(() => {
+
+      });
+    });
+  }
+
   get email(): AbstractControl {
     return this.loginForm.get('email');
   }

@@ -8,19 +8,19 @@ import { ProjectCategory } from '../models/project-category.model';
   providedIn: 'root'
 })
 export class ProjectCategoryService {
-  private _projectCategorys: BehaviorSubject<ProjectCategory[]>;
+  private _projectCategories: BehaviorSubject<ProjectCategory[]>;
 
-  public get projectCategorys$(): Observable<ProjectCategory[]> {
-    return this._projectCategorys.asObservable();
+  public get projectCategories$(): Observable<ProjectCategory[]> {
+    return this._projectCategories.asObservable();
   }
 
-  public get projectCategorys(): ProjectCategory[] {
-    return this._projectCategorys.value;
+  public get projectCategories(): ProjectCategory[] {
+    return this._projectCategories.value;
   }
 
-  public set projectCategorys(projectCategorys: ProjectCategory[]) {
-    sessionStorage.setItem('projectCategorys', JSON.stringify(projectCategorys));
-    this._projectCategorys.next(projectCategorys);
+  public set projectCategories(projectCategories: ProjectCategory[]) {
+    sessionStorage.setItem('projectCategories', JSON.stringify(projectCategories));
+    this._projectCategories.next(projectCategories);
   }
 
   private _loading: BehaviorSubject<boolean>;
@@ -30,17 +30,17 @@ export class ProjectCategoryService {
   }
 
   constructor(private http: HttpClient) {
-    let savedProjectCategorys = JSON.parse(sessionStorage.getItem('projectCategorys'));
-    this._projectCategorys = new BehaviorSubject<ProjectCategory[]>(savedProjectCategorys);
+    let savedprojectCategories = JSON.parse(sessionStorage.getItem('projectCategories'));
+    this._projectCategories = new BehaviorSubject<ProjectCategory[]>(savedprojectCategories);
     this._loading = new BehaviorSubject<boolean>(null);
   }
 
   getAll(): void {
     this._loading.next(true);
-    this.http.get<ProjectCategory[]>(environment.apiUrl + `projectCategorys`)
+    this.http.get<ProjectCategory[]>(environment.apiUrl + `projectCategories`)
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe({
-        next: (projectCategorys) => this.projectCategorys = projectCategorys
+        next: (projectCategories) => this.projectCategories = projectCategories
       });
   }
 
@@ -48,15 +48,15 @@ export class ProjectCategoryService {
     let data = {
       name: name
     }
-    return this.http.post<ProjectCategory>(environment.adminApiUrl + 'projectCategorys', data);
+    return this.http.post<ProjectCategory>(environment.adminApiUrl + 'projectCategories', data);
   }
 
   public update(id: number, name: string): Observable<any> {
-    return this.http.put<any>(environment.adminApiUrl + `projectCategorys/${id}`, { name });
+    return this.http.put<any>(environment.adminApiUrl + `projectCategories/${id}`, { name });
   }
   
   
   delete(id: number): Observable<any> {
-    return this.http.delete<any>(environment.adminApiUrl + `projectCategorys/${id}`);
+    return this.http.delete<any>(environment.adminApiUrl + `projectCategories/${id}`);
   }
 }

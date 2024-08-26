@@ -3,8 +3,8 @@
     <app-project-category></app-project-category>
   </div>
   <app-loading-spinner *ngIf="(projectCategoryService.loading$|async)"></app-loading-spinner>
-  <div class="card" *ngIf="!(projectCategoryService.loading$|async) && (projectCategoryService.projectCategorys$|async)">
-    <p-table [value]="(projectCategoryService.projectCategorys$|async)">
+  <div class="card" *ngIf="!(projectCategoryService.loading$|async) && (projectCategoryService.projectCategories$|async)">
+    <p-table [value]="(projectCategoryService.projectCategories$|async)">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>

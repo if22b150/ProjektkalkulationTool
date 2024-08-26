@@ -77,4 +77,8 @@ export class AuthService {
         })
       );
   }
+
+  resetPassword(email: string) {
+    return this.http.post('/api/auth/password-reset', { email });
+  }
 }

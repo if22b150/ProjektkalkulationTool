@@ -35,7 +35,7 @@ import {InputNumberModule} from "primeng/inputnumber";
 import { ProjectsViewComponent } from './views/projects-view/projects-view.component';
 import {LoadingSpinnerComponent} from "../shared/components/loading-spinner/loading-spinner.component";
 import {ProjectsComponent} from "../customer/components/projects/projects.component";
-import { BadgeModule } from 'primeng/badge';
+import { DeleteProjectCategoryComponent } from './views/project-category-view/delete-project-category/delete-project-category.component';
 import { UpdateProjectCategoryComponent } from './views/project-category-view/update-project-category/update-project-category.component';
 import { ProjectCategoryComponent } from './components/project-category/project-category.component';
 import { ProjectCategoryViewComponent } from './views/project-category-view/project-category-view.component';
@@ -64,7 +64,8 @@ import { ProjectCategoryViewComponent } from './views/project-category-view/proj
     ProjectsViewComponent,
     ProjectCategoryComponent,
     ProjectCategoryViewComponent,
-    UpdateProjectCategoryComponent
+    UpdateProjectCategoryComponent,
+    DeleteProjectCategoryComponent
   ],
   imports: [
     CommonModule,

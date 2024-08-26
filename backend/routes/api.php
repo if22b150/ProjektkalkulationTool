@@ -25,6 +25,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('expenses', [\App\Http\Controllers\ExpenseController::class, 'index']);
     Route::get('faculties', [\App\Http\Controllers\FacultyController::class, 'index']);
     Route::get('project-types', [\App\Http\Controllers\ProjectTypeController::class, 'index']);
+    Route::get('projectCategories', [\App\Http\Controllers\ProjectCategoryController::class, 'index']);
 });
 
 // admin routes
@@ -33,6 +34,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
     Route::apiResource('faculties.lecturers', \App\Http\Controllers\Admin\LecturerController::class);
     Route::apiResource('users', \App\Http\Controllers\Admin\UserController::class)->except('update');
     Route::apiResource('expenses', \App\Http\Controllers\Admin\ExpenseController::class);
+    Route::apiResource('projectCategories', \App\Http\Controllers\Admin\ProjectCategoryController::class);
     Route::apiResource('project-types', \App\Http\Controllers\Admin\ProjectTypeController::class)->except('update');
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only(['update','index','show']);
     Route::apiResource('notifications', \App\Http\Controllers\Admin\NotificationController::class)->only(['update','index']);

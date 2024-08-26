@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 import {finalize} from "rxjs";
-import {ProjectCategory} from "../../../../models/project-category.model";
-import {ProjectCategoryService} from "../../../../services/project-category.service";
+import {ProjectCategory} from "src/app/models/project-category.model";
+import {ProjectCategoryService} from "src/app/services/project-category.service";
 import {MessageService} from "primeng/api";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
