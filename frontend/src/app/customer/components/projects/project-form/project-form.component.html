@@ -13,15 +13,16 @@
           <label for="projectType" class="mb-1">
             Projektart
           </label>
-
-          <p-dropdown id="projectType" formControlName="projectType"
+          <app-project-category [project]="project" [projectForm]="projectForm"
+          [submitted]="submitted"></app-project-category>
+          <!-- <p-dropdown id="projectType" formControlName="projectType"
                       [options]="projectTypeService.projectTypes$|async" optionLabel="name" placeholder="Auswählen">
             <ng-template let-projectType pTemplate="item">
               <div class="flex align-items-center gap-2">
                 <div>{{ projectType.name }}</div>
               </div>
             </ng-template>
-          </p-dropdown>
+          </p-dropdown> -->
 
         </div>
 

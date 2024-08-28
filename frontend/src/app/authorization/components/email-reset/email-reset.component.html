@@ -1,0 +1,13 @@
+<app-auth-container [title]="'Geben Sie Ihre E-Mail-Adresse ein'">
+    <form [formGroup]="formGroup">
+      <label for="email" class="block text-900 font-medium mb-2">Benutzer</label>
+      <input id="email" formControlName="email" type="text" placeholder="E-Mail-Adresse" pInputText class="w-full mb-3">
+      <small *ngIf="submitted && email.errors" class="p-error">Ungültige E-Mail-Adresse.</small>
+  
+      <div class="card flex justify-content-center">
+        <p-button pRipple label="Passwort zurücksetzen" [loading]="loading" (click)="submit()" class="bg-red-600 text-white"></p-button>
+      </div>
+  
+    </form>
+  </app-auth-container>
+  <p-toast></p-toast>

@@ -1,0 +1,28 @@
+<div class="flex align-items-center flex-wrap gap-4 mb-4">
+    <h1 class="m-0">Projektarten</h1>
+    <app-project-category></app-project-category>
+  </div>
+  <app-loading-spinner *ngIf="(projectCategoryService.loading$|async)"></app-loading-spinner>
+  <div class="card" *ngIf="!(projectCategoryService.loading$|async) && (projectCategoryService.projectCategories$|async)">
+    <p-table [value]="(projectCategoryService.projectCategories$|async)">
+      <ng-template pTemplate="header">
+        <tr>
+          <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
+          <th>Bearbeiten</th>
+          <th>Löschen</th>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="body" let-projectCategory>
+        <tr>
+          <td>{{projectCategory.name}}</td>
+          <td >
+            <app-update-project-category style="display: flex !important;" [projectCategory]="projectCategory"></app-update-project-category>
+          </td>
+          <td>
+            <app-delete-project-category [projectCategory]="projectCategory"></app-delete-project-category>
+          </td>
+        </tr>
+      </ng-template>
+    </p-table>
+
+  </div>

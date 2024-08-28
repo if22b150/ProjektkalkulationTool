@@ -12,6 +12,7 @@ import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
 import { AuthContainerComponent } from './components/auth-container/auth-container.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
+import { EmailResetComponent } from './components/email-reset/email-reset.component';
 
 @NgModule({
   providers: [
@@ -20,7 +21,8 @@ import { ChangePasswordComponent } from './components/change-password/change-pas
   declarations: [
     LoginComponent,
     AuthContainerComponent,
-    ChangePasswordComponent
+    ChangePasswordComponent,
+    EmailResetComponent
   ],
   imports: [
     CommonModule,
