@@ -21,5 +21,5 @@ interface IProjectTypeRepository
 //
     public function create(string $name, string $code, bool $is_course): ?ProjectType;
 
-    public function update(int $id, string $name): ?ProjectType;
+    public function update(int $id, string $name, string $code, bool $is_course): ?ProjectType;
 }

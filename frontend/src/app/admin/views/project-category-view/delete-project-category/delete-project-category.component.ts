@@ -1,7 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {finalize} from "rxjs";
-import { ProjectCategory } from 'src/app/models/project-category.model';
-import { ProjectCategoryService } from 'src/app/services/project-category.service';
+
+import { ProjectType } from 'src/app/models/project-type.model';
+import { ProjectTypeService } from 'src/app/services/project-type.service';
 
 @Component({
   selector: 'app-delete-project-category',
@@ -10,19 +11,19 @@ import { ProjectCategoryService } from 'src/app/services/project-category.servic
   `,
 })
 export class DeleteProjectCategoryComponent {
-  @Input() projectCategory: ProjectCategory;
+  @Input() projectType: ProjectType
   loading: boolean;
 
-  constructor(private projectCategoryService: ProjectCategoryService) {
+  constructor(private projectTypeService: ProjectTypeService) {
   }
 
   delete() {
     this.loading = true;
-    this.projectCategoryService.delete(this.projectCategory.id)
+    this.projectTypeService.delete(this.projectType.id)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.projectCategoryService.getAll();
+          this.projectTypeService.getAll();
         }
       })
   }

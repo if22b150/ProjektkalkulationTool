@@ -11,7 +11,7 @@
           <input id="name" formControlName="name" type="text" placeholder="Name" pInputText pAutoFocus [autofocus]="true" class="w-full">
   
           <div style="position: relative">
-            <small style="position: absolute" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
+            <small style="position: absolute; color: red" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
           </div>
         </div>
 
@@ -20,7 +20,7 @@
             <input id="hourlyRate" formControlName="hourlyRate" type="text" placeholder="Stundenrate" pInputText pAutoFocus [autofocus]="true" class="w-full">
     
             <div style="position: relative">
-              <small style="position: absolute" *ngIf="hourlyRate.hasError('required') && (hourlyRate.touched || submitted)">Stundenrate ist erforderlich</small>
+              <small style="position: absolute; color: red" *ngIf="hourlyRate.hasError('required') && (hourlyRate.touched || submitted)">Stundenrate ist erforderlich</small>
             </div>
           </div>
 
@@ -29,7 +29,7 @@
             <input id="dailyRate" formControlName="dailyRate" type="text" placeholder="Tagesrate" pInputText pAutoFocus [autofocus]="true" class="w-full">
     
             <div style="position: relative">
-              <small style="position: absolute" *ngIf="dailyRate.hasError('required') && (dailyRate.touched || submitted)">Tagesrate ist erforderlich</small>
+              <small style="position: absolute; color: red"  *ngIf="dailyRate.hasError('required') && (dailyRate.touched || submitted)">Tagesrate ist erforderlich</small>
             </div>
           </div>
 

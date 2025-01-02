@@ -22,7 +22,7 @@ class StoreFacultyRequest extends FormRequest
      */
     public function rules() {
         return [
-            'name' => ['required', 'string', 'unique:faculties,name'],
+            'name' => ['required', 'string'],
             'priceForCoursePerDay' => ['required', 'integer', 'min:1']
         ];
     }

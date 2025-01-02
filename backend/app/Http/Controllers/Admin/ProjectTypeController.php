@@ -27,13 +27,13 @@ class ProjectTypeController extends Controller
         return new ProjectTypeResource($this->projectTypeRepository->create($request->name, $request->code, $request->isCourse));
     }
 
-//    public function update(StoreFacultyRequest $request, int $id)
-//    {
-//        if(!$this->facultyRepository->getOne($id))
-//            return response(null, 404);
-//
-//        return new FacultyResource($this->facultyRepository->update($id, $request->name));
-//    }
+    public function update(StoreProjectTypeRequest $request, int $id)
+    {
+        if(!$this->projectTypeRepository->getOne($id))
+            return response(null, 404);
+
+        return new ProjectTypeResource($this->projectTypeRepository->update($id, $request->name, $request->code, $request->isCourse));
+    }
 
     public function destroy(int $id)
     {

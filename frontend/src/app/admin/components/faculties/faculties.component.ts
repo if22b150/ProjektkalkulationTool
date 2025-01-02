@@ -34,6 +34,7 @@ export class FacultiesComponent implements OnInit {
 
   closeDialog() {
     this.visible = false;
+    this.submitted = false;
     this.createForm.reset();
   }
 

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ProjectCategoryService } from 'src/app/services/project-category.service';
+import { ProjectTypeService } from 'src/app/services/project-type.service';
 
 @Component({
   selector: 'app-project-category-view',
@@ -7,9 +8,9 @@ import { ProjectCategoryService } from 'src/app/services/project-category.servic
   styleUrl: './project-category-view.component.scss'
 })
 export class ProjectCategoryViewComponent {
-  constructor(public projectCategoryService: ProjectCategoryService) {}
+  constructor(public projectTypeService: ProjectTypeService) {}
 
   ngOnInit(): void {
-    this.projectCategoryService.getAll();
+    this.projectTypeService.getAll();
   }
 }

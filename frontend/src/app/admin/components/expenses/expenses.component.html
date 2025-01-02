@@ -11,7 +11,7 @@
           <input id="name" formControlName="name" type="text" placeholder="Name" pInputText pAutoFocus [autofocus]="true" class="w-full">
 
           <div style="position: relative">
-            <small style="position: absolute" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
+            <small style="position: absolute; color: red" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
           </div>
         </div>
 

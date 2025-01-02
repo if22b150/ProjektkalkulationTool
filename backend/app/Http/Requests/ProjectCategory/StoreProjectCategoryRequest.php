@@ -22,7 +22,7 @@ class StoreProjectCategoryRequest extends FormRequest
      */
     public function rules() {
         return [
-            'name' => ['required', 'string', 'unique:expenses,name']
+            'name' => ['required', 'string']
         ];
     }
 }

@@ -3,6 +3,7 @@ import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/form
 import { ProjectCategoryService } from 'src/app/services/project-category.service';
 import {MessageService} from "primeng/api";
 import {finalize} from "rxjs";
+import { ProjectTypeService } from 'src/app/services/project-type.service';
 
 @Component({
   selector: 'app-project-category',
@@ -14,15 +15,22 @@ export class ProjectCategoryComponent {
   visible: boolean;
   submitted: boolean;
   loading: boolean;
+  isCourse: boolean;
+
+  yesNoOptions = [
+    { label: 'Ja', value: true },
+    { label: 'Nein', value: false }
+  ];
 
   constructor(private formBuilder: FormBuilder,
-              public projectCategoryService: ProjectCategoryService,
+              public projectTypeService: ProjectTypeService,
               private messageService: MessageService) {
   }
 
   ngOnInit() {
     this.createForm = this.formBuilder.group({
-      name: [null, [Validators.required]]
+      name: [null, [Validators.required]],
+      code: [null, [Validators.required]]
     });
   }
 
@@ -32,6 +40,7 @@ export class ProjectCategoryComponent {
 
   closeDialog() {
     this.visible = false;
+    this.submitted = false;
     this.createForm.reset();
   }
 
@@ -42,13 +51,14 @@ export class ProjectCategoryComponent {
 
     this.loading = true;
 
-    this.projectCategoryService.create(this.name.value)
+    console.log(this.isCourse)
+    this.projectTypeService.create(this.name.value, this.code.value, this.isCourse)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Aufwand wurde erstellt.' });
           this.closeDialog();
-          this.projectCategoryService.getAll();
+          this.projectTypeService.getAll();
         },
         error: (err) => {
           console.log(err);
@@ -59,5 +69,13 @@ export class ProjectCategoryComponent {
 
   get name(): AbstractControl {
     return this.createForm.get('name');
+  }
+
+  get code(): AbstractControl {
+    return this.createForm.get('code');
+  }
+
+  onSelectionChange(option: any) {
+    this.isCourse = option.value;
   }
 }

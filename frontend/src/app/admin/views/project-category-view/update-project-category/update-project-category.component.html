@@ -7,12 +7,39 @@
       <form [formGroup]="createForm">
   
         <div class="mb-4">
-          <label for="name" class="block text-900 font-medium mb-2">Name</label>
-          <input id="name" formControlName="name" type="text" placeholder={{this.projectCategory.name}} pInputText pAutoFocus [autofocus]="true" class="w-full">
-  
+          <label for="name" class="block text-900 font-medium mb-2">Projektart</label>
+          <input id="name" formControlName="name" type="text" placeholder={{this.projectType.name}} pInputText pAutoFocus [autofocus]="true" class="w-full">
+
           <div style="position: relative">
-            <small style="position: absolute" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
+            <small style="position: absolute; color: red" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
           </div>
+        </div>
+    
+        <div class="mb-4">
+          <label for="code" class="block text-900 font-medium mb-2">Abkürzung</label>
+          <input id="code" formControlName="code" type="text" placeholder={{this.projectType.code}} pInputText pAutoFocus [autofocus]="true" class="w-full">
+
+          <div style="position: relative">
+            <small style="position: absolute; color: red" *ngIf="code.hasError('required') && (code.touched || submitted)">Abkürzung ist erforderlich</small>
+          </div>
+        </div>
+
+        <div class="mb-4">
+          <label for="code" class="block text-900 font-medium mb-2">Kurs</label>
+          <p-dropdown 
+          (onChange)="onSelectionChange($event?.value)" 
+          appendTo="body" 
+          [placeholder]="this.projectType.isCourse ? 'Ja' : 'Nein'"
+          [style]="{'width':'100%'}" 
+          id="yesNoOptions" 
+          [options]="yesNoOptions" 
+          optionLabel="label">
+          <ng-template let-option pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div>{{ option.label }}</div>
+            </div>
+          </ng-template>
+        </p-dropdown>
         </div>
   
         <div class="flex justify-content-end">

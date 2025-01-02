@@ -32,6 +32,7 @@ export class ExpensesComponent {
 
   closeDialog() {
     this.visible = false;
+    this.submitted = false;
     this.createForm.reset();
   }
 

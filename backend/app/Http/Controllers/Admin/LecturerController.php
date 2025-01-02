@@ -40,9 +40,7 @@ class LecturerController extends Controller
        if(!$this->lecturerRepository->getOne($request->id))
            return response(null, 404);
 
-
-
-       return new StoreLecturerRequest($this->lecturerRepository->update($request->id, $request->name, $request->hourlyRate, $request->dailyRate, $request->facultyId));
+       return new StoreLecturerRequest((array)$this->lecturerRepository->update($request->id, $request->name, $request->hourlyRate, $request->dailyRate, $request->facultyId));
    }
 
     public function destroy(int $id)

@@ -53,11 +53,13 @@ class ProjectTypeRepository implements IProjectTypeRepository
         return $this->save($pt);
     }
 
-    public function update(int $id, string $name): ?ProjectType
+    public function update(int $id, string $name, string $code, bool $is_course): ?ProjectType
     {
-        $expense = $this->getOne($id);
-        $expense->name = $name;
+        $pt = $this->getOne($id);
+        $pt->name = $name;
+        $pt->code = $code;
+        $pt->is_course = $is_course;
 
-        return $this->save($expense);
+        return $this->save($pt);
     }
 }

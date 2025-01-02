@@ -5,31 +5,47 @@ import {ProjectCategoryService} from "src/app/services/project-category.service"
 import {MessageService} from "primeng/api";
 import {AbstractControl, FormBuilder, FormGroup, Validators} from "@angular/forms";
 
+import { ProjectType } from 'src/app/models/project-type.model';
+import { ProjectTypeService } from 'src/app/services/project-type.service';
+
 @Component({
   selector: 'app-update-project-category',
   templateUrl: './update-project-category.component.html',
   styleUrl: './update-project-category.component.scss'
 })
 export class UpdateProjectCategoryComponent {
-  @Input() projectCategory: ProjectCategory;
+  @Input() projectType: ProjectType;
   loading: boolean;
 
   createForm: FormGroup;
   visible: boolean;
   submitted: boolean;
+  isCourse: boolean;
 
-  constructor(private projectCategoryServie: ProjectCategoryService, private formBuilder: FormBuilder,
-    private messageService: MessageService) {
+  yesNoOptions = [
+    { label: 'Ja', value: true },
+    { label: 'Nein', value: false }
+  ];
+
+  constructor(private formBuilder: FormBuilder,
+    private messageService: MessageService, private projectTypeService: ProjectTypeService) {
   }
 
   ngOnInit() {
+    this.isCourse = this.projectType.isCourse;
     this.createForm = this.formBuilder.group({
-      name: [this.projectCategory.name, [Validators.required]]
+      name: [this.projectType.name, [Validators.required]],
+      code: [this.projectType.code, [Validators.required]],
+      isCourse: [this.projectType.isCourse, [Validators.required]]
     });
   }
 
   openDialog() {
     this.visible = true;
+    this.createForm = this.formBuilder.group({
+      name: [this.projectType.name, [Validators.required]],
+      code: [this.projectType.code, [Validators.required]],
+    });
   }
 
   closeDialog() {
@@ -43,14 +59,13 @@ export class UpdateProjectCategoryComponent {
       return;
 
     this.loading = true;
-
-    this.projectCategoryServie.update(this.projectCategory.id, this.name.value)
+    this.projectTypeService.update(this.projectType.id, this.name.value, this.code.value, this.isCourse)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Die Auftragsart wurde aktualisiert.' });
           this.closeDialog();
-          this.projectCategoryServie.getAll();
+          this.projectTypeService.getAll();
         },
         error: (err) => {
           console.log(err);
@@ -61,5 +76,13 @@ export class UpdateProjectCategoryComponent {
 
   get name(): AbstractControl {
     return this.createForm.get('name');
+  }
+
+  get code(): AbstractControl {
+    return this.createForm.get('code');
+  }
+
+  onSelectionChange(option: any) {
+    this.isCourse = option.value;
   }
 }

@@ -26,6 +26,7 @@ export class LecturerUpdateComponent {
   }
 
   ngOnInit() {
+    this.faculty = this.lecturer.faculty;
     this.createForm = this.formBuilder.group({
       name: [this.lecturer?.name, [Validators.required]],
       hourlyRate: [this.lecturer?.hourlyRate, [Validators.required]],

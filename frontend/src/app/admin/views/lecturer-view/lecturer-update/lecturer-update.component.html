@@ -35,7 +35,7 @@
 
         <div class="card">
             <label for="mail" class="block text-900 font-medium mb-2">Fakultät</label>
-              <p-dropdown (onChange)="selectedFaculty($event?.value)" placeholder="Arbeitende Fakultät" appendTo="body" [style]="{'width':'100%'}" id="faculties"
+              <p-dropdown (onChange)="selectedFaculty($event?.value)" [placeholder]="this.lecturer.faculty.name" appendTo="body" [style]="{'width':'100%'}" id="faculties"
               [options]="facultyService.faculties$|async" optionLabel="name">
               <ng-template let-faculty pTemplate="item">
                   <div [style]="{'width':'46vw'}" class="flex align-items-center gap-2">
