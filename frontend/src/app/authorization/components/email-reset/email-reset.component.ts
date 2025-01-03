@@ -39,11 +39,13 @@ export class EmailResetComponent {
 
     this.authService.resetPassword(this.formGroup.value.email)
       .pipe(
-        finalize(() => this.loading = false) // Ladezustand zurücksetzen, wenn der API-Aufruf beendet ist
+        finalize(() => this.loading = false)
       )
       .subscribe({
-        next: () => {
-          this.router.navigate(['/auth/login']).then(() => {
+        next: (response: { email: string }) => {
+          this.router.navigate(['/auth/enter-code'], {
+            queryParams: { data: JSON.stringify(response.email) }
+          }).then(() => {
             setTimeout(() => {
               this.messageService.add({
                 severity: 'success',
@@ -62,7 +64,6 @@ export class EmailResetComponent {
         }
       });
   }
-
 
   get email(): AbstractControl {
     return this.formGroup.get('email')

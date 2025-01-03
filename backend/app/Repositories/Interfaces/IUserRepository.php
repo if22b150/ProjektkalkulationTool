@@ -4,6 +4,7 @@ namespace App\Repositories\Interfaces;
 
 use App\Enums\ERole;
 use App\Models\User;
+use http\Env\Response;
 use Illuminate\Database\Eloquent\Collection;
 
 interface IUserRepository
@@ -29,4 +30,8 @@ interface IUserRepository
                            ERole $role,
                            string $password,
                            ?int $faculty_id): ?User;
+
+    public function reset_password(User $user): ?User;
+
+    public function verifyToken(string $email, string $token): void;
 }

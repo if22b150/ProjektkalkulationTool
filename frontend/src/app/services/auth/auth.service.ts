@@ -79,6 +79,10 @@ export class AuthService {
   }
 
   resetPassword(email: string) {
-    return this.http.post('/api/auth/password-reset', { email });
+    return this.http.post(environment.apiUrl + 'password-reset', { email });
+  }
+
+  verifyToken(email: string, token: string) {
+    return this.http.post(environment.apiUrl + 'verify-token', { email, token });
   }
 }

@@ -15,12 +15,13 @@ use Illuminate\Support\Facades\Route;
 
 // public routes
 Route::post('login', [\App\Http\Controllers\AuthController::class, 'login']);
+Route::post('password-reset', [\App\Http\Controllers\AuthController::class, 'resetPassword']);
+Route::post('verify-token', [\App\Http\Controllers\AuthController::class, 'verifyToken']);
 
 // secure routes
 Route::middleware('auth:sanctum')->group(function () {
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'logout']);
     Route::put('change-password', [\App\Http\Controllers\AuthController::class, 'changePassword']);
-
     Route::get('lecturers', [\App\Http\Controllers\LecturerController::class, 'index']);
     Route::get('expenses', [\App\Http\Controllers\ExpenseController::class, 'index']);
     Route::get('faculties', [\App\Http\Controllers\FacultyController::class, 'index']);

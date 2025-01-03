@@ -1,0 +1,69 @@
+<app-auth-container [title]="'Geben Sie den 6-stelligen Code ein'">
+    <form [formGroup]="formGroup">
+      <div class="flex justify-content-center mb-3">
+        <input
+          id="digit1"
+          type="text"
+          formControlName="digit1"
+          maxlength="1"
+          class="code-input"
+          (input)="moveFocus($event, 'digit2')"
+          [disabled]="loading"
+        />
+        <input
+          id="digit2"
+          type="text"
+          formControlName="digit2"
+          maxlength="1"
+          class="code-input"
+          (input)="moveFocus($event, 'digit3')"
+          [disabled]="loading"
+        />
+        <input
+          id="digit3"
+          type="text"
+          formControlName="digit3"
+          maxlength="1"
+          class="code-input"
+          (input)="moveFocus($event, 'digit4')"
+          [disabled]="loading"
+        />
+        <input
+          id="digit4"
+          type="text"
+          formControlName="digit4"
+          maxlength="1"
+          class="code-input"
+          (input)="moveFocus($event, 'digit5')"
+          [disabled]="loading"
+        />
+        <input
+          id="digit5"
+          type="text"
+          formControlName="digit5"
+          maxlength="1"
+          class="code-input"
+          (input)="moveFocus($event, 'digit6')"
+          [disabled]="loading"
+        />
+        <input
+          id="digit6"
+          type="text"
+          formControlName="digit6"
+          maxlength="1"
+          class="code-input"
+          [disabled]="loading"
+        />
+      </div>
+      
+      <div *ngIf="submitted && formGroup.invalid" class="p-error mb-3">
+        Bitte geben Sie alle 6 Ziffern des Codes ein.
+      </div>
+  
+      <div class="card flex justify-content-center">
+        <p-button pRipple label="Code verifizieren" [loading]="loading" (click)="submit()" class="bg-red-600 text-white"></p-button>
+      </div>
+    </form>
+  </app-auth-container>
+  <p-toast></p-toast>
+  

@@ -6,6 +6,7 @@ use App\Enums\ERole;
 use App\Models\User;
 use App\Repositories\Interfaces\IUserRepository;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Mail;
 
 class UserRepository implements IUserRepository
 {
@@ -89,5 +90,35 @@ class UserRepository implements IUserRepository
         $user->password_reset = true;
 
         return $this->save($user);
+    }
+
+    public function reset_password(User $user): User
+    {
+        $token = str_pad(rand(100000, 999999), 6, '0', STR_PAD_LEFT);
+
+        $passwordReset = new \App\Models\PasswordReset([
+            'email' => $user->email,
+            'token' => $token,
+            'created_at' => now()
+        ]);
+        $passwordReset->save();
+
+        Mail::to($user->email)->send(new \App\Mail\PasswordResetMail($token));
+        return $user;
+    }
+
+    public function verifyToken(string $email, string $token): void {
+        $passwordReset = PasswordReset::where('email', $email)
+            ->where('token', $token)
+            ->first();
+
+        if (!$passwordReset) {
+            throw new \Exception("Ungültiger Token oder E-Mail", 400);
+        }
+
+        $tokenExpiration = $passwordReset->created_at->addMinutes(60);
+        if (now()->gt($tokenExpiration)) {
+            throw new \Exception("Token ist abgelaufen", 400);
+        }
     }
 }

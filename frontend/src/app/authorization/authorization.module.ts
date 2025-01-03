@@ -13,6 +13,7 @@ import {MessageService} from "primeng/api";
 import { AuthContainerComponent } from './components/auth-container/auth-container.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { EmailResetComponent } from './components/email-reset/email-reset.component';
+import { EnterCodeComponent } from './components/enter-code/enter-code.component';
 
 @NgModule({
   providers: [
@@ -22,7 +23,8 @@ import { EmailResetComponent } from './components/email-reset/email-reset.compon
     LoginComponent,
     AuthContainerComponent,
     ChangePasswordComponent,
-    EmailResetComponent
+    EmailResetComponent,
+    EnterCodeComponent
   ],
   imports: [
     CommonModule,

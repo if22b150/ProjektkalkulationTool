@@ -4,6 +4,7 @@ import {AuthService} from "../../../services/auth/auth.service";
 import {MessageService} from "primeng/api";
 import {Router} from "@angular/router";
 import {finalize} from "rxjs";
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-change-password',
@@ -15,15 +16,23 @@ export class ChangePasswordComponent {
   loading: boolean;
   submitted: boolean;
 
+  email: any;
+
   constructor(private fb: FormBuilder,
               private authService: AuthService,
               private messageService: MessageService,
-              private router: Router) {
+              private router: Router,
+              private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
     this.cpForm = this.fb.group({
-      email: [{value: this.authService.user.email, disabled: true}],
+      email: [{ 
+        value: this.route.snapshot.queryParams['data'] 
+            ? JSON.parse(this.route.snapshot.queryParams['data']) 
+            : this.authService.user.email, 
+        disabled: true 
+    }],
       password: [null, [Validators.required, this.passwordValidator()]],
       passwordConfirmation: [null, [Validators.required, this.confirmPasswordValidator()]]
     }, {

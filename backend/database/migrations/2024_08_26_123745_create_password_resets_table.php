@@ -15,9 +15,6 @@ return new class extends Migration
             $table->string('email')->index();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-
-            // Optional: Define a primary key if needed
-            // $table->primary(['email', 'token']);
         });
     }
 

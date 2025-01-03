@@ -21,7 +21,7 @@ registerLocaleData(localeDe);
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    AuthorizationModule
+    //AuthorizationModule
   ],
   providers: [
     {provide: LOCALE_ID, useValue: 'de'},
