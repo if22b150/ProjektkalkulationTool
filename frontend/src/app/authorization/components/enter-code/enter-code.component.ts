@@ -85,7 +85,7 @@ export class EnterCodeComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Fehler',
-            detail: 'Falscher Code.'
+            detail: err.error.error
           });
         }
       });

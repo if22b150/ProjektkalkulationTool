@@ -3,9 +3,12 @@
 namespace App\Repositories;
 
 use App\Enums\ERole;
+use App\Models\PasswordReset;
 use App\Models\User;
 use App\Repositories\Interfaces\IUserRepository;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Mail;
 
 class UserRepository implements IUserRepository
@@ -113,12 +116,16 @@ class UserRepository implements IUserRepository
             ->first();
 
         if (!$passwordReset) {
-            throw new \Exception("Ungültiger Token oder E-Mail", 400);
+            throw new \Exception("Ungültiger Token", 400);
         }
 
-        $tokenExpiration = $passwordReset->created_at->addMinutes(60);
+        $tokenExpiration = Carbon::parse($passwordReset->created_at)->addMinutes(60);
         if (now()->gt($tokenExpiration)) {
-            throw new \Exception("Token ist abgelaufen", 400);
+            throw new \Exception("Dieser Token ist abgelaufen, fordern Sie einen neuen an", 400);
         }
+
+        PasswordReset::where('email', $email)
+            ->where('token', $token)
+            ->delete();
     }
 }
