@@ -6,6 +6,7 @@ use App\Enums\ERole;
 use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Mail\NewProjectMail;
+use App\Repositories\Interfaces\ICompanyRepository;
 use App\Repositories\Interfaces\INotificationRepository;
 use App\Repositories\Interfaces\IOtherExpenseRepository;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
@@ -31,7 +32,8 @@ class ProjectController extends Controller
                                 protected IProjectFacultyRepository  $projectFacultyRepository,
                                 protected IOtherExpenseRepository    $otherExpenseRepository,
                                 protected INotificationRepository   $notificationRepository,
-                                protected IProjectTypeRepository     $projectTypeRepository)
+                                protected IProjectTypeRepository     $projectTypeRepository,
+                                protected ICompanyRepository       $companyRepository,)
     {
     }
 
@@ -83,7 +85,9 @@ class ProjectController extends Controller
                 $request->notes,
                 $request->participants,
                 $request->duration,
+                $request->ects,
                 $request->projectTypeId,
+                $request->companyId,
                 $request->user()->id,
                 $facultyId
             );
@@ -119,6 +123,7 @@ class ProjectController extends Controller
             $request->validate([
                 'participants' => ['required', 'integer', 'min:1'],
                 'duration' => ['required', 'integer', 'min:1'],
+                'ects' => ['required', 'integer', 'min:1'],
             ]);
         }
 
@@ -137,7 +142,9 @@ class ProjectController extends Controller
                 $request->notes,
                 $request->participants,
                 $request->duration,
+                $request->ects,
                 $request->projectTypeId,
+                $request->companyId,
                 $request->priceForCoursePerDayOverride
             );
 

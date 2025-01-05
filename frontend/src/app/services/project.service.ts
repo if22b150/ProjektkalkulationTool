@@ -75,6 +75,7 @@ export class ProjectService {
   create(
     facultyId: number,
     projectTypeId: number,
+    companyId: number,
     name: string,
     start: string,
     end: string,
@@ -88,12 +89,14 @@ export class ProjectService {
     costs: number,
     participants: number,
     duration: number,
+    ects: number,
     crossFaculties: Faculty[]
   ): Observable<Project> {
     return this.http.post<Project>(
       environment.apiUrl + `faculties/${facultyId}/projects`,
       {
         projectTypeId,
+        companyId,
         name,
         start,
         end,
@@ -107,6 +110,7 @@ export class ProjectService {
         costs,
         participants,
         duration,
+        ects,
         crossFaculties: crossFaculties.map(c => ({id: c.id}))
       });
   }
@@ -115,6 +119,7 @@ export class ProjectService {
     projectId: number,
     facultyId: number,
     projectTypeId: number,
+    companyId: number,
     name: string,
     start: string,
     end: string,
@@ -128,6 +133,7 @@ export class ProjectService {
     costs: number,
     participants: number,
     duration: number,
+    ects: number,
     crossFaculties: Faculty[],
     priceForCoursePerDayOverride: number | null,
     otherExpenses: OtherExpense[]
@@ -139,6 +145,7 @@ export class ProjectService {
         projectId,
         facultyId,
         projectTypeId,
+        companyId,
         name,
         start,
         end,
@@ -152,6 +159,7 @@ export class ProjectService {
         costs,
         participants,
         duration,
+        ects,
         crossFaculties: crossFaculties.map(c => ({id: c.id})),
         priceForCoursePerDayOverride: priceForCoursePerDayOverride * 100,
         otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, perParticipant: oe.perParticipant, costs: oe.costs * 100})),

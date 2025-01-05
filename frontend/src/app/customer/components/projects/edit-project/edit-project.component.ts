@@ -97,6 +97,7 @@ export class EditProjectComponent implements OnInit {
       this.project.id,
       this.project.faculty.id,
       this.projectType.value.id,
+      this.company.value.id,
       this.name.value,
       this.datePipe.transform(this.start.value, 'YYYY-MM-dd'),
       this.datePipe.transform(this.end.value, 'YYYY-MM-dd'),
@@ -110,6 +111,7 @@ export class EditProjectComponent implements OnInit {
       this.totalCost * 100,
       this.participants.value,
       this.duration.value,
+      this.ects.value,
       this.crossFaculties.value,
       this.priceForCoursePerDayOverride.value,
       this.otherExpenses.value
@@ -162,6 +164,10 @@ export class EditProjectComponent implements OnInit {
     return this.editProjectForm.get("projectType");
   }
 
+  get company(): AbstractControl {
+    return this.editProjectForm.get("company");
+  }
+
   get projectLecturers(): FormArray {
     return this.editProjectForm.get("projectLecturers") as FormArray;
   }
@@ -176,6 +182,10 @@ export class EditProjectComponent implements OnInit {
 
   get duration(): AbstractControl {
     return this.editProjectForm.get("duration");
+  }
+
+  get ects(): AbstractControl {
+    return this.editProjectForm.get("ects");
   }
 
   get crossFaculties(): FormArray {

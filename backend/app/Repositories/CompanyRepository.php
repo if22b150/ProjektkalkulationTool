@@ -43,13 +43,11 @@ class CompanyRepository implements ICompanyRepository
 
     public function create(string $companyName, $file): Company
     {
-        // Bild speichern, falls vorhanden
         $imagePath = null;
         if ($file) {
             $imagePath = $file->store('company_images', 'public');
         }
 
-        // Company in der Datenbank speichern
         $company = Company::create([
             'name' => $companyName,
             'image_path' => $imagePath,

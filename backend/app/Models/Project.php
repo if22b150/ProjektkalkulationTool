@@ -15,6 +15,7 @@ class Project extends Model
         'name',
         'costs',
         'project_type_id',
+        'company_id',
         'user_id',
         'faculty_id',
         'firstname',
@@ -26,6 +27,7 @@ class Project extends Model
         'notes',
         'participants',
         'duration',
+        'ects',
         'is_opened',
         'contribution_margin_1', // TODO: remove
         'contribution_margin_2', // TODO: remove
@@ -41,6 +43,10 @@ class Project extends Model
 
     public function projectType() {
         return $this->belongsTo(ProjectType::class, 'project_type_id');
+    }
+
+    public function company() {
+        return $this->belongsTo(Company::class, 'company_id');
     }
     public function user() {
         return $this->belongsTo(User::class, 'user_id');

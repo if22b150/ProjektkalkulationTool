@@ -32,7 +32,9 @@ interface IProjectRepository
         ?string $notes,
         ?int $participants,
         ?int $duration,
+        ?int $ects,
         int $projectTypeId,
+        int $companyId,
         int $userId,
         int $facultyId,
     ): ?Project;
@@ -50,7 +52,9 @@ interface IProjectRepository
         ?string $notes,
         ?int $participants,
         ?int $duration,
+        ?int $ects,
         int $projectTypeId,
+        int $companyId,
         ?int $priceForCoursePerDayOverride
     ): ?Project;
 

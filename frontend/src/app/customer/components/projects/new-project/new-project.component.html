@@ -1,6 +1,6 @@
 <app-project-form *ngIf="(projectTypeService.projectTypes$|async)
               && (expenseService.expenses$|async)
-              && (lecturerService.lecturers$|async); else loadingSpinner"
+              && (lecturerService.lecturers$|async) && (companyService.companies$|async); else loadingSpinner"
                   (submitEmitter)="create()"
                   (formChangesEmitter)="formChanges($event)"
                   (costChangesEmitter)="costChanges($event)"

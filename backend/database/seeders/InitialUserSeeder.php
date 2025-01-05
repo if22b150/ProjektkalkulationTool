@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Enums\ERole;
+use App\Models\Company;
 use App\Models\Expense;
 use App\Models\Faculty;
 use App\Models\Lecturer;
@@ -127,5 +128,59 @@ class InitialUserSeeder extends Seeder
             'is_course' => true
         ]);
         $projectType3->save();
+
+        $company1 = new Company([
+            'name' => 'FH-Technikum',
+            'image_path' => 'company_images/FH-Technikum.png'
+        ]);
+        $company1->save();
+
+        $company2 = new Company([
+            'name' => 'IBM',
+            'image_path' => 'company_images/ibm.jpg'
+        ]);
+        $company2->save();
+
+        $company3 = new Company([
+            'name' => 'Stadt Wien',
+            'image_path' => 'company_images/stadt-wien.svg'
+        ]);
+        $company3->save();
+
+        $company4 = new Company([
+            'name' => 'Fabasoft',
+            'image_path' => 'company_images/Fabasoft.jpg'
+        ]);
+        $company4->save();
+
+        $company5 = new Company([
+            'name' => 'Accenture',
+            'image_path' => 'company_images/accenture.jpg'
+        ]);
+        $company5->save();
+
+        $company6 = new Company([
+            'name' => 'SAP',
+            'image_path' => 'company_images/sap.png'
+        ]);
+        $company6->save();
+
+        $company7 = new Company([
+            'name' => 'Erste Bank',
+            'image_path' => 'company_images/erst-bank.png'
+        ]);
+        $company7->save();
+
+        $company8 = new Company([
+            'name' => 'Paysafe',
+            'image_path' => 'company_images/paysafe-card.svg'
+        ]);
+        $company8->save();
+
+        $company9 = new Company([
+            'name' => 'Asfinag',
+            'image_path' => 'company_images/asfinag.png'
+        ]);
+        $company9->save();
     }
 }

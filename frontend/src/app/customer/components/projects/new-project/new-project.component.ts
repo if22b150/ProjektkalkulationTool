@@ -55,6 +55,7 @@ export class NewProjectComponent implements OnInit{
     this.projectService.create(
       this.authService.user.faculty.id,
       this.projectType.value.id,
+      this.company.value.id,
       this.name.value,
       this.datePipe.transform(this.start.value, 'YYYY-MM-dd'),
       this.datePipe.transform(this.end.value, 'YYYY-MM-dd'),
@@ -68,6 +69,7 @@ export class NewProjectComponent implements OnInit{
       this.totalCost * 100,
       this.participants.value,
       this.duration.value,
+      this.ects.value,
       this.crossFaculties.value
     )
       .pipe(
@@ -105,6 +107,10 @@ export class NewProjectComponent implements OnInit{
     return this.newProjectForm.get("email");
   }
 
+  get ects(): AbstractControl {
+    return this.newProjectForm.get("ects");
+  }
+
   get start(): AbstractControl {
     return this.newProjectForm.get("start");
   }
@@ -123,6 +129,10 @@ export class NewProjectComponent implements OnInit{
 
   get projectType(): AbstractControl {
     return this.newProjectForm.get("projectType");
+  }
+
+  get company(): AbstractControl {
+    return this.newProjectForm.get("company");
   }
 
   get projectLecturers(): FormArray {

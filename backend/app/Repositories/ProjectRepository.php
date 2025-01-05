@@ -56,7 +56,9 @@ class ProjectRepository implements IProjectRepository
                            ?string $notes,
                            ?int $participants,
                            ?int $duration,
+                           ?int $ects,
                            int $projectTypeId,
+                           int $companyId,
                            int $userId,
                            int $facultyId): ?Project
     {
@@ -72,8 +74,10 @@ class ProjectRepository implements IProjectRepository
             'notes' => $notes,
             'participants' => $participants,
             'duration' => $duration,
+            'ects' => $ects,
             'is_opened' => false,
             'project_type_id' => $projectTypeId,
+            'company_id' => $companyId,
             'user_id' => $userId,
             'faculty_id' => $facultyId
         ]);
@@ -94,7 +98,9 @@ class ProjectRepository implements IProjectRepository
                             ?string $notes,
                             ?int $participants,
                             ?int $duration,
+                            ?int $ects,
                             int $projectTypeId,
+                            int $companyId,
                             ?int $priceForCoursePerDayOverride): ?Project
     {
 
@@ -110,7 +116,9 @@ class ProjectRepository implements IProjectRepository
         $project->notes = $notes;
         $project->participants = $participants;
         $project->duration = $duration;
+        $project->ects = $ects;
         $project->project_type_id = $projectTypeId;
+        $project->company_id = $companyId;
         $project->price_for_course_per_day_override = $priceForCoursePerDayOverride;
 
         return $this->save($project);

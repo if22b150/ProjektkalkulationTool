@@ -21,6 +21,7 @@ return new class extends Migration
             $table->boolean('cross_faculty')->default(false);
             $table->unsignedInteger('participants')->nullable();
             $table->unsignedInteger('duration')->nullable();
+            $table->unsignedInteger('ects')->nullable();
         });
     }
 
@@ -39,6 +40,7 @@ return new class extends Migration
             $table->dropColumn('cross_faculty');
             $table->dropColumn('participants');
             $table->dropColumn('duration');
+            $table->dropColumn('ects');
         });
     }
 };

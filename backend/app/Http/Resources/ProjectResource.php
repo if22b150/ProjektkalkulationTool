@@ -22,11 +22,13 @@ class ProjectResource extends JsonResource
             'notes' => $this->notes,
             'participants' => $this->participants,
             'duration' => $this->duration,
+            'ects' => $this->ects,
             'crossFaculty' => $this->cross_faculty,
             'userId' => $this->user->id,
             'isOpened' => $this->is_opened,
             'faculty' => new FacultyResource($this->faculty),
             'projectType' => new ProjectTypeResource($this->projectType),
+            'company' => new CompanyResource($this->company),
             'lecturers' => ProjectLecturerResource::collection($this->lecturers),
             'expenses' => ProjectExpenseResource::collection($this->expenses),
             'crossFaculties' => $this->faculties->map(function ($item, int $key) {
