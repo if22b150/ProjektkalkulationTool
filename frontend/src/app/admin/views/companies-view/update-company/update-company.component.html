@@ -13,10 +13,22 @@
               <small style="position: absolute; color: red" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
             </div>
           </div>
+        <div class="mb-4">
+            <label for="image" class="block text-900 font-medium mb-2">Aktuelles Kundenbild</label>
+            <img *ngIf="this.company.image_url" [src]="this.company.image_url" alt="Default Image" class="w-full" width="120" height="120"/>
+        </div>
 
         <div class="mb-4">
-            <label for="image" class="block text-900 font-medium mb-2">Kundenbild</label>
-            <input id="image" formControlName="image" type="file" accept="image/*" (change)="onFileSelected($event)" pInputText pAutoFocus [autofocus]="true" class="w-full">
+            <label for="image" class="block text-900 font-medium mb-2">Neues Kundenbild</label>
+            <p-fileUpload 
+                #fileUpload
+                name="image" 
+                accept="image/*" 
+                (onSelect)="onFileSelected($event)" 
+                chooseLabel="Datei auswählen" 
+                auto="true"
+                class="w-full">
+            </p-fileUpload>
 
             <div style="position: relative">
               <small style="position: absolute; color: red" *ngIf="image.hasError('required') && (image.touched || submitted)">Kundenbild ist erforderlich</small>
@@ -24,7 +36,7 @@
           </div>
 
         <div class="flex justify-content-end">
-          <p-button  (click)="submit()" pRipple label="Erstellen" [loading]="loading" icon="pi pi-save"
+          <p-button  (click)="submit()" pRipple label="Aktualisieren" [loading]="loading" icon="pi pi-save"
                      styleClass="p-button-primary"></p-button>
         </div>
 

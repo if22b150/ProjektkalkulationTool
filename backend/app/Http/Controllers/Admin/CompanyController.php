@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Company\StoreCompanyRequest;
 use App\Http\Resources\CompanyResource;
 use App\Repositories\Interfaces\ICompanyRepository;
+use Illuminate\Support\Facades\Log;
 
 class CompanyController extends Controller {
     public function __construct(protected ICompanyRepository $companyRepository)
@@ -23,15 +24,17 @@ class CompanyController extends Controller {
 
     public function store(StoreCompanyRequest $request)
     {
+        error_log("Request: " . json_encode($request->all()));
         return new CompanyResource($this->companyRepository->create($request->companyName, $request->file));
     }
 
     public function update(StoreCompanyRequest $request, int $id)
     {
+        error_log("Request: " . json_encode($request->all()));
         if(!$this->companyRepository->getOne($id))
             return response(null, 404);
 
-        return new CompanyResource($this->companyRepository->update($id, $request->name));
+        return new CompanyResource($this->companyRepository->update($id, $request->companyName, $request->file));
     }
 
     public function destroy(int $id)

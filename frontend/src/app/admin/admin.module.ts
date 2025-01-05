@@ -10,6 +10,7 @@ import {InputTextModule} from "primeng/inputtext";
 import {AutoFocusModule} from "primeng/autofocus";
 import {MessageService} from "primeng/api";
 import {MegaMenuModule} from "primeng/megamenu";
+import { FileUploadModule } from 'primeng/fileupload';
 import {DashboardComponent} from "./components/dashboard/dashboard.component";
 import { UsersComponent } from './components/users/users.component';
 import { FacultiesComponent } from './components/faculties/faculties.component';
@@ -95,6 +96,7 @@ import { DeleteCompanyComponent } from './views/companies-view/delete-company/de
     InputNumberModule,
     LoadingSpinnerComponent,
     ProjectsComponent,
+    FileUploadModule
   ]
 })
 export class AdminModule { }

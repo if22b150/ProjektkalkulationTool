@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { CompanyService } from 'src/app/services/company.service';
 import { MessageService } from "primeng/api";
@@ -14,6 +14,7 @@ export class CompaniesComponent implements OnInit {
   visible: boolean;
   submitted: boolean;
   loading: boolean;
+  @ViewChild('fileUpload') fileUpload: any;
   
   selectedImage: File = null;
 
@@ -36,12 +37,16 @@ export class CompaniesComponent implements OnInit {
     this.visible = false;
     this.submitted = false;
     this.createForm.reset();
+    this.fileUpload.clear();
   }
 
   // Funktion zum Handhaben der Bildauswahl
   onFileSelected(event: any): void {
-    this.selectedImage = <File>event.target.files[0];
-  }
+    const file = event.files[0]; // Korrekte Zugriffsmethode für PrimeNG
+    this.selectedImage = file;
+    this.createForm.patchValue({ image: file }); 
+    this.createForm.get('image').updateValueAndValidity();
+}
 
   submit() {
     this.submitted = true;
@@ -54,7 +59,7 @@ export class CompaniesComponent implements OnInit {
 
     this.loading = true;
     const formData = new FormData();
-    formData.append('file', this.selectedImage, this.selectedImage.name);
+    formData.append('file', this.createForm.get('image').value);
 
     this.companyService.create(formData, this.name.value) // Passiere FormData an den Service
       .pipe(finalize(() => this.loading = false))

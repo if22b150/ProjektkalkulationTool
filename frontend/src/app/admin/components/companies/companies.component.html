@@ -16,7 +16,16 @@
 
         <div class="mb-4">
             <label for="image" class="block text-900 font-medium mb-2">Kundenbild</label>
-            <input id="image" formControlName="image" type="file" accept="image/*" (change)="onFileSelected($event)" pInputText pAutoFocus [autofocus]="true" class="w-full">
+            <p-fileUpload 
+                #fileUpload
+                name="image" 
+                accept="image/*" 
+                (onSelect)="onFileSelected($event)" 
+                chooseLabel="Datei auswählen" 
+                auto="true"
+                class="w-full">
+            </p-fileUpload>
+
 
             <div style="position: relative">
               <small style="position: absolute; color: red" *ngIf="image.hasError('required') && (image.touched || submitted)">Kundenbild ist erforderlich</small>

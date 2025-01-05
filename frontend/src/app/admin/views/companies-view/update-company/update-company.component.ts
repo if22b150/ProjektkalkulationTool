@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, ViewChild} from '@angular/core';
 import {finalize} from "rxjs";
 import { Company } from "src/app/models/company.model";
 import { CompanyService } from "src/app/services/company.service";
@@ -19,6 +19,7 @@ export class UpdateCompanyComponent {
   visible: boolean;
   submitted: boolean;
   selectedImage: File = null;
+  @ViewChild('fileUpload') fileUpload: any;
 
   constructor(private companyService: CompanyService, private formBuilder: FormBuilder,
     private messageService: MessageService) {
@@ -27,7 +28,7 @@ export class UpdateCompanyComponent {
   ngOnInit() {
     console.log(this.company.image_url)
     this.createForm = this.formBuilder.group({
-      image: [this.company.image, [Validators.required]],
+      image: [this.company.image_url, [Validators.required]],
       name: [this.company.name, [Validators.required]]
     });
   }
@@ -43,11 +44,16 @@ export class UpdateCompanyComponent {
   closeDialog() {
     this.visible = false;
     this.createForm.reset();
+    this.selectedImage = null;
+    this.fileUpload.clear();
   }
 
   onFileSelected(event: any): void {
-    this.selectedImage = <File>event.target.files[0];
-  }
+    const file = event.files[0]; // Korrekte Zugriffsmethode für PrimeNG
+    this.selectedImage = file;
+    this.createForm.patchValue({ image: file }); 
+    this.createForm.get('image').updateValueAndValidity();
+}
 
   submit() {
     this.submitted = true;
@@ -61,8 +67,7 @@ export class UpdateCompanyComponent {
 
     this.loading = true;
     const formData = new FormData();
-    formData.append('file', this.selectedImage, this.selectedImage.name);
-    console.log(this.name.value)
+    formData.append('file', this.createForm.get('image').value);
     this.companyService.update(this.company.id, formData ,this.name.value)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
