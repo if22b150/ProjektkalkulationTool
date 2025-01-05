@@ -18,6 +18,7 @@ import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {ProjectType} from "../../../../models/project-type.model";
 import {FacultyService} from "../../../../services/faculty.service";
+import { CompanyService } from 'src/app/services/company.service';
 import {MultiSelect, MultiSelectModule} from "primeng/multiselect";
 import {DropdownModule} from "primeng/dropdown";
 import {AsyncPipe, CurrencyPipe, NgIf} from "@angular/common";
@@ -94,7 +95,8 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
               public authService: AuthService,
               private ref: ChangeDetectorRef,
               public lecturerService: LecturerService,
-              private facultyService: FacultyService) {
+              private facultyService: FacultyService,
+              public companyService: CompanyService) {
   }
 
   ngOnInit() {
@@ -111,10 +113,12 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       crossFaculty: this.project ? this.project.crossFaculty : false,
       notes: this.project ? this.project.notes : null,
       projectType: [this.project ? this.project.projectType : this.projectTypeService.projectTypes[0], [Validators.required]],
+      company: [this.project ? this.project.company : this.companyService.companies[0], [Validators.required]],
       projectExpenses: this.formBuilder.array([]),
       projectLecturers: this.formBuilder.array([]),
       participants: [this.project ? this.project.participants : null],
       duration: [this.project ? this.project.duration : null],
+      ects: [this.project ? this.project.ects : null],
       crossFaculties: [this.project ? this.getCrossFacultiesValue() : []],
       priceForCoursePerDayOverride: [this.project ? (this.project.priceForCoursePerDayOverride ?? this.project.faculty.priceForCoursePerDay) : this.faculty.priceForCoursePerDay],
       otherExpenses: this.formBuilder.array([]),
@@ -147,7 +151,6 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
         this.setCourseValidators()
       }
     })
-
   }
 
   // Workaround
@@ -205,6 +208,9 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
     this.revenue = this.participants.value * (this.priceForCoursePerDayOverride.value ?? this.faculty.priceForCoursePerDay) * this.duration.value
   }
 
+  get company(): AbstractControl {
+    return this.projectForm.get("company");
+  }
 
   get projectType(): AbstractControl {
     return this.projectForm.get("projectType");
@@ -260,6 +266,10 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   get duration(): AbstractControl {
     return this.projectForm.get("duration");
+  }
+
+  get ects(): AbstractControl {
+    return this.projectForm.get("ects")
   }
 
   get crossFaculties(): AbstractControl {

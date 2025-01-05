@@ -116,7 +116,7 @@ class UserRepository implements IUserRepository
             ->first();
 
         if (!$passwordReset) {
-            throw new \Exception("Ungültiger Token", 400);
+            throw new \Exception("Ungültiger Code", 400);
         }
 
         $tokenExpiration = Carbon::parse($passwordReset->created_at)->addMinutes(60);

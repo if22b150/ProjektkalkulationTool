@@ -9,6 +9,7 @@ import {ProjectService} from "../../../../services/project.service";
 import {AuthService} from "../../../../services/auth/auth.service";
 import {Router} from "@angular/router";
 import {DatePipe} from "@angular/common";
+import { CompanyService } from 'src/app/services/company.service';
 
 @Component({
   selector: 'app-new-project',
@@ -28,6 +29,7 @@ export class NewProjectComponent implements OnInit{
               public projectTypeService: ProjectTypeService,
               public expenseService: ExpenseService,
               public lecturerService: LecturerService,
+              public companyService: CompanyService,
               private datePipe: DatePipe) {
 
   }

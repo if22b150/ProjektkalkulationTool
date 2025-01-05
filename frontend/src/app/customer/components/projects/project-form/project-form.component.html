@@ -26,6 +26,24 @@
         </div>
 
         <div>
+          <label for="company" class="mb-1">
+            Firma
+          </label>
+          <app-project-company [project]="project" [projectForm]="projectForm"
+          [submitted]="submitted"></app-project-company>
+          <p-dropdown id="company" formControlName="company"
+                      [options]="companyService.companies$|async" optionLabel="name" placeholder="Auswählen">
+                      <ng-template let-company pTemplate="item">
+                        <div class="flex align-items-center gap-2">
+                          <img *ngIf="company.image_url" [src]="company.image_url" alt="Company Image" 
+                               style="width: 40px; height: 40px; object-fit: cover; margin-right: 8px;">
+                          <div>{{ company.name }}</div>
+                        </div>
+                      </ng-template>
+          </p-dropdown>
+        </div>
+
+        <div>
           <label for="name" class="mb-1">Projekttitel</label>
           <input id="name" type="text" class="w-full" pInputText formControlName="name" placeholder="Name">
           <small *ngIf="name?.errors?.required && submitted" class="p-error w-full">
@@ -68,6 +86,14 @@
           <label for="duration" class="mb-1">Dauer des Projekts (in Tagen)</label>
           <input id="duration" type="number" pInputText formControlName="duration" placeholder="Tage">
           <small *ngIf="duration?.errors?.required && submitted" class="p-error">
+            Die Dauer des Projekts ist erforderlich.
+          </small>
+        </div>
+
+        <div class="flex flex-column">
+          <label for="ects" class="mb-1">ECTS</label>
+          <input id="ects" type="number" pInputText formControlName="ects" placeholder="ECTS">
+          <small *ngIf="ects?.errors?.required && submitted" class="p-error">
             Die Dauer des Projekts ist erforderlich.
           </small>
         </div>

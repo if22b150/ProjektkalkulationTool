@@ -1,0 +1,10 @@
+<p-dropdown id="company" formControlName="company"
+            [options]="companyService.companies$ | async" optionLabel="name" placeholder="Auswählen">
+  <ng-template let-company pTemplate="item">
+    <div class="flex align-items-center gap-2">
+      <img *ngIf="company.image_url" [src]="company.image_url" alt="Company Image" 
+                               style="width: 40px; height: 40px; object-fit: cover; margin-right: 8px;">
+      <div>{{ company.name }}</div>
+    </div>
+  </ng-template>
+</p-dropdown>
