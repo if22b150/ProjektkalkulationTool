@@ -7,6 +7,7 @@ import {LecturerService} from "../../../services/lecturer.service";
 import {FacultyService} from "../../../services/faculty.service";
 import {ProjectTypeService} from "../../../services/project-type.service";
 import { ProjectCategoryService } from 'src/app/services/project-category.service';
+import { CompanyService } from 'src/app/services/company.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -22,7 +23,8 @@ export class DashboardComponent implements OnInit{
               private lecturerService: LecturerService,
               private projectTypeService: ProjectTypeService,
               private facultyService: FacultyService,
-              private projectCategoryService: ProjectCategoryService) {
+              private projectCategoryService: ProjectCategoryService,
+              private companiesService: CompanyService) {
   }
 
   ngOnInit() {
@@ -32,6 +34,7 @@ export class DashboardComponent implements OnInit{
     this.lecturerService.getAll();
     this.projectTypeService.getAll();
     this.projectCategoryService.getAll();
+    this.companiesService.getAll();
 
     this.items = [
       {
@@ -48,6 +51,11 @@ export class DashboardComponent implements OnInit{
         label: 'Vortragende',
         icon: 'pi pi-fw pi-users',
         routerLink: 'lecturer'
+      },
+      {
+        label: 'Kunden',
+        icon: 'pi pi-fw pi-address-book',
+        routerLink: 'companies'
       },
       {
         label: 'Aufwände',

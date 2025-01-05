@@ -48,6 +48,10 @@ class Project extends Model
     public function faculty() {
         return $this->belongsTo(Faculty::class, 'faculty_id');
     }
+
+    //public function company() {
+    //    return $this->belongsTo(Company::class, 'company_id');
+    //}
     public function lecturers() {
         return $this->hasMany(ProjectLecturer::class, 'project_id', 'id');
     }

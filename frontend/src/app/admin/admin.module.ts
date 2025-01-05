@@ -39,6 +39,10 @@ import { DeleteProjectCategoryComponent } from './views/project-category-view/de
 import { UpdateProjectCategoryComponent } from './views/project-category-view/update-project-category/update-project-category.component';
 import { ProjectCategoryComponent } from './components/project-category/project-category.component';
 import { ProjectCategoryViewComponent } from './views/project-category-view/project-category-view.component';
+import { CompaniesComponent } from './components/companies/companies.component';
+import { CompaniesViewComponent } from './views/companies-view/companies-view.component';
+import { UpdateCompanyComponent } from './views/companies-view/update-company/update-company.component';
+import { DeleteCompanyComponent } from './views/companies-view/delete-company/delete-company.component';
 
 @NgModule({
   providers: [
@@ -65,7 +69,11 @@ import { ProjectCategoryViewComponent } from './views/project-category-view/proj
     ProjectCategoryComponent,
     ProjectCategoryViewComponent,
     UpdateProjectCategoryComponent,
-    DeleteProjectCategoryComponent
+    DeleteProjectCategoryComponent,
+    CompaniesComponent,
+    CompaniesViewComponent,
+    UpdateCompanyComponent,
+    DeleteCompanyComponent
   ],
   imports: [
     CommonModule,

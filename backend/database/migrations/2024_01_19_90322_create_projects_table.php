@@ -20,7 +20,9 @@ return new class extends Migration
             $table->unsignedBigInteger('project_type_id');
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('faculty_id');
+            $table->unsignedBigInteger('company_id');
 
+            $table->foreign('company_id')->references('id')->on('companies')->onDelete('cascade');
             $table->foreign('project_type_id')->references('id')->on('project_types')->onDelete('cascade');
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('faculty_id')->references('id')->on('faculties')->onDelete('cascade');

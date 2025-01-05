@@ -2,10 +2,11 @@
 
 namespace App\Providers;
 
-use App\Models\Project_ProjectCategory;
+use App\Repositories\CompanyRepository;
 use App\Repositories\ExpenseRepository;
 use App\Repositories\FacultyRepository;
 use App\Repositories\Interfaces\IExpenseRepository;
+use App\Repositories\Interfaces\ICompanyRepository;
 use App\Repositories\Interfaces\IFacultyRepository;
 use App\Repositories\Interfaces\ILecturerRepository;
 use App\Repositories\Interfaces\INotificationRepository;
@@ -40,6 +41,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(IUserRepository::class, UserRepository::class);
+        $this->app->bind(ICompanyRepository::class, CompanyRepository::class);
         $this->app->bind(IFacultyRepository::class, FacultyRepository::class);
         $this->app->bind(ILecturerRepository::class, LecturerRepository::class);
         $this->app->bind(IExpenseRepository::class, ExpenseRepository::class);

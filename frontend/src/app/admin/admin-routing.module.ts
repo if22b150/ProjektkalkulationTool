@@ -9,6 +9,7 @@ import {ProjectsViewComponent} from "./views/projects-view/projects-view.compone
 import {EditProjectComponent} from "../customer/components/projects/edit-project/edit-project.component";
 import {NotificationsViewComponent} from "./views/notifications-view/notifications-view.component";
 import { ProjectCategoryViewComponent } from './views/project-category-view/project-category-view.component';
+import { CompaniesViewComponent } from './views/companies-view/companies-view.component';
 
 const routes: Routes = [
   {
@@ -23,6 +24,7 @@ const routes: Routes = [
       { path: 'projects', component: ProjectsViewComponent },
       { path: 'projects/:id', component: EditProjectComponent },
       { path: 'projectCategory', component: ProjectCategoryViewComponent},
+      { path: 'companies', component: CompaniesViewComponent},
       {path: '', redirectTo: '/admin/users', pathMatch: 'full'}
     ]
   }
