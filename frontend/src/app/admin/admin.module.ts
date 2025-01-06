@@ -44,6 +44,7 @@ import { CompaniesComponent } from './components/companies/companies.component';
 import { CompaniesViewComponent } from './views/companies-view/companies-view.component';
 import { UpdateCompanyComponent } from './views/companies-view/update-company/update-company.component';
 import { DeleteCompanyComponent } from './views/companies-view/delete-company/delete-company.component';
+import { CompanyDetailsComponent } from './views/companies-view/company-details/company-details.component';
 
 @NgModule({
   providers: [

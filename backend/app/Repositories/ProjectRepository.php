@@ -30,6 +30,11 @@ class ProjectRepository implements IProjectRepository
         return Project::where($column, $value)->get();
     }
 
+    public function getAllByCompanyId(int $companyId): Collection
+    {
+        return Project::where('company_id', $companyId)->get();
+    }
+
     public function delete(int $id): bool
     {
         return Project::destroy($id) == 1;

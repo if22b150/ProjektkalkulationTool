@@ -20,6 +20,8 @@ interface IProjectRepository
 
     public function save(Project $project): ?Project;
 
+    public function getAllByCompanyId(int $companyId): Collection;
+
     public function create(
         string $name,
         int $costs,

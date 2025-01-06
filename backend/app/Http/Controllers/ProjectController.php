@@ -61,6 +61,14 @@ class ProjectController extends Controller
         return new ProjectResource($this->projectRepository->getOne($projectId));
     }
 
+    public function getProjectsByCompanyId(Request $request, int $companyId) {
+        $company = $this->companyRepository->getOne($companyId);
+        if (!$company)
+            return response('Not found', 404);
+
+        return ProjectResource::collection($this->projectRepository->getAllByCompanyId($companyId));
+    }
+
     public function store(StoreProjectRequest $request, int $facultyId)
     {
         $projectType = $this->projectTypeRepository->getOne($request->projectTypeId);

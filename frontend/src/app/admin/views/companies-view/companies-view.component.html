@@ -9,16 +9,14 @@
         <tr>
           <th pSortableColumn="image" style="width:20%">Firmenbild <p-sortIcon field="image"></p-sortIcon></th>
           <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>
-          <th pSortableColumn="projectCount" style="width:20%">Abgeschlossene Projekte<p-sortIcon field="projectCount"></p-sortIcon></th>
           <th>Bearbeiten</th>
           <th>Löschen</th>
         </tr>
       </ng-template>
       <ng-template pTemplate="body" let-company>
-        <tr>
+        <tr (click)="navigateToDetails(company)" style="cursor: pointer;">
             <td><img src="{{company.image_url}}" alt="Company Image" width="100" height="100"></td>
           <td>{{company.name}}</td>
-          <td>{{company.projectCount}}</td>
           <td >
             <app-update-company style="display: flex !important;" [company]="company"></app-update-company>
           </td>

@@ -175,4 +175,10 @@ export class ProjectService {
       responseType: 'blob' // Important to set the response type to 'blob'
     });
   }
+
+  getProjectsByCompanyId(id: number): void {
+    this.http.get<Project[]>(environment.adminApiUrl + `projects/fetch/${id}`)
+      .pipe(finalize(() => this._loading.next(false)))
+      .subscribe(projects => this._projects.next(projects));
+  }
 }
