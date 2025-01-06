@@ -27,7 +27,7 @@ const routes: Routes = [
       { path: 'projectCategory', component: ProjectCategoryViewComponent},
       { path: 'companies', component: CompaniesViewComponent},
       { path: 'company-details/:id', component: CompanyDetailsComponent},
-      {path: '', redirectTo: '/admin/users', pathMatch: 'full'}
+      
     ]
   }
 ];

@@ -45,6 +45,7 @@ import { CompaniesViewComponent } from './views/companies-view/companies-view.co
 import { UpdateCompanyComponent } from './views/companies-view/update-company/update-company.component';
 import { DeleteCompanyComponent } from './views/companies-view/delete-company/delete-company.component';
 import { CompanyDetailsComponent } from './views/companies-view/company-details/company-details.component';
+import {FloatLabelModule} from "primeng/floatlabel";
 
 @NgModule({
   providers: [
@@ -75,7 +76,8 @@ import { CompanyDetailsComponent } from './views/companies-view/company-details/
     CompaniesComponent,
     CompaniesViewComponent,
     UpdateCompanyComponent,
-    DeleteCompanyComponent
+    DeleteCompanyComponent,
+    CompanyDetailsComponent
   ],
   imports: [
     CommonModule,
@@ -97,7 +99,8 @@ import { CompanyDetailsComponent } from './views/companies-view/company-details/
     InputNumberModule,
     LoadingSpinnerComponent,
     ProjectsComponent,
-    FileUploadModule
+    FileUploadModule,
+    FloatLabelModule
   ]
 })
 export class AdminModule { }

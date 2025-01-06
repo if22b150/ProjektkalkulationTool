@@ -45,7 +45,7 @@ class ProjectToCSV {
     private static function getDetailsCSVKeys(): array
     {
         return [
-            'ID', 'NAME', 'FACULTY', 'TYPE', 'START', 'END', 'FIRSTNAME', 'LASTNAME', 'EMAIL', 'CROSS_FACULTY', 'TOTAL_COSTS'
+            'ID', 'COMPANY', 'NAME', 'FACULTY', 'TYPE', 'ECTS', 'START', 'END', 'FIRSTNAME', 'LASTNAME', 'EMAIL', 'CROSS_FACULTY', 'TOTAL_COSTS'
         ];
     }
 
@@ -69,9 +69,11 @@ class ProjectToCSV {
     {
         return [
             'ID' => $project->id,
+            'COMPANY' => $project->company->name,
             'NAME' => $project->name,
             'FACULTY' => $project->faculty->name,
             'TYPE' => $project->projectType->name,
+            'ECTS' => $project->ects,
             'START' => ProjectToCSV::convertDateTime($project->start),
             'END' => ProjectToCSV::convertDateTime($project->end),
             'FIRSTNAME' => $project->firstname,

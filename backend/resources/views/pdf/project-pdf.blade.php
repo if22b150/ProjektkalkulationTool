@@ -70,6 +70,7 @@
     <!-- Project Details -->
     <div class="section">
         <div class="content">
+            <p><strong>Kunde:</strong> {{ $project->company->name }}</p>
             <p><strong>Typ:</strong> {{ $project->projectType->name }}</p>
             <p><strong>Ansprechperson:</strong> {{ $project->firstname }} {{ $project->lastname }} ({{ $project->email }})</p>
             <p><strong>Fakultät:</strong> {{ $project->faculty->name }}</p>
@@ -78,6 +79,7 @@
             @if($project->projectType->is_course)
                 <p><strong>Teilnehmeranzahl:</strong> {{ $project->participants }}</p>
                 <p><strong>Dauer:</strong> {{ $project->duration }} Tage</p>
+                <p><strong>ECTS:</strong> {{ $project->ects }}</p>
                 @if($forAdmin)
                     <p><strong>Preis für Teilnehmer pro Tag:</strong> {{ number_format(($project->price_for_course_per_day_override ?? $project->faculyt->price_for_course_per_day) / 100, 2, ',', '.') }} €</p>
                 @endif

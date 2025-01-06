@@ -1,1 +1,77 @@
-<p>{{company.name}}</p>
+<div class="flex align-items-end gap-4 mb-3">
+    <h1 class="m-0">{{company.name}}</h1>
+</div>
+
+<div>
+    <div class="mt-4 flex gap-4">
+        <p-floatLabel>
+            <p-dropdown
+                [(ngModel)]="facultyFilter"
+                [options]="facultyService.faculties$|async" optionLabel="name"
+                inputId="facultyFilter">
+                <ng-template let-faculty pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ faculty.name }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <label for="facultyFilter">Fakultät</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+            <p-dropdown
+                [(ngModel)]="projectTypeFilter"
+                [options]="projectTypeService.projectTypes$|async" optionLabel="name"
+                inputId="projectTypeFilter">
+                <ng-template let-projectType pTemplate="item">
+                    <div class="flex align-items-center gap-2">
+                        <div>{{ projectType.name }}</div>
+                    </div>
+                </ng-template>
+            </p-dropdown>
+            <label for="projectTypeFilter">Projektart</label>
+        </p-floatLabel>
+
+        <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null" />
+    </div>
+    
+    <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length">
+        {{ (projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length }} Projekt(e) vorhanden
+    </div>
+
+    <div class="grid" *ngIf="(projectService.projects$|async) && !(projectService.loading$|async); else loadingSpinner">
+        <div style="margin-top:3vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">
+            Keine Projekte vorhanden.
+        </div>
+
+        <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
+             class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
+
+            <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">
+                <a [routerLink]="['/admin/projects', project.id]" style="text-decoration: none">
+                    <div class="flex align-items-center flex-column mb-2">
+                        <span class="block text-500 text-center font-medium mb-2">
+                            {{ project.faculty.name }}
+                        </span>
+                        <p-badge [value]="project.projectType.name" severity="info" />
+                        <img src="{{project.company.image_url}}" alt="Company Image" width="100" height="100" style="margin-top:1vh">
+                    </div>
+
+                    <ng-template>
+                        <span class="block text-500 text-center font-medium mb-2">{{ project.projectType.name }}</span>
+                      </ng-template>
+                      <span class="block text-900 text-center font-medium text-xl mb-2">{{ project.name }}</span>
+                      <span class="block text-center text-500">{{ project.costs|currency:"EUR" }}</span>
+                </a>
+                
+                <app-export-buttons [project]="project" class="mt-4" [faculty]="project.faculty"></app-export-buttons>
+            </div>
+        </div>
+    </div>
+</div>
+
+<ng-template #loadingSpinner>
+    <app-loading-spinner></app-loading-spinner>
+</ng-template>
+
+<p-toast></p-toast>
