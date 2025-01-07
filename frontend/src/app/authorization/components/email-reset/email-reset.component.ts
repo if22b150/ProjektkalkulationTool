@@ -30,7 +30,7 @@ export class EmailResetComponent {
 
   submit() {
     this.submitted = true;
-    
+
     if (this.formGroup.invalid) {
       return;
     }
@@ -59,7 +59,7 @@ export class EmailResetComponent {
           this.messageService.add({
             severity: 'error',
             summary: 'Fehler',
-            detail: 'E-Mail konnte nicht gesendet werden. Bitte versuche es erneut.'
+            detail: err.error == "Kein Benutzer mit dieser E-Mail vorhanden" ? err.error : "E-Mail konnte nicht gesendet werden. Bitte versuche es erneut."
           });
         }
       });
