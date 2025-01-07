@@ -31,6 +31,8 @@ interface IUserRepository
                            string $password,
                            ?int $faculty_id): ?User;
 
+    public function setPasswordReset(int $id, bool $passwordReset): ?User;
+
     public function reset_password(User $user): ?User;
 
     public function verifyToken(string $email, string $token): void;

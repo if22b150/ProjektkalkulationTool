@@ -18,7 +18,7 @@ export class EnterCodeComponent {
   loading = false;
   email: any;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, 
+  constructor(private fb: FormBuilder, private route: ActivatedRoute,
     private router: Router, private authService: AuthService, private messageService: MessageService) { }
 
   ngOnInit(): void {
@@ -60,23 +60,21 @@ export class EnterCodeComponent {
                this.formGroup.value.digit3 + this.formGroup.value.digit4 +
                this.formGroup.value.digit5 + this.formGroup.value.digit6;
 
-    console.log('Code als String:', token); 
+    console.log('Code als String:', token);
     this.loading = true;
-    
+
     this.authService.verifyToken(this.email, token)
       .pipe(
         finalize(() => this.loading = false)
       )
       .subscribe({
-        next: (response: { email: string }) => {
-          this.router.navigate(['/auth/change-password', { skipLocationChange: false }], {
-            queryParams: { data: JSON.stringify(response.email) }
-          }).then(() => {
+        next: (user) => {
+          this.router.navigate(['/auth/change-password']).then(() => {
             setTimeout(() => {
               this.messageService.add({
                 severity: 'success',
-                summary: 'Erfolgreich',
-                detail: 'Sie können nun Ihr Passwort zurücksetzen.'
+                summary: 'Verifizierung erfolgreich',
+                detail: 'Ein neues Passwort kann nun gesetzt werden.'
               });
             });
           });

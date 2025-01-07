@@ -55,15 +55,14 @@
           [disabled]="loading"
         />
       </div>
-      
+
       <div *ngIf="submitted && formGroup.invalid" class="p-error mb-3">
         Bitte geben Sie alle 6 Ziffern des Codes ein.
       </div>
-  
+
       <div class="card flex justify-content-center">
-        <p-button pRipple label="Code verifizieren" [loading]="loading" (click)="submit()" class="bg-red-600 text-white"></p-button>
+        <p-button pRipple label="Code verifizieren" [loading]="loading" (click)="submit()"></p-button>
       </div>
     </form>
   </app-auth-container>
   <p-toast></p-toast>
-  

@@ -64,7 +64,9 @@ class AuthController extends Controller
 
         try {
             $this->userRepository->verifyToken($email, $token);
-            return response()->json(['message' => 'Token erfolgreich verifiziert. Sie können Ihr Passwort zurücksetzen.'], 200);
+            $user = $this->userRepository->getByEmail($email);
+            $user = $this->userRepository->setPasswordReset($user->id, false);
+            return new UserLoginResource($user);
         } catch (\Exception $e) {
             $statusCode = is_numeric($e->getCode()) ? (int)$e->getCode() : 500;
             return response()->json(['error' => $e->getMessage()], $statusCode);

@@ -82,7 +82,15 @@ export class AuthService {
     return this.http.post(environment.apiUrl + 'password-reset', { email });
   }
 
-  verifyToken(email: string, token: string) {
-    return this.http.post(environment.apiUrl + 'verify-token', { email, token });
+  verifyToken(email: string, token: string): Observable<User> {
+    return this.http.post<User>(environment.apiUrl + 'verify-token', { email, token })
+      .pipe(
+        take(1),
+        tap((user: User) => {
+          this._user.next(user);
+          localStorage.removeItem('user');
+          localStorage.setItem('user', JSON.stringify(user)); // save to local storage to be still logged in later
+        })
+      );
   }
 }

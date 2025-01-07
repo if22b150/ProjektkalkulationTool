@@ -85,6 +85,14 @@ class UserRepository implements IUserRepository
         return $this->save($user);
     }
 
+    public function setPasswordReset(int $id, bool $passwordReset): ?User
+    {
+        $user = $this->getOne($id);
+        $user->password_reset = $passwordReset;
+
+        return $this->save($user);
+    }
+
     public function setPassword(int $id, string $password)
     {
         /** @var User $user */
