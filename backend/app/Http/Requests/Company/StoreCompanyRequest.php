@@ -23,7 +23,7 @@ class StoreCompanyRequest extends FormRequest
     public function rules()
     {
         return [
-            'companyName' => 'nullable|string|max:255',
+            'companyName' => 'required|string|max:255',
             'file' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
         ];
     }

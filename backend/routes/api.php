@@ -31,7 +31,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 // admin routes
 Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::apiResource('companies', \App\Http\Controllers\Admin\CompanyController::class);
+    Route::apiResource('companies', \App\Http\Controllers\Admin\CompanyController::class)->except('update');
+    Route::post('companies/{companyId}', [\App\Http\Controllers\Admin\CompanyController::class, 'update']);
     Route::apiResource('faculties', \App\Http\Controllers\Admin\FacultyController::class);
     Route::apiResource('faculties.lecturers', \App\Http\Controllers\Admin\LecturerController::class);
     Route::apiResource('users', \App\Http\Controllers\Admin\UserController::class)->except('update');

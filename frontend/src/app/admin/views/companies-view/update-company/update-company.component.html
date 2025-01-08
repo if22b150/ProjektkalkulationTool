@@ -1,31 +1,31 @@
 <div class="card flex justify-content-center">
     <p-button  (click)="openDialog()" icon="pi pi-pencil"
                styleClass="p-button-secondary"></p-button>
-  
+
     <p-dialog header="Kunde aktualisieren" [(visible)]="visible" [modal]="true" [style]="{ width: '50vw' }"
               [draggable]="false" [resizable]="false" (onHide)="closeDialog()">
       <form [formGroup]="createForm">
         <div class="mb-4">
             <label for="name" class="block text-900 font-medium mb-2">Kunde</label>
             <input id="name" formControlName="name" type="text" placeholder="Name" pInputText pAutoFocus [autofocus]="true" class="w-full">
-  
+
             <div style="position: relative">
               <small style="position: absolute; color: red" *ngIf="name.hasError('required') && (name.touched || submitted)">Name ist erforderlich</small>
             </div>
           </div>
         <div class="mb-4">
-            <label for="image" class="block text-900 font-medium mb-2">Aktuelles Kundenbild</label>
+            <label class="block text-900 font-medium mb-2">Aktuelles Kundenbild</label>
             <img *ngIf="this.company.image_url" [src]="this.company.image_url" alt="Default Image" class="w-full" width="120" height="120"/>
         </div>
 
         <div class="mb-4">
-            <label for="image" class="block text-900 font-medium mb-2">Neues Kundenbild</label>
-            <p-fileUpload 
+            <label class="block text-900 font-medium mb-2">Neues Kundenbild</label>
+            <p-fileUpload
                 #fileUpload
-                name="image" 
-                accept="image/*" 
-                (onSelect)="onFileSelected($event)" 
-                chooseLabel="Datei auswählen" 
+                name="image"
+                accept="image/*"
+                (onSelect)="onFileSelected($event)"
+                chooseLabel="Datei auswählen"
                 auto="true"
                 class="w-full">
             </p-fileUpload>

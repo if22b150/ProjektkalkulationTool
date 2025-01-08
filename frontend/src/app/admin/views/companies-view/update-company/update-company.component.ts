@@ -26,19 +26,18 @@ export class UpdateCompanyComponent {
   }
 
   ngOnInit() {
-    console.log(this.company.image_url)
     this.createForm = this.formBuilder.group({
-      image: [this.company.image_url, [Validators.required]],
+      image: [null],
       name: [this.company.name, [Validators.required]]
     });
   }
 
   openDialog() {
     this.visible = true;
-    this.createForm = this.formBuilder.group({
-      image: [this.company.image, [Validators.required]],
-      name: [this.company.name, [Validators.required]]
-    });
+    // this.createForm = this.formBuilder.group({
+    //   image: [this.company.image],
+    //   name: [this.company.name, [Validators.required]]
+    // });
   }
 
   closeDialog() {
@@ -51,7 +50,7 @@ export class UpdateCompanyComponent {
   onFileSelected(event: any): void {
     const file = event.files[0]; // Korrekte Zugriffsmethode für PrimeNG
     this.selectedImage = file;
-    this.createForm.patchValue({ image: file }); 
+    this.createForm.patchValue({ image: file });
     this.createForm.get('image').updateValueAndValidity();
 }
 
@@ -60,25 +59,21 @@ export class UpdateCompanyComponent {
     if(this.createForm.invalid)
       return;
 
-    if (!this.selectedImage) {
-      this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Bitte ein Bild auswählen.' });
-      return;
-    }
-
     this.loading = true;
     const formData = new FormData();
-    formData.append('file', this.createForm.get('image').value);
+    if(this.createForm.get('image').value)
+      formData.append('file', this.createForm.get('image').value);
     this.companyService.update(this.company.id, formData ,this.name.value)
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Aufwand wurde aktualisiert.' });
+          this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Kunde wurde aktualisiert.' });
           this.closeDialog();
           this.companyService.getAll();
         },
         error: (err) => {
           console.log(err);
-          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Der Aufwand konnte nicht aktualisiert werden.' });
+          this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Der Kunde konnte nicht aktualisiert werden.' });
         }
       })
   }

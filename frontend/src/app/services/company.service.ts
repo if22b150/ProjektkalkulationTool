@@ -1,15 +1,15 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {BehaviorSubject, finalize, Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
-import { Company } from '../models/company.model';
+import {Company} from '../models/company.model';
 
 @Injectable({
-    providedIn: 'root'
-  })
+  providedIn: 'root'
+})
 
-  export class CompanyService {
-    private _companies: BehaviorSubject<Company[]>;
+export class CompanyService {
+  private _companies: BehaviorSubject<Company[]>;
 
   public get companies$(): Observable<Company[]> {
     return this._companies.asObservable();
@@ -54,10 +54,10 @@ import { Company } from '../models/company.model';
   update(id: number, imageData: FormData, name: string): Observable<any> {
     imageData.append('companyName', name);
 
-    return this.http.put<Company>(environment.adminApiUrl + `companies/${id}`, imageData);
+    // formdata can only be sent via POST, therefore we do not use PUT
+    return this.http.post<Company>(environment.adminApiUrl + `companies/${id}`, imageData);
   }
-  
-  
+
   delete(id: number): Observable<any> {
     return this.http.delete<Company>(environment.adminApiUrl + `companies/${id}`);
   }

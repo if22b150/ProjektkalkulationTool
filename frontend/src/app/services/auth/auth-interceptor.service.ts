@@ -26,6 +26,7 @@ export class AuthInterceptorService {
 
   // this method will add the Bearer token to the Header of the HTTP-Request if a user is logged in
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('sss')
     if (this.authService.token) {
       const modifiedRequest = req.clone({headers: new HttpHeaders().append("Authorization", "Bearer " + this.authService.token)});
       return next.handle(modifiedRequest).pipe(

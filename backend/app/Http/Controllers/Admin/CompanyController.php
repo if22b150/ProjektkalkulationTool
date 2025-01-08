@@ -24,13 +24,12 @@ class CompanyController extends Controller {
 
     public function store(StoreCompanyRequest $request)
     {
-        error_log("Request: " . json_encode($request->all()));
+//        error_log("Request: " . json_encode($request->all()));
         return new CompanyResource($this->companyRepository->create($request->companyName, $request->file));
     }
 
     public function update(StoreCompanyRequest $request, int $id)
     {
-        error_log("Request: " . json_encode($request->all()));
         if(!$this->companyRepository->getOne($id))
             return response(null, 404);
 
