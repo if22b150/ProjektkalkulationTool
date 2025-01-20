@@ -6,6 +6,7 @@ import {ExpenseService} from "../../../services/expense.service";
 import {ProjectTypeService} from "../../../services/project-type.service";
 import {ProjectService} from "../../../services/project.service";
 import {FacultyService} from "../../../services/faculty.service";
+import {CompanyService} from "../../../services/company.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -19,7 +20,8 @@ export class DashboardComponent implements OnInit {
     this.facultyService,
     this.expenseService,
     this.lecturerService,
-    this.projectTypeService
+    this.projectTypeService,
+    this.companyService
   ]
 
   constructor(private lecturerService: LecturerService,
@@ -27,6 +29,7 @@ export class DashboardComponent implements OnInit {
               private expenseService: ExpenseService,
               private projectTypeService: ProjectTypeService,
               private projectService: ProjectService,
+              private companyService: CompanyService,
               public authService: AuthService) {
   }
 

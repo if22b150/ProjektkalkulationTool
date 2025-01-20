@@ -27,6 +27,8 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('faculties', [\App\Http\Controllers\FacultyController::class, 'index']);
     Route::get('project-types', [\App\Http\Controllers\ProjectTypeController::class, 'index']);
     Route::get('projectCategories', [\App\Http\Controllers\ProjectCategoryController::class, 'index']);
+    Route::get('companies', [\App\Http\Controllers\CompanyController::class, 'index']);
+
 });
 
 // admin routes
