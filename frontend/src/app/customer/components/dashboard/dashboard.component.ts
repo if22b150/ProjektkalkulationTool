@@ -14,6 +14,13 @@ import {FacultyService} from "../../../services/faculty.service";
 })
 export class DashboardComponent implements OnInit {
   items: MegaMenuItem[] | undefined;
+  services = [
+    this.projectService,
+    this.facultyService,
+    this.expenseService,
+    this.lecturerService,
+    this.projectTypeService
+  ]
 
   constructor(private lecturerService: LecturerService,
               private facultyService: FacultyService,
@@ -24,11 +31,14 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.lecturerService.getAll();
-    this.expenseService.getAll();
-    this.projectTypeService.getAll();
-    this.facultyService.getAll(true);
-    this.projectService.getAllByFaculty(this.authService.user.faculty.id);
+    this.services.forEach((service: any) => {
+      if(service instanceof ProjectService)
+        service.getAllByFaculty(this.authService.user.faculty.id)
+      else if(service instanceof FacultyService)
+        service.getAll(true)
+      else
+        service.getAll()
+    })
 
     this.items = [
       {
@@ -39,12 +49,31 @@ export class DashboardComponent implements OnInit {
       {
         label: 'Logout',
         icon: 'pi pi-fw pi-sign-out',
-        // routerLink: ['..', '..'],
-        command: () => {
-          // LOGOUT LOGIC
-          this.authService.logout();
+        command: () => this.logout()
+      }
+    ]
+
+    this.authService.logoutLoading$.subscribe(
+      {
+        next: (loading) => {
+          let logoutItem = {
+            label: 'Logout',
+            icon: loading ? 'pi pi-spin pi-spinner' : 'pi pi-fw pi-sign-out',
+            command: () => loading ? {} : this.logout()
+          }
+          if(loading) {
+            this.items = this.items.map(i => i.label == 'Logout' ? logoutItem : i)
+          }
         }
       }
-    ];
+    )
+  }
+
+  logout() {
+    this.authService.logoutLoading = true
+    this.services.forEach((service: any) => {
+      service.reset()
+    })
+    this.authService.logout();
   }
 }

@@ -23,7 +23,6 @@ export class LecturerDeleteComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.lecturerService.getAll();
         }
       })
   }

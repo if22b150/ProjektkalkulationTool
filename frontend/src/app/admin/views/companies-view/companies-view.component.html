@@ -3,8 +3,8 @@
     <app-companies></app-companies>
   </div>
   <app-loading-spinner *ngIf="(companyService.loading$|async)"></app-loading-spinner>
-  <div class="card" *ngIf="!(companyService.loading$|async) && (companyService.companies$|async)">
-    <p-table [value]="(companyService.companies$|async)">
+  <div class="card" *ngIf="!(companyService.loading$|async) && (companyService.models$|async)">
+    <p-table [value]="(companyService.models$|async)">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="image" style="width:20%">Firmenbild <p-sortIcon field="image"></p-sortIcon></th>

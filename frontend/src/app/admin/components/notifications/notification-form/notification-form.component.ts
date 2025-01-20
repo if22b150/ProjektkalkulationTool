@@ -58,7 +58,6 @@ export class NotificationFormComponent implements OnInit {
       .subscribe({
         next: (notification: Notification) => {
           this.messageService.add({severity: 'success', summary: 'Erfolgreich', detail: 'Die Änderungen wurden gespeichert.'});
-          this.notificationService.notifications = this.notificationService.notifications.map(n => n.id == notification.id ? notification : n)
         },
         error: err => this.messageService.add({severity: 'error', summary: 'Fehler', detail: 'Die Änderungen konnten nicht gespeichert werden.'})
       })

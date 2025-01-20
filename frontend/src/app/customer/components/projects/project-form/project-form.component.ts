@@ -101,7 +101,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   ngOnInit() {
     this.faculty = this.authService.user.role == ERole.ADMIN ? this.project.faculty : this.authService.user.faculty
-    this.dropDownFaculties = this.facultyService.faculties.filter(f => f.id != this.faculty.id)
+    this.dropDownFaculties = this.facultyService.models.filter(f => f.id != this.faculty.id)
 
     this.projectForm = this.formBuilder.group({
       name: [this.project ? this.project.name : null, [Validators.required]],
@@ -112,8 +112,8 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       end: [this.project ? new Date(this.project.end) : null, [Validators.required]],
       crossFaculty: this.project ? this.project.crossFaculty : false,
       notes: this.project ? this.project.notes : null,
-      projectType: [this.project ? this.project.projectType : this.projectTypeService.projectTypes[0], [Validators.required]],
-      company: [this.project ? this.project.company : this.companyService.companies[0], [Validators.required]],
+      projectType: [this.project ? this.project.projectType : this.projectTypeService.models[0], [Validators.required]],
+      company: [this.project ? this.project.company : this.companyService.models[0], [Validators.required]],
       projectExpenses: this.formBuilder.array([]),
       projectLecturers: this.formBuilder.array([]),
       participants: [this.project ? this.project.participants : null],
@@ -166,7 +166,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   }
 
   setLecturers() {
-    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.getLecturersGroupedByFaculty([...(this.crossFaculties.value ?? []), ...[this.faculty]]) : this.lecturerService.lecturers.filter(l => l.faculty.id == this.faculty.id);
+    this.dropDownLecturers = this.crossFaculty.value ? this.lecturerService.getLecturersGroupedByFaculty([...(this.crossFaculties.value ?? []), ...[this.faculty]]) : this.lecturerService.models.filter(l => l.faculty.id == this.faculty.id);
   }
 
   setCourseValidators() {

@@ -15,7 +15,7 @@ export class CompaniesComponent implements OnInit {
   submitted: boolean;
   loading: boolean;
   @ViewChild('fileUpload') fileUpload: any;
-  
+
   selectedImage: File = null;
 
   constructor(private formBuilder: FormBuilder,
@@ -44,7 +44,7 @@ export class CompaniesComponent implements OnInit {
   onFileSelected(event: any): void {
     const file = event.files[0]; // Korrekte Zugriffsmethode für PrimeNG
     this.selectedImage = file;
-    this.createForm.patchValue({ image: file }); 
+    this.createForm.patchValue({ image: file });
     this.createForm.get('image').updateValueAndValidity();
 }
 
@@ -67,7 +67,6 @@ export class CompaniesComponent implements OnInit {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Unternehmen wurde erstellt.' });
           this.closeDialog();
-          this.companyService.getAll();
         },
         error: (err) => {
           console.log(err);

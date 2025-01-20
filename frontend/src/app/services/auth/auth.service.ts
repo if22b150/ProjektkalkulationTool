@@ -4,6 +4,7 @@ import {HttpClient} from "@angular/common/http";
 import {Router} from "@angular/router";
 import {environment} from "../../../environments/environment";
 import {User} from "../../models/user.model";
+import {finalizeLoading} from "../../shared/operators/finalize-loading.operator";
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,25 @@ export class AuthService {
     return this._user.value != null && this.token != null && this._user.value.verified;
   }
 
+  protected _logoutLoading: BehaviorSubject<boolean>;
+
+  public get logoutLoading$(): Observable<boolean> {
+    return this._logoutLoading.asObservable();
+  }
+
+  public get logoutLoading(): boolean {
+    return this._logoutLoading.value;
+  }
+
+  public set logoutLoading(l: boolean) {
+    this._logoutLoading.next(l)
+  }
+
   constructor(private http: HttpClient,
               private router: Router) {
     let savedUser = JSON.parse(localStorage.getItem('user'));
     this._user = new BehaviorSubject<User>(savedUser);
+    this._logoutLoading = new BehaviorSubject<boolean>(false);
   }
 
   public login(email: string, password: string): Observable<User> {
@@ -56,9 +72,11 @@ export class AuthService {
     return this.http.post<any>(environment.apiUrl + 'logout', {})
       .pipe(
         take(1),
+        finalizeLoading(this._logoutLoading, false),
         tap(() => {
           // log user out in browser
-          localStorage.removeItem('user');
+          localStorage.clear()
+          sessionStorage.clear()
           this._user.next(null);
           this.router.navigate(['auth']);
         }))

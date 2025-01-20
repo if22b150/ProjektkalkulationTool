@@ -38,7 +38,7 @@ export class ProjectLecturersComponent implements OnInit {
 
   ngOnInit() {
     this.initializeLecturers();
-    this.lecturerService.lecturers$.subscribe({
+    this.lecturerService.models$.subscribe({
       next: (l) => {
         if(l)
           this.initializeLecturers()

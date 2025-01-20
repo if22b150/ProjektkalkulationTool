@@ -1,60 +1,53 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, finalize, Observable} from "rxjs";
+import {finalize, Observable, tap} from "rxjs";
 import {Faculty} from "../models/faculty.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
+import {AResourceService} from "./a-resource.service";
 
 @Injectable({
   providedIn: 'root'
 })
-export class FacultyService {
-  private _faculties: BehaviorSubject<Faculty[]>;
-
-  public get faculties$(): Observable<Faculty[]> {
-    return this._faculties.asObservable();
-  }
-
-  public get faculties(): Faculty[] {
-    return this._faculties.value;
-  }
-
-  public set faculties(faculties: Faculty[]) {
-    sessionStorage.setItem('faculties', JSON.stringify(faculties));
-    this._faculties.next(faculties);
-  }
-
-  private _loading: BehaviorSubject<boolean>;
-
-  public get loading$(): Observable<boolean> {
-    return this._loading.asObservable();
-  }
-
+export class FacultyService extends AResourceService<Faculty> {
   constructor(private http: HttpClient) {
-    let savedFaculties = JSON.parse(sessionStorage.getItem('faculties'));
-    this._faculties = new BehaviorSubject<Faculty[]>(savedFaculties);
-    this._loading = new BehaviorSubject<boolean>(null);
+    super('faculties')
   }
 
-  public getAll(requestedByCustomer: boolean = false) {
+  override getAll(requestedByCustomer: boolean = false) {
     this._loading.next(true);
     this.http.get<Faculty[]>((requestedByCustomer ? environment.apiUrl : environment.adminApiUrl) + 'faculties')
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe({
         next: (faculties) => {
-          this.faculties = faculties;
+          this.models = faculties;
         }
       });
   }
 
   public delete(id: number): Observable<any> {
-    return this.http.delete<any>(environment.adminApiUrl + `faculties/${id}`);
+    return this.http.delete<any>(environment.adminApiUrl + `faculties/${id}`)
+      .pipe(
+        tap(() => {
+          this.removeModel(id);
+        })
+      )
   }
 
   public create(name: string, priceForCoursePerDay: number): Observable<Faculty> {
-    return this.http.post<Faculty>(environment.adminApiUrl + 'faculties', { name, priceForCoursePerDay: priceForCoursePerDay * 100 });
+    return this.http.post<Faculty>(environment.adminApiUrl + 'faculties', { name, priceForCoursePerDay: priceForCoursePerDay * 100 })
+      .pipe(
+        tap((model) => {
+          this.addModel(model);
+        }),
+      )
   }
 
   public update(id: number, name: string, priceForCoursePerDay: number): Observable<Faculty> {
-    return this.http.put<Faculty>(environment.adminApiUrl + `faculties/${id}`, { name, priceForCoursePerDay: priceForCoursePerDay * 100 });
+    return this.http.put<Faculty>(environment.adminApiUrl + `faculties/${id}`, { name, priceForCoursePerDay: priceForCoursePerDay * 100 })
+      .pipe(
+        tap((model) => {
+          this.updateModel(model);
+        }),
+      )
   }
 }

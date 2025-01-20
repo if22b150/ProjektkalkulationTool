@@ -31,7 +31,6 @@ export class UsersComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.facultyService.getAll();
     this.createForm = this.formBuilder.group({
       email: [null, [Validators.required, Validators.email]],
       faculty: [null, Validators.required]
@@ -62,7 +61,6 @@ export class UsersComponent implements OnInit {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Benutzer wurde erstellt.' });
           this.closeDialog();
           this.download(response);
-          this.userService.getAll();
         },
         error: (err) => {
           this.messageService.add({ severity: 'error', summary: 'Fehler', detail: 'Der Benutzer konnte nicht erstellt werden.' });

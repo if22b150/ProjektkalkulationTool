@@ -3,8 +3,8 @@
   <app-lecturer></app-lecturer>
 </div>
 <app-loading-spinner *ngIf="(lecturerService.loading$|async)"></app-loading-spinner>
-<div class="card" *ngIf="!(lecturerService.loading$|async) && (lecturerService.lecturers$|async)">
-  <p-table [value]="(lecturerService.lecturers$|async)" [tableStyle]="{'min-width': '60rem'}">
+<div class="card" *ngIf="!(lecturerService.loading$|async) && (lecturerService.models$|async)">
+  <p-table [value]="(lecturerService.models$|async)" [tableStyle]="{'min-width': '60rem'}">
     <ng-template pTemplate="header">
       <tr>
         <th pSortableColumn="name" style="width:20%">Name <p-sortIcon field="name"></p-sortIcon></th>

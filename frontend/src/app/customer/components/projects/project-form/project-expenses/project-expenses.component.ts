@@ -47,7 +47,7 @@ export class ProjectExpensesComponent implements OnInit{
     if (this.project) {
       // not needed until there is no editing of projects
       this.project.expenses.forEach((projectExpenses: ProjectExpense) => {
-        let expense = this.expenseService.expenses.find(e => e.id == projectExpenses.expense.id);
+        let expense = this.expenseService.models.find(e => e.id == projectExpenses.expense.id);
         this.projectExpenses.push(this.formBuilder.group({
           id: [projectExpenses.id],
           expense: [expense, [Validators.required]],
@@ -62,7 +62,7 @@ export class ProjectExpensesComponent implements OnInit{
   newProjectExpenseFormGroup(): FormGroup {
     return this.formBuilder.group({
       id: [null],
-      expense: [this.expenseService.expenses[0], [Validators.required]],
+      expense: [this.expenseService.models[0], [Validators.required]],
       costs: [null, [Validators.required, Validators.min(1)]]
     })
   }

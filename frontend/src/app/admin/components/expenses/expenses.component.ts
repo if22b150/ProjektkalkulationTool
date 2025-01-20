@@ -49,7 +49,6 @@ export class ExpensesComponent {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Aufwand wurde erstellt.' });
           this.closeDialog();
-          this.expenseService.getAll();
         },
         error: (err) => {
           console.log(err);

@@ -1,7 +1,7 @@
 <h1 class="mt-0">Benachrichtigungen</h1>
 
 <div *ngIf="!(notificationService.loading$|async); else loadingSpinner">
-  <div *ngFor="let notification of (notificationService.notifications$|async)">
+  <div *ngFor="let notification of (notificationService.models$|async)">
     <app-notification-form [notification]="notification"></app-notification-form>
   </div>
 </div>

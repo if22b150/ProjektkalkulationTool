@@ -30,7 +30,6 @@ export class LecturerComponent implements OnInit{
       hourlyRate: [null, [Validators.required]],
       dailyRate: [null, [Validators.required]]
     });
-    this.facultyService.getAll();
   }
 
   openDialog() {
@@ -56,7 +55,6 @@ export class LecturerComponent implements OnInit{
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Lektor wurde angelegt.' });
           this.closeDialog();
-          this.lecturerService.getAll();
         },
         error: (err) => {
           console.log(err);

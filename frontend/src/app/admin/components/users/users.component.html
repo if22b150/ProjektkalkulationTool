@@ -19,7 +19,7 @@
       <div class="card">
         <label for="faculties" class="block text-900 font-medium mb-2">Fakultät</label>
           <p-dropdown formControlName="faculty" (onChange)="selectedFaculty($event?.value)" placeholder="Arbeitende Fakultät" appendTo="body" [style]="{'width':'100%'}" id="faculties"
-          [options]="facultyService.faculties$|async" optionLabel="name">
+          [options]="facultyService.models$|async" optionLabel="name">
           <ng-template let-faculty pTemplate="item">
               <div [style]="{'width':'46vw'}" class="flex align-items-center gap-2">
                 <div>{{ faculty.name }}</div>

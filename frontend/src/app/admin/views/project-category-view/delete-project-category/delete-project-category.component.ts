@@ -23,7 +23,6 @@ export class DeleteProjectCategoryComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.projectTypeService.getAll();
         }
       })
   }

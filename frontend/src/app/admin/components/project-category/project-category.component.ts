@@ -58,7 +58,6 @@ export class ProjectCategoryComponent {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Aufwand wurde erstellt.' });
           this.closeDialog();
-          this.projectTypeService.getAll();
         },
         error: (err) => {
           console.log(err);

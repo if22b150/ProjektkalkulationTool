@@ -14,7 +14,7 @@
 
           <p-dropdown [id]="!project ? 'new-project-expense-' + i : 'project-' + project.id + '-' + 'expense-' + i"
                       formControlName="expense"
-                      [options]="expenseService.expenses$|async"
+                      [options]="expenseService.models$|async"
                       optionLabel="name"
                       [style]="{'width':'200px'}"
                       placeholder="Auswählen"></p-dropdown>

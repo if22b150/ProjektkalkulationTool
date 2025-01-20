@@ -3,8 +3,8 @@
     <app-users></app-users>
   </div>
   <app-loading-spinner *ngIf="(userService.loading$|async)"></app-loading-spinner>
-  <div class="card" *ngIf="!(userService.loading$|async) && (userService.users$|async)">
-    <p-table [value]="(userService.users$|async)" [tableStyle]="{'min-width': '60rem'}">
+  <div class="card" *ngIf="!(userService.loading$|async) && (userService.models$|async)">
+    <p-table [value]="(userService.models$|async)" [tableStyle]="{'min-width': '60rem'}">
       <ng-template pTemplate="header">
         <tr>
           <th pSortableColumn="id" style="width:20%">Id <p-sortIcon field="id"></p-sortIcon></th>

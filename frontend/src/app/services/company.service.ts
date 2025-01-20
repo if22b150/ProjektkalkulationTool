@@ -1,64 +1,58 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, finalize, Observable} from "rxjs";
+import {Observable, tap} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {Company} from '../models/company.model';
+import {AResourceService} from "./a-resource.service";
+import {finalizeLoading} from "../shared/operators/finalize-loading.operator";
 
 @Injectable({
   providedIn: 'root'
 })
 
-export class CompanyService {
-  private _companies: BehaviorSubject<Company[]>;
-
-  public get companies$(): Observable<Company[]> {
-    return this._companies.asObservable();
-  }
-
-  public get companies(): Company[] {
-    return this._companies.value;
-  }
-
-  public set companies(companies: Company[]) {
-    sessionStorage.setItem('companies', JSON.stringify(companies));
-    this._companies.next(companies);
-  }
-
-  private _loading: BehaviorSubject<boolean>;
-
-  public get loading$(): Observable<boolean> {
-    return this._loading.asObservable();
-  }
-
+export class CompanyService extends AResourceService<Company> {
   constructor(private http: HttpClient) {
-    let savedCompanies = JSON.parse(sessionStorage.getItem('companies'));
-    this._companies = new BehaviorSubject<Company[]>(savedCompanies);
-    this._loading = new BehaviorSubject<boolean>(null);
+    super('companies')
   }
 
-  getAll(): void {
-    this._loading.next(true);
+  override getAll(): void {
+    this._loading.next(true)
     this.http.get<Company[]>(environment.adminApiUrl + `companies`)
-      .pipe(finalize(() => this._loading.next(false)))
+      .pipe(finalizeLoading(this._loading, false))
       .subscribe({
-        next: (companies) => this.companies = companies
+        next: (companies) => this.models = companies
       });
   }
 
   create(imageData: FormData, name: string): Observable<Company> {
     imageData.append('companyName', name);
 
-    return this.http.post<Company>(environment.adminApiUrl + 'companies', imageData);
+    return this.http.post<Company>(environment.adminApiUrl + 'companies', imageData)
+      .pipe(
+        tap((model) => {
+          this.addModel(model);
+        }),
+      )
   }
 
   update(id: number, imageData: FormData, name: string): Observable<any> {
     imageData.append('companyName', name);
 
     // formdata can only be sent via POST, therefore we do not use PUT
-    return this.http.post<Company>(environment.adminApiUrl + `companies/${id}`, imageData);
+    return this.http.post<Company>(environment.adminApiUrl + `companies/${id}`, imageData)
+      .pipe(
+        tap((model) => {
+          this.updateModel(model);
+        }),
+      )
   }
 
   delete(id: number): Observable<any> {
-    return this.http.delete<Company>(environment.adminApiUrl + `companies/${id}`);
+    return this.http.delete<Company>(environment.adminApiUrl + `companies/${id}`)
+      .pipe(
+        tap(() => {
+          this.removeModel(id);
+        }),
+      );
   }
 }

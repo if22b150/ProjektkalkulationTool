@@ -12,7 +12,7 @@
     <p-floatLabel *ngIf="(authService.user$|async).role == ERole.ADMIN">
       <p-dropdown
         [(ngModel)]="facultyFilter"
-        [options]="facultyService.faculties$|async" optionLabel="name"
+        [options]="facultyService.models$|async" optionLabel="name"
         inputId="facultyFilter">
         <ng-template let-faculty pTemplate="item">
           <div class="flex align-items-center gap-2">
@@ -26,7 +26,7 @@
     <p-floatLabel>
       <p-dropdown
         [(ngModel)]="projectTypeFilter"
-        [options]="projectTypeService.projectTypes$|async" optionLabel="name"
+        [options]="projectTypeService.models$|async" optionLabel="name"
         inputId="projectTypeFilter">
         <ng-template let-projectType pTemplate="item">
           <div class="flex align-items-center gap-2">
@@ -44,7 +44,7 @@
 </div>
 
 <div style="margin-top: 2em;" class="grid"
-     *ngIf="(projectService.projects$|async) && !(projectService.loading$|async); else loadingSpinner">
+     *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
   <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">Keine Projekte vorhanden.</div>
   <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">

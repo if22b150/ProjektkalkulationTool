@@ -22,7 +22,6 @@ export class DeleteCompanyComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.companyService.getAll();
         }
       })
   }

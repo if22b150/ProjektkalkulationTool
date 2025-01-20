@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, filter, finalize, map, Observable} from "rxjs";
+import {BehaviorSubject, filter, finalize, map, Observable, tap} from "rxjs";
 import {Project} from "../models/project.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
@@ -8,37 +8,15 @@ import {ProjectLecturer} from "../models/project-lecturer.model";
 import {Faculty} from "../models/faculty.model";
 import {OtherExpense} from "../models/other-expense.model";
 import {ProjectType} from "../models/project-type.model";
+import {AResourceService} from "./a-resource.service";
+import {finalizeLoading} from "../shared/operators/finalize-loading.operator";
 
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService {
-  private _projects: BehaviorSubject<Project[]>;
-  private _loading: BehaviorSubject<boolean>;
-
-  public get projects$(): Observable<Project[]> {
-    return this._projects.asObservable();
-  }
-  public get loading$(): Observable<boolean> {
-    return this._loading.asObservable();
-  }
-
-  public get projects(): Project[] {
-    return this._projects.value;
-  }
-
-  public set projects(projects: Project[]) {
-    this._projects.next(projects);
-  }
-
-  public addUpdatedProject(project: Project): void {
-    let updated = this.projects.map(p => p.id == project.id ? project : p);
-    console.log(updated);
-    this._projects.next(updated);
-  }
-
+export class ProjectService extends AResourceService<Project>{
   public filteredProjects$(projectType: ProjectType, faculty: Faculty): Observable<Project[]> {
-    return this._projects.asObservable().pipe(
+    return this._models.asObservable().pipe(
       map(projects => projects.filter((project) => {
         return (projectType == null || project.projectType.id === projectType.id) && (faculty == null || project.faculty.id === faculty.id)
       }))
@@ -46,22 +24,21 @@ export class ProjectService {
   }
 
   constructor(private http: HttpClient) {
-    this._projects = new BehaviorSubject<Project[]>(null);
-    this._loading = new BehaviorSubject<boolean>(false);
+    super('projects')
   }
 
-  getAll(): void {
+  override getAll(): void {
     this._loading.next(true)
     this.http.get<Project[]>(environment.adminApiUrl + `projects`)
-      .pipe(finalize(() => this._loading.next(false)))
-      .subscribe(projects => this._projects.next(projects));
+      .pipe(finalizeLoading(this._loading, false))
+      .subscribe(projects => this.models = projects)
   }
 
   getAllByFaculty(facultyId: number): void {
     this._loading.next(true)
     this.http.get<Project[]>(environment.apiUrl + `faculties/${facultyId}/projects`)
-      .pipe(finalize(() => this._loading.next(false)))
-      .subscribe(projects => this._projects.next(projects));
+      .pipe(finalizeLoading(this._loading, false))
+      .subscribe(projects => this.models = projects);
   }
 
   getOne(id: number, facultyId: number): Observable<Project> {
@@ -112,7 +89,12 @@ export class ProjectService {
         duration,
         ects,
         crossFaculties: crossFaculties.map(c => ({id: c.id}))
-      });
+      })
+      .pipe(
+        tap((model) => {
+          this.addModel(model);
+        }),
+      )
   }
 
   update(
@@ -163,7 +145,12 @@ export class ProjectService {
         crossFaculties: crossFaculties.map(c => ({id: c.id})),
         priceForCoursePerDayOverride: priceForCoursePerDayOverride * 100,
         otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, perParticipant: oe.perParticipant, costs: oe.costs * 100})),
-      });
+      })
+      .pipe(
+        tap((model) => {
+          this.updateModel(model);
+        }),
+      )
   }
 
   exportToCSV(facultyId: number, project: Project): Observable<any> {
@@ -179,6 +166,6 @@ export class ProjectService {
   getProjectsByCompanyId(id: number): void {
     this.http.get<Project[]>(environment.adminApiUrl + `projects/fetch/${id}`)
       .pipe(finalize(() => this._loading.next(false)))
-      .subscribe(projects => this._projects.next(projects));
+      .subscribe(projects => this.models = projects);
   }
 }

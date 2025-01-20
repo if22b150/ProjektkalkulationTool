@@ -23,7 +23,6 @@ export class DeleteUserComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.userService.getAll();
         }
       })
   }

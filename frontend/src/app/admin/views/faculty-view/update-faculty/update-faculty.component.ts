@@ -57,7 +57,6 @@ export class UpdateFacultyComponent implements OnInit{
           next: () => {
             this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Die Fakultät wurde aktualisiert.' });
             this.closeDialog();
-            this.facultyService.getAll();
           },
           error: (err) => {
             console.log(err);

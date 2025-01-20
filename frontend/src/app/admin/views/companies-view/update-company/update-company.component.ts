@@ -69,7 +69,6 @@ export class UpdateCompanyComponent {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Der Kunde wurde aktualisiert.' });
           this.closeDialog();
-          this.companyService.getAll();
         },
         error: (err) => {
           console.log(err);

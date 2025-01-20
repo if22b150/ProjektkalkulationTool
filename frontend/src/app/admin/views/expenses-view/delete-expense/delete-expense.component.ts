@@ -23,7 +23,6 @@ export class DeleteExpenseComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.expenseService.getAll();
         }
       })
   }

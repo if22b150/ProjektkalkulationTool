@@ -23,7 +23,6 @@ export class DeleteFacultyComponent {
       .pipe(finalize(() => this.loading = false))
       .subscribe({
         next: () => {
-          this.facultyService.getAll();
         }
       })
   }

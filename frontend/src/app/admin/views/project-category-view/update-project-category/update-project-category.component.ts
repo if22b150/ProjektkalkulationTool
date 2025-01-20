@@ -65,7 +65,6 @@ export class UpdateProjectCategoryComponent {
         next: () => {
           this.messageService.add({ severity: 'success', summary: 'Erfolgreich', detail: 'Die Auftragsart wurde aktualisiert.' });
           this.closeDialog();
-          this.projectTypeService.getAll();
         },
         error: (err) => {
           console.log(err);
