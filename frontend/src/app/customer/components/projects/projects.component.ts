@@ -19,6 +19,8 @@ import {ProjectType} from "../../../models/project-type.model";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {Faculty} from "../../../models/faculty.model";
 import {FacultyService} from "../../../services/faculty.service";
+import { Company } from 'src/app/models/company.model';
+import { CompanyService } from 'src/app/services/company.service';
 
 @Component({
   selector: 'app-projects',
@@ -48,10 +50,12 @@ import {FacultyService} from "../../../services/faculty.service";
 export class ProjectsComponent {
   projectTypeFilter: ProjectType;
   facultyFilter: Faculty;
+  companyFilter: Company;
 
   constructor(public projectService: ProjectService,
               public projectTypeService: ProjectTypeService,
               public facultyService: FacultyService,
+              public companyService: CompanyService,
               public authService: AuthService) {
                 projectService.getAll();
   }

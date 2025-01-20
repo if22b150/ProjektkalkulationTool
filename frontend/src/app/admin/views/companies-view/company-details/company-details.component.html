@@ -35,9 +35,12 @@
         <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null" />
     </div>
 
-    <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length">
-        {{ (projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length }} Projekt(e) vorhanden
+    <div *ngIf="(projectService.models$|async) && !(projectService.loading$|async)">
+        <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length">
+            {{ (projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length }} Projekt(e) vorhanden
+        </div>
     </div>
+    
 
     <div class="grid" *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
         <div style="margin-top:3vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">

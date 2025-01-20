@@ -10,15 +10,17 @@ import {OtherExpense} from "../models/other-expense.model";
 import {ProjectType} from "../models/project-type.model";
 import {AResourceService} from "./a-resource.service";
 import {finalizeLoading} from "../shared/operators/finalize-loading.operator";
+import { Company } from '../models/company.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService extends AResourceService<Project>{
-  public filteredProjects$(projectType: ProjectType, faculty: Faculty): Observable<Project[]> {
+  public filteredProjects$(projectType: ProjectType, faculty: Faculty, company: Company): Observable<Project[]> {
     return this._models.asObservable().pipe(
       map(projects => projects.filter((project) => {
         return (projectType == null || project.projectType.id === projectType.id) && (faculty == null || project.faculty.id === faculty.id)
+        && (company == null || project.company.id === company.id)
       }))
     );
   }
