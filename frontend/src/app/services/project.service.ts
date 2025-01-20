@@ -164,6 +164,7 @@ export class ProjectService extends AResourceService<Project>{
   }
 
   getProjectsByCompanyId(id: number): void {
+    this._loading.next(true)
     this.http.get<Project[]>(environment.adminApiUrl + `projects/fetch/${id}`)
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe(projects => this.models = projects);

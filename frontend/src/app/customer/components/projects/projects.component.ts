@@ -53,6 +53,7 @@ export class ProjectsComponent {
               public projectTypeService: ProjectTypeService,
               public facultyService: FacultyService,
               public authService: AuthService) {
+                projectService.getAll();
   }
 
   isOpened = true;
