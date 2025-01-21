@@ -11,6 +11,7 @@ import {NotificationsViewComponent} from "./views/notifications-view/notificatio
 import { ProjectCategoryViewComponent } from './views/project-category-view/project-category-view.component';
 import { CompaniesViewComponent } from './views/companies-view/companies-view.component';
 import { CompanyDetailsComponent } from './views/companies-view/company-details/company-details.component';
+import { FacultyDetailsComponent } from './views/faculty-view/faculty-details/faculty-details.component';
 
 const routes: Routes = [
   {
@@ -27,7 +28,7 @@ const routes: Routes = [
       { path: 'projectCategory', component: ProjectCategoryViewComponent},
       { path: 'companies', component: CompaniesViewComponent},
       { path: 'company-details/:id', component: CompanyDetailsComponent},
-      
+      { path: 'faculty-details/:id', component: FacultyDetailsComponent},
     ]
   }
 ];

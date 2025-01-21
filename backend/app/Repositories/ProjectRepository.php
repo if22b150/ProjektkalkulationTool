@@ -136,6 +136,11 @@ class ProjectRepository implements IProjectRepository
         return $this->save($project);
     }
 
+    public function getAllByFacultiesId(int $facultyId): Collection
+    {
+        return Project::where('faculty_id', $facultyId)->get();
+    }
+
     public function updateState(int $id, string $state): ?Project
     {
         $project = $this->getOne($id);

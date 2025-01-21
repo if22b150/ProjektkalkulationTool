@@ -7,6 +7,7 @@ use App\Http\Requests\Project\StoreProjectRequest;
 use App\Http\Resources\ProjectResource;
 use App\Mail\NewProjectMail;
 use App\Repositories\Interfaces\ICompanyRepository;
+use App\Repositories\Interfaces\IFacultyRepository;
 use App\Repositories\Interfaces\INotificationRepository;
 use App\Repositories\Interfaces\IOtherExpenseRepository;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
@@ -33,7 +34,8 @@ class ProjectController extends Controller
                                 protected IOtherExpenseRepository    $otherExpenseRepository,
                                 protected INotificationRepository   $notificationRepository,
                                 protected IProjectTypeRepository     $projectTypeRepository,
-                                protected ICompanyRepository       $companyRepository,)
+                                protected ICompanyRepository       $companyRepository,
+                                protected IFacultyRepository        $facultyRepository)
     {
     }
 
@@ -67,6 +69,14 @@ class ProjectController extends Controller
             return response('Not found', 404);
 
         return ProjectResource::collection($this->projectRepository->getAllByCompanyId($companyId));
+    }
+
+    public function getFacultiesByCompanyId(Request $request, int $facultyId) {
+        $faculty = $this->facultyRepository->getOne($facultyId);
+        if (!$faculty)
+            return response('Not found', 404);
+
+        return ProjectResource::collection($this->projectRepository->getAllByFacultiesId($facultyId));
     }
 
     public function store(StoreProjectRequest $request, int $facultyId)

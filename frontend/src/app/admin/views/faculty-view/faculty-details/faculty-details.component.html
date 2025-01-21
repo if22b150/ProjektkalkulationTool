@@ -1,22 +1,22 @@
 <div class="flex align-items-end gap-4 mb-3">
-    <h1 class="m-0">{{company.name}}</h1>
+    <h1 class="m-0">{{faculty.name}}</h1>
 </div>
 
 <div>
     <div class="mt-4 flex gap-4">
         <p-floatLabel>
             <p-dropdown
-                [(ngModel)]="facultyFilter"
-                [options]="facultyService.models$|async" optionLabel="name"
-                inputId="facultyFilter">
-                <ng-template let-faculty pTemplate="item">
-                    <div class="flex align-items-center gap-2">
-                        <div>{{ faculty.name }}</div>
-                    </div>
-                </ng-template>
+              [(ngModel)]="companyFilter"
+              [options]="companiesService.models$|async" optionLabel="name"
+              inputId="companyFilter">
+              <ng-template let-company pTemplate="item">
+                <div class="flex align-items-center gap-2">
+                  <div>{{ company.name }}</div>
+                </div>
+              </ng-template>
             </p-dropdown>
-            <label for="facultyFilter">Fakultät</label>
-        </p-floatLabel>
+            <label for="companyFilter">Kunde</label>
+          </p-floatLabel>
 
         <p-floatLabel>
             <p-dropdown
@@ -32,24 +32,24 @@
             <label for="projectTypeFilter">Projektart</label>
         </p-floatLabel>
 
-        <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null" />
+        <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; companyFilter = null" />
 
         <p-button [outlined]="true" label="CSV Export"/>
     </div>
 
     <div *ngIf="(projectService.models$|async) && !(projectService.loading$|async)">
-        <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length">
-            {{ (projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length }} Projekt(e) vorhanden
+        <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, faculty, companyFilter) | async)?.length">
+            {{ (projectService.filteredProjects$(projectTypeFilter, faculty, companyFilter) | async)?.length }} Projekt(e) vorhanden
         </div>
     </div>
     
 
     <div class="grid" *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
-        <div style="margin-top:3vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">
+        <div style="margin-top:3vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, faculty, companyFilter)|async).length == 0">
             Keine Projekte vorhanden.
         </div>
 
-        <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
+        <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, faculty, companyFilter)|async"
              class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
             <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">

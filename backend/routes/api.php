@@ -40,7 +40,8 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
     Route::apiResource('expenses', \App\Http\Controllers\Admin\ExpenseController::class);
     Route::apiResource('projectCategories', \App\Http\Controllers\Admin\ProjectCategoryController::class);
     Route::apiResource('project-types', \App\Http\Controllers\Admin\ProjectTypeController::class);
-    Route::get('projects/fetch/{companyId}', [\App\Http\Controllers\ProjectController::class, 'getProjectsByCompanyId']);
+    Route::get('projects/fetch-companies/{companyId}', [\App\Http\Controllers\ProjectController::class, 'getProjectsByCompanyId']);
+    Route::get('projects/fetch-faculties/{facultyId}', [\App\Http\Controllers\ProjectController::class, 'getFacultiesByCompanyId']);
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only(['update','index','show']);
     Route::patch('projects/{projectId}/set-state', [\App\Http\Controllers\Admin\ProjectController::class, 'updateState']);
     Route::apiResource('notifications', \App\Http\Controllers\Admin\NotificationController::class)->only(['update','index']);

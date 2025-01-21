@@ -11,15 +11,15 @@ import {Faculty} from "src/app/models/faculty.model";
 import {FacultyService} from "src/app/services/faculty.service";
 
 @Component({
-  selector: 'app-company-details',
-  templateUrl: './company-details.component.html',
-  styleUrl: './company-details.component.scss'
+  selector: 'app-faculty-details',
+  templateUrl: './faculty-details.component.html',
+  styleUrl: './faculty-details.component.scss'
 })
-export class CompanyDetailsComponent {
-  company: Company = null;
+export class FacultyDetailsComponent {
+  faculty: Faculty = null;
   projects: Project[];
   projectTypeFilter: ProjectType;
-  facultyFilter: Faculty;
+  companyFilter: Company;
 
   constructor(public companiesService: CompanyService, private route: ActivatedRoute,
     public projectService: ProjectService,
@@ -31,9 +31,9 @@ export class CompanyDetailsComponent {
     this.route.queryParams.subscribe(params => {
       const companyData = params['company'];
       if (companyData) {
-        this.company = JSON.parse(companyData);  // Parse the JSON string back to an object
+        this.faculty = JSON.parse(companyData);
       }
-      this.projectService.getProjectsByCompanyId(this.company.id)
+      this.projectService.getProjectsByFacultyId(this.faculty.id)
     });
   }
 }

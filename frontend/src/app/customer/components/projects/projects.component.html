@@ -25,6 +25,20 @@
 
     <p-floatLabel>
       <p-dropdown
+        [(ngModel)]="companyFilter"
+        [options]="companyService.models$|async" optionLabel="name"
+        inputId="companyFilter">
+        <ng-template let-company pTemplate="item">
+          <div class="flex align-items-center gap-2">
+            <div>{{ company.name }}</div>
+          </div>
+        </ng-template>
+      </p-dropdown>
+      <label for="companyFilter">Kunde</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+      <p-dropdown
         [(ngModel)]="projectTypeFilter"
         [options]="projectTypeService.models$|async" optionLabel="name"
         inputId="projectTypeFilter">
@@ -37,18 +51,17 @@
       <label for="projectTypeFilter">Projektart</label>
     </p-floatLabel>
 
-    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null"/>
+    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null; companyFilter = null" />
 
+    <p-button [outlined]="true" label="CSV Export"/>
   </div>
 
 </div>
 
 <div style="margin-top: 2em;" class="grid"
      *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
-  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">Keine Projekte
-    vorhanden.
-  </div>
-  <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
+  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter)|async).length == 0">Keine Projekte vorhanden.</div>
+  <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter)|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
     <div *ngIf="!project.isOpened && authService.user.role == ERole.ADMIN;"
