@@ -15,16 +15,15 @@
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-faculty>
-      <tr>
+      <tr (click)="navigateToDetails(faculty)" style="cursor: pointer;">
         <td>{{faculty.id}}</td>
         <td>{{faculty.name}}</td>
         <td>{{faculty.priceForCoursePerDay}}</td>
         <td>
-          <app-faculty-update [faculty]="faculty"></app-faculty-update>
-<!--          <button (click)="editFaculty(faculty)">Bearbeiten</button>-->
+          <app-faculty-update [faculty]="faculty" (click)="$event.stopPropagation()"></app-faculty-update>
         </td>
         <td>
-          <app-faculty-delete [faculty]="faculty"></app-faculty-delete>
+          <app-faculty-delete [faculty]="faculty" (click)="$event.stopPropagation()"></app-faculty-delete>
         </td>
       </tr>
     </ng-template>
