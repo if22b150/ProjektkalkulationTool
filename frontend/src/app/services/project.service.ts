@@ -12,16 +12,22 @@ import {AResourceService} from "./a-resource.service";
 import {finalizeLoading} from "../shared/operators/finalize-loading.operator";
 import { Company } from '../models/company.model';
 
+
 @Injectable({
   providedIn: 'root'
 })
 export class ProjectService extends AResourceService<Project>{
   public filteredProjects$(projectType: ProjectType, faculty: Faculty, company: Company): Observable<Project[]> {
+    console.log(faculty)
     return this._models.asObservable().pipe(
       map(projects => projects.filter((project) => {
-        return (projectType == null || project.projectType.id === projectType.id) && (faculty == null || project.faculty.id === faculty.id)
-        && (company == null || project.company.id === company.id)
-      }))
+        return (projectType == null || project.projectType.id === projectType.id) &&
+               (faculty == null || project.faculty.id === faculty.id) &&
+               (company == null || project.company.id === company.id);
+      })),
+      tap(filteredProjects => {
+        console.log('Gefilterte Projekte:', filteredProjects); // Hier loggen
+      })
     );
   }
 
@@ -167,7 +173,14 @@ export class ProjectService extends AResourceService<Project>{
 
   getProjectsByCompanyId(id: number): void {
     this._loading.next(true)
-    this.http.get<Project[]>(environment.adminApiUrl + `projects/fetch/${id}`)
+    this.http.get<Project[]>(environment.adminApiUrl + `projects/fetch-companies/${id}`)
+      .pipe(finalize(() => this._loading.next(false)))
+      .subscribe(projects => this.models = projects);
+  }
+
+  getProjectsByFacultyId(id: number): void {
+    this._loading.next(true)
+    this.http.get<Project[]>(environment.adminApiUrl + `projects/fetch-faculties/${id}`)
       .pipe(finalize(() => this._loading.next(false)))
       .subscribe(projects => this.models = projects);
   }

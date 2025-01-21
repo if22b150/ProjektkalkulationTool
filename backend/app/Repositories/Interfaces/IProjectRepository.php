@@ -22,6 +22,8 @@ interface IProjectRepository
 
     public function getAllByCompanyId(int $companyId): Collection;
 
+    public function getAllByFacultiesId(int $facultyId): Collection;
+
     public function create(
         string $name,
         int $costs,

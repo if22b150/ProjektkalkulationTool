@@ -135,4 +135,9 @@ class ProjectRepository implements IProjectRepository
         $project->is_opened = $isOpened;
         return $this->save($project);
     }
+
+    public function getAllByFacultiesId(int $facultyId): Collection
+    {
+        return Project::where('faculty_id', $facultyId)->get();
+    }
 }
