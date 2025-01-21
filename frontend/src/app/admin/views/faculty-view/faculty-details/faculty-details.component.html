@@ -33,6 +33,8 @@
         </p-floatLabel>
 
         <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; companyFilter = null" />
+
+        <p-button [outlined]="true" label="CSV Export"/>
     </div>
 
     <div *ngIf="(projectService.models$|async) && !(projectService.loading$|async)">
