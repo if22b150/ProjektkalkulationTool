@@ -153,7 +153,7 @@ class ProjectController extends Controller
                 $request->ects,
                 $request->projectTypeId,
                 $request->companyId,
-                $request->priceForCoursePerDayOverride
+                $request->priceForCoursePerDayOverride,
             );
 
             $this->_updateLecturers($request->lecturers, $projectId);
@@ -167,24 +167,6 @@ class ProjectController extends Controller
             return response('Project could not be updated: ' . $e->getMessage(), 500);
         }
 
-        return new ProjectResource($this->projectRepository->getOne($project->id));
-    }
-
-    public function isOpened(StoreProjectRequest $request, int $facultyId, int $projectId)
-    {
-        if (!$this->projectRepository->getOne($projectId))
-            return response("Gibs nd ...", 404);
-
-        Log::info('Dies ist eine Info-Nachricht: ' . $request->getContent());
-        try {
-            $project = $this->projectRepository->updateIsOpen(
-                $request->projectId,
-                $facultyId,
-                $request->isOpened,
-            );
-        } catch (\Exception) {
-
-        }
         return new ProjectResource($this->projectRepository->getOne($project->id));
     }
 

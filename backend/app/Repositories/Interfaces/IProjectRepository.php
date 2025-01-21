@@ -61,4 +61,6 @@ interface IProjectRepository
     ): ?Project;
 
     public function updateIsOpened(int $id, bool $isOpened): ?Project;
+
+    public function updateState(int $id, string $state): ?Project;
 }

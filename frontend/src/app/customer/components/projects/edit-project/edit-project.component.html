@@ -5,9 +5,11 @@
                     [submitLabel]="'Änderungen speichern'"
                     [title]="project.name"
                     (submitEmitter)="update()"
+                    (stateChangeEmitter)="updateState($event)"
                     [exportOptions]="true"
                     (costChangesEmitter)="costChanges($event)"
-                    [loading]="updateLoading">
+                    [loading]="updateLoading"
+                    [stateLoading]="updateStateLoading">
   </app-project-form>
 </div>
 

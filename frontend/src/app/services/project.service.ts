@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {BehaviorSubject, filter, finalize, map, Observable, tap} from "rxjs";
-import {Project} from "../models/project.model";
+import {finalize, map, Observable, tap} from "rxjs";
+import {EProjectState, Project} from "../models/project.model";
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../environments/environment";
 import {ProjectExpense} from "../models/project-expense.model";
@@ -146,6 +146,15 @@ export class ProjectService extends AResourceService<Project>{
         priceForCoursePerDayOverride: priceForCoursePerDayOverride * 100,
         otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, perParticipant: oe.perParticipant, costs: oe.costs * 100})),
       })
+      .pipe(
+        tap((model) => {
+          this.updateModel(model);
+        }),
+      )
+  }
+
+  updateState(id: number, state: EProjectState) {
+    return this.http.patch<Project>(environment.adminApiUrl + `projects/${id}/set-state`, {state})
       .pipe(
         tap((model) => {
           this.updateModel(model);

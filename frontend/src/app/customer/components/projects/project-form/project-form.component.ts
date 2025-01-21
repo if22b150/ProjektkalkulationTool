@@ -10,7 +10,7 @@ import {
 } from '@angular/core';
 import {AbstractControl, FormArray, FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {ProjectTypeService} from "../../../../services/project-type.service";
-import {Project} from "../../../../models/project.model";
+import {EProjectState, getProjectStateIconClass, getProjectStateLabel, Project} from "../../../../models/project.model";
 import {ExpenseService} from "../../../../services/expense.service";
 import {LecturerService} from "../../../../services/lecturer.service";
 import Utils from "../../../../shared/utils";
@@ -21,7 +21,7 @@ import {FacultyService} from "../../../../services/faculty.service";
 import { CompanyService } from 'src/app/services/company.service';
 import {MultiSelect, MultiSelectModule} from "primeng/multiselect";
 import {DropdownModule} from "primeng/dropdown";
-import {AsyncPipe, CurrencyPipe, NgIf} from "@angular/common";
+import {AsyncPipe, CurrencyPipe, DatePipe, NgIf} from "@angular/common";
 import {InputTextModule} from "primeng/inputtext";
 import {CalendarModule} from "primeng/calendar";
 import {InputTextareaModule} from "primeng/inputtextarea";
@@ -61,7 +61,8 @@ import {CalculationsComponent} from "./calculations/calculations.component";
     Ripple,
     InputNumberModule,
     ProjectOtherExpensesComponent,
-    CalculationsComponent
+    CalculationsComponent,
+    DatePipe
   ],
   styleUrls: ['./project-form.component.scss']
 })
@@ -70,12 +71,14 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
   @Output() costChangesEmitter: EventEmitter<number> = new EventEmitter<number>();
   @Output() revenueChangesEmitter: EventEmitter<number> = new EventEmitter<number>();
   @Output() submitEmitter: EventEmitter<void> = new EventEmitter<void>();
+  @Output() stateChangeEmitter: EventEmitter<EProjectState> = new EventEmitter<EProjectState>();
 
   @Input() project: Project = null;
   @Input() submitLabel: string;
   @Input() title: string;
   @Input() submitted: boolean;
   @Input() loading: boolean = false;
+  @Input() stateLoading: boolean = false;
   @Input() exportOptions: boolean;
 
   @ViewChild('crossFacultySelect') crossFacultySelect: MultiSelect
@@ -290,4 +293,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   protected readonly ERole = ERole;
   protected readonly Utils = Utils;
+  protected readonly getProjectStateLabel = getProjectStateLabel;
+  protected readonly EProjectState = EProjectState;
+  protected readonly getProjectStateIconClass = getProjectStateIconClass;
 }

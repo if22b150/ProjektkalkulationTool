@@ -1,7 +1,7 @@
-import {Component, Input} from '@angular/core';
+import {Component} from '@angular/core';
 import {ProjectService} from "../../../services/project.service";
 import {Button} from "primeng/button";
-import {AsyncPipe, CurrencyPipe, NgClass, NgForOf, NgIf} from "@angular/common";
+import {AsyncPipe, CurrencyPipe, DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {Ripple} from "primeng/ripple";
 import {RouterLink} from "@angular/router";
 import {ExportButtonsComponent} from "./export-buttons/export-buttons.component";
@@ -19,6 +19,7 @@ import {ProjectType} from "../../../models/project-type.model";
 import {FloatLabelModule} from "primeng/floatlabel";
 import {Faculty} from "../../../models/faculty.model";
 import {FacultyService} from "../../../services/faculty.service";
+import {EProjectState, getProjectStateIconClass, getProjectStateLabel} from "../../../models/project.model";
 
 @Component({
   selector: 'app-projects',
@@ -41,7 +42,8 @@ import {FacultyService} from "../../../services/faculty.service";
     DropdownModule,
     PaginatorModule,
     ReactiveFormsModule,
-    FloatLabelModule
+    FloatLabelModule,
+    DatePipe
   ],
   styleUrls: ['./projects.component.scss']
 })
@@ -58,4 +60,7 @@ export class ProjectsComponent {
   isOpened = true;
 
   protected readonly ERole = ERole;
+  protected readonly getProjectStateIconClass = getProjectStateIconClass;
+  protected readonly getProjectStateLabel = getProjectStateLabel;
+  protected readonly EProjectState = EProjectState;
 }

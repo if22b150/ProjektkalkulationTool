@@ -2,7 +2,6 @@
 
 namespace App\Http\Resources;
 
-use App\Models\OtherExpense;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class ProjectResource extends JsonResource
@@ -29,6 +28,9 @@ class ProjectResource extends JsonResource
             'faculty' => new FacultyResource($this->faculty),
             'projectType' => new ProjectTypeResource($this->projectType),
             'company' => new CompanyResource($this->company),
+            'state' => $this->state,
+            'stateChangedAt' => $this->state_changed_at?->format('Y-m-d H:i:s'),
+            'createdAt' => $this->created_at?->format('Y-m-d H:i:s'),
             'lecturers' => ProjectLecturerResource::collection($this->lecturers),
             'expenses' => ProjectExpenseResource::collection($this->expenses),
             'crossFaculties' => $this->faculties->map(function ($item, int $key) {

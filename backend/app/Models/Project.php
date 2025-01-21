@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\EProjectState;
 use Illuminate\Database\Eloquent\Model;
 
 class Project extends Model
@@ -29,9 +30,9 @@ class Project extends Model
         'duration',
         'ects',
         'is_opened',
-        'contribution_margin_1', // TODO: remove
-        'contribution_margin_2', // TODO: remove
-        'price_for_course_per_day_override'
+        'price_for_course_per_day_override',
+        'state',
+        'state_changed_at'
     ];
 
     protected $casts = [
@@ -39,6 +40,8 @@ class Project extends Model
         'end' => 'datetime:Y-m-d',
         'cross_faculty' => 'boolean',
         'is_opened' => 'boolean',
+        'state' => EProjectState::class,
+        'state_changed_at' => 'datetime:Y-m-d H:i:s'
     ];
 
     public function projectType() {

@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from "@angular/router";
 import {MessageService} from "primeng/api";
 import {ProjectService} from "../../../../services/project.service";
-import {filter, finalize} from "rxjs";
+import {finalize} from "rxjs";
 import {AuthService} from "../../../../services/auth/auth.service";
-import {Project} from "../../../../models/project.model";
+import {EProjectState, Project} from "../../../../models/project.model";
 import {AbstractControl, FormArray, FormGroup} from "@angular/forms";
 import {ProjectFormComponent} from "../project-form/project-form.component";
 import {LoadingSpinnerComponent} from "../../../../shared/components/loading-spinner/loading-spinner.component";
@@ -28,6 +28,7 @@ import {ProjectTypeService} from "../../../../services/project-type.service";
 export class EditProjectComponent implements OnInit {
   loading: boolean;
   updateLoading: boolean;
+  updateStateLoading: boolean;
   project: Project;
   submitted: boolean;
   editProjectForm: FormGroup;
@@ -125,6 +126,20 @@ export class EditProjectComponent implements OnInit {
           this.messageService.add({severity:'success', summary:'Erfolg', detail:'Projektänderungen wurden erfolgreich gespeichert'});
         }
       });
+  }
+
+  updateState(state: EProjectState) {
+    this.updateStateLoading = true
+    this.projectService.updateState(this.project.id, state)
+      .pipe(
+        finalize(() => this.updateStateLoading = false)
+      )
+      .subscribe({
+        next: (project) => {
+          this.project.state = project.state
+          this.project.stateChangedAt = project.stateChangedAt
+        }
+      })
   }
 
   get name(): AbstractControl {

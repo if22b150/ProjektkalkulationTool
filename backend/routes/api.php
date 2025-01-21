@@ -28,7 +28,6 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('project-types', [\App\Http\Controllers\ProjectTypeController::class, 'index']);
     Route::get('projectCategories', [\App\Http\Controllers\ProjectCategoryController::class, 'index']);
     Route::get('companies', [\App\Http\Controllers\CompanyController::class, 'index']);
-
 });
 
 // admin routes
@@ -43,6 +42,7 @@ Route::middleware(['auth:sanctum', 'auth.admin'])->prefix('admin')->name('admin.
     Route::apiResource('project-types', \App\Http\Controllers\Admin\ProjectTypeController::class);
     Route::get('projects/fetch/{companyId}', [\App\Http\Controllers\ProjectController::class, 'getProjectsByCompanyId']);
     Route::apiResource('projects', \App\Http\Controllers\ProjectController::class)->only(['update','index','show']);
+    Route::patch('projects/{projectId}/set-state', [\App\Http\Controllers\Admin\ProjectController::class, 'updateState']);
     Route::apiResource('notifications', \App\Http\Controllers\Admin\NotificationController::class)->only(['update','index']);
 });
 

@@ -37,7 +37,7 @@
       <label for="projectTypeFilter">Projektart</label>
     </p-floatLabel>
 
-    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null" />
+    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null"/>
 
   </div>
 
@@ -45,7 +45,9 @@
 
 <div style="margin-top: 2em;" class="grid"
      *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
-  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">Keine Projekte vorhanden.</div>
+  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async).length == 0">Keine Projekte
+    vorhanden.
+  </div>
   <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
@@ -77,7 +79,7 @@
           <span class="block text-500 text-center font-medium mb-2">
             {{ project.faculty.name }}
           </span>
-          <p-badge [value]="project.projectType.name" severity="info" />
+          <p-badge [value]="project.projectType.name" severity="info"/>
           <img src="{{project.company.image_url}}" alt="Company Image" width="100" height="100" style="margin-top:1vh">
         </div>
 
@@ -90,7 +92,13 @@
         <span class="block text-center text-500">{{ project.costs|currency:"EUR" }}</span>
       </a>
 
-      <app-export-buttons [project]="project" class="mt-4" [faculty]="project.faculty"></app-export-buttons>
+      <div class="flex mt-2 justify-content-center">
+        <strong
+          class="{{project.state == EProjectState.APPROVED ? 'text-primary' : (project.state == EProjectState.REJECTED ? 'text-red-500' : '') }}"><i
+          class="{{getProjectStateIconClass(project.state)}}"></i> {{ getProjectStateLabel(project.state) }}</strong>
+      </div>
+
+      <app-export-buttons [project]="project" class="mt-2" [faculty]="project.faculty"></app-export-buttons>
 
     </div>
   </div>

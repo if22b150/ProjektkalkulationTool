@@ -6,7 +6,7 @@ use App\Models\Project;
 use App\Repositories\Interfaces\IProjectRepository;
 use DateTime;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Carbon;
 
 class ProjectRepository implements IProjectRepository
 {
@@ -133,6 +133,14 @@ class ProjectRepository implements IProjectRepository
     {
         $project = $this->getOne($id);
         $project->is_opened = $isOpened;
+        return $this->save($project);
+    }
+
+    public function updateState(int $id, string $state): ?Project
+    {
+        $project = $this->getOne($id);
+        $project->state = $state;
+        $project->state_changed_at = Carbon::now()->toDateTimeString();
         return $this->save($project);
     }
 }
