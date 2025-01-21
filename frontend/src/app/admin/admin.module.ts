@@ -47,6 +47,7 @@ import { DeleteCompanyComponent } from './views/companies-view/delete-company/de
 import { CompanyDetailsComponent } from './views/companies-view/company-details/company-details.component';
 import {FloatLabelModule} from "primeng/floatlabel";
 import { FacultyDetailsComponent } from './views/faculty-view/faculty-details/faculty-details.component';
+import { ExportButtonsComponent } from '../customer/components/projects/export-buttons/export-buttons.component';
 
 @NgModule({
   providers: [
@@ -102,7 +103,8 @@ import { FacultyDetailsComponent } from './views/faculty-view/faculty-details/fa
     LoadingSpinnerComponent,
     ProjectsComponent,
     FileUploadModule,
-    FloatLabelModule
+    FloatLabelModule,
+    ExportButtonsComponent
   ]
 })
 export class AdminModule { }
