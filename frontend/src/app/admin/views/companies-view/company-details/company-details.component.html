@@ -32,13 +32,35 @@
             <label for="projectTypeFilter">Projektart</label>
         </p-floatLabel>
 
-        <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null" />
+        <p-floatLabel>
+            <p-calendar 
+              [(ngModel)]="dateUntil" 
+              firstDayOfWeek="1"
+              dateFormat="dd.mm.yy" 
+              inputId="dateUntil"
+              showIcon="true">
+            </p-calendar>
+            <label for="dateUntil">Projektstart ab</label>
+          </p-floatLabel>
+        
+          <p-floatLabel>
+            <p-calendar 
+              [(ngModel)]="dateFrom" 
+              firstDayOfWeek="1"
+              dateFormat="dd.mm.yy" 
+              inputId="dateFrom"
+              showIcon="true">
+            </p-calendar>
+            <label for="dateFrom">Projektstart bis</label>
+          </p-floatLabel>
+
+        <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null; dateUntil = null; dateFrom = null" />
 
         <p-button [outlined]="true" label="CSV Export"/>
     </div>
 
     <div *ngIf="(projectService.models$|async) && !(projectService.loading$|async)">
-        <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length">
+        <div style="margin-top:2vh; margin-bottom: 2vh;" *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter, null, dateUntil, dateFrom) | async)?.length">
             {{ (projectService.filteredProjects$(projectTypeFilter, facultyFilter) | async)?.length }} Projekt(e) vorhanden
         </div>
     </div>
@@ -49,7 +71,7 @@
             Keine Projekte vorhanden.
         </div>
 
-        <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter)|async"
+        <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter, null, dateUntil, dateFrom)|async"
              class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
             <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">

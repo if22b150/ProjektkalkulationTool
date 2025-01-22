@@ -48,6 +48,7 @@ import { CompanyDetailsComponent } from './views/companies-view/company-details/
 import {FloatLabelModule} from "primeng/floatlabel";
 import { FacultyDetailsComponent } from './views/faculty-view/faculty-details/faculty-details.component';
 import { ExportButtonsComponent } from '../customer/components/projects/export-buttons/export-buttons.component';
+import {CalendarModule} from "primeng/calendar";
 
 @NgModule({
   providers: [
@@ -104,7 +105,8 @@ import { ExportButtonsComponent } from '../customer/components/projects/export-b
     ProjectsComponent,
     FileUploadModule,
     FloatLabelModule,
-    ExportButtonsComponent
+    ExportButtonsComponent,
+    CalendarModule
   ]
 })
 export class AdminModule { }

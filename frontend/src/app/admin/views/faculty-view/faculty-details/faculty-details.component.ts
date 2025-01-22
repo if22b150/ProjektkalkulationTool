@@ -20,6 +20,8 @@ export class FacultyDetailsComponent {
   projects: Project[];
   projectTypeFilter: ProjectType;
   companyFilter: Company;
+  dateUntil: Date | null = null;
+  dateFrom: Date | null = null;
 
   constructor(public companiesService: CompanyService, private route: ActivatedRoute,
     public projectService: ProjectService,
