@@ -16,24 +16,32 @@ import { Company } from '../models/company.model';
 @Injectable({
   providedIn: 'root'
 })
-export class ProjectService extends AResourceService<Project>{
+export class ProjectService extends AResourceService<Project> {
   public filteredProjects$(
-    projectType: ProjectType, 
-    faculty: Faculty, 
-    company: Company, 
-    startDate: Date, 
+    projectType: ProjectType,
+    faculty: Faculty,
+    company: Company,
+    dateFrom: Date, // Startdatum ab
+    dateUntil: Date // Startdatum bis
   ): Observable<Project[]> {
     return this._models.asObservable().pipe(
-      map(projects => projects.filter((project) => {
-        const matchesProjectType = projectType == null || project.projectType.id === projectType.id;
-        const matchesFaculty = faculty == null || project.faculty.id === faculty.id;
-        const matchesCompany = company == null || project.company.id === company.id;
+      map(projects =>
+        projects.filter((project) => {
+          const matchesProjectType = projectType == null || project.projectType.id === projectType.id;
+          const matchesFaculty = faculty == null || project.faculty.id === faculty.id;
+          const matchesCompany = company == null || project.company.id === company.id;
   
-        const matchesStartDate = startDate == null || new Date(project.start) <= startDate;
-        // const matchesEndDate = startDate == null || new Date(project.start) <= startDate;
+          // Entferne den Zeitanteil vom Datum für Vergleich
+          const projectStartDate = new Date(new Date(project.start).toDateString());
+          const fromDate = dateFrom ? new Date(dateFrom.toDateString()) : null;
+          const untilDate = dateUntil ? new Date(dateUntil.toDateString()) : null;
   
-        return matchesProjectType && matchesFaculty && matchesCompany && matchesStartDate;
-      }))
+          const matchesStartDateFrom = fromDate == null || projectStartDate >= fromDate;
+          const matchesStartDateUntil = untilDate == null || projectStartDate <= untilDate;
+  
+          return matchesProjectType && matchesFaculty && matchesCompany && matchesStartDateFrom && matchesStartDateUntil;
+        })
+      )
     );
   }
 

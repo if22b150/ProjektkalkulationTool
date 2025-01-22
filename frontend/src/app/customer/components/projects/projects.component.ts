@@ -55,8 +55,8 @@ export class ProjectsComponent {
   projectTypeFilter: ProjectType;
   facultyFilter: Faculty;
   companyFilter: Company;
-  startDate: Date | null = null;
-  endDate: Date | null = null;
+  dateUntil: Date | null = null;
+  dateFrom: Date | null = null;
 
   constructor(public projectService: ProjectService,
               public projectTypeService: ProjectTypeService,
