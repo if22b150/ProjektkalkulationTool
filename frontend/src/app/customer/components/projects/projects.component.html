@@ -50,8 +50,30 @@
       </p-dropdown>
       <label for="projectTypeFilter">Projektart</label>
     </p-floatLabel>
+  
+    <p-floatLabel>
+      <p-calendar 
+        [(ngModel)]="startDate" 
+        firstDayOfWeek="1"
+        dateFormat="dd.mm.yy" 
+        inputId="startDate"
+        showIcon="true">
+      </p-calendar>
+      <label for="startDate">Startdatum</label>
+    </p-floatLabel>
+  
+    <p-floatLabel>
+      <p-calendar 
+        [(ngModel)]="endDate" 
+        firstDayOfWeek="1"
+        dateFormat="dd.mm.yy" 
+        inputId="endDate"
+        showIcon="true">
+      </p-calendar>
+      <label for="endDate">Enddatum</label>
+    </p-floatLabel>
 
-    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null; companyFilter = null" />
+    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null; companyFilter = null; endDate = null; startDate = null" />
 
     <p-button [outlined]="true" label="CSV Export"/>
   </div>
@@ -60,8 +82,8 @@
 
 <div style="margin-top: 2em;" class="grid"
      *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
-  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter)|async).length == 0">Keine Projekte vorhanden.</div>
-  <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter)|async"
+  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter, startDate)|async).length == 0">Keine Projekte vorhanden.</div>
+  <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter, startDate)|async"
        class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
     <div *ngIf="!project.isOpened && authService.user.role == ERole.ADMIN;"

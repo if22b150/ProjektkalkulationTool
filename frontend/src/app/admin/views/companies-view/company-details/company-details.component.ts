@@ -21,6 +21,7 @@ export class CompanyDetailsComponent {
   projectTypeFilter: ProjectType;
   facultyFilter: Faculty;
 
+
   constructor(public companiesService: CompanyService, private route: ActivatedRoute,
     public projectService: ProjectService,
     public projectTypeService: ProjectTypeService,

@@ -17,17 +17,23 @@ import { Company } from '../models/company.model';
   providedIn: 'root'
 })
 export class ProjectService extends AResourceService<Project>{
-  public filteredProjects$(projectType: ProjectType, faculty: Faculty, company: Company): Observable<Project[]> {
-    console.log(faculty)
+  public filteredProjects$(
+    projectType: ProjectType, 
+    faculty: Faculty, 
+    company: Company, 
+    startDate: Date, 
+  ): Observable<Project[]> {
     return this._models.asObservable().pipe(
       map(projects => projects.filter((project) => {
-        return (projectType == null || project.projectType.id === projectType.id) &&
-               (faculty == null || project.faculty.id === faculty.id) &&
-               (company == null || project.company.id === company.id);
-      })),
-      tap(filteredProjects => {
-        console.log('Gefilterte Projekte:', filteredProjects); // Hier loggen
-      })
+        const matchesProjectType = projectType == null || project.projectType.id === projectType.id;
+        const matchesFaculty = faculty == null || project.faculty.id === faculty.id;
+        const matchesCompany = company == null || project.company.id === company.id;
+  
+        const matchesStartDate = startDate == null || new Date(project.start) <= startDate;
+        // const matchesEndDate = startDate == null || new Date(project.start) <= startDate;
+  
+        return matchesProjectType && matchesFaculty && matchesCompany && matchesStartDate;
+      }))
     );
   }
 

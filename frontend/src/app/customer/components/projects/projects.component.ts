@@ -22,6 +22,7 @@ import {FacultyService} from "../../../services/faculty.service";
 import {EProjectState, getProjectStateIconClass, getProjectStateLabel} from "../../../models/project.model";
 import { Company } from 'src/app/models/company.model';
 import { CompanyService } from 'src/app/services/company.service';
+import {CalendarModule} from "primeng/calendar";
 
 @Component({
   selector: 'app-projects',
@@ -45,7 +46,8 @@ import { CompanyService } from 'src/app/services/company.service';
     PaginatorModule,
     ReactiveFormsModule,
     FloatLabelModule,
-    DatePipe
+    DatePipe,
+    CalendarModule
   ],
   styleUrls: ['./projects.component.scss']
 })
@@ -53,6 +55,8 @@ export class ProjectsComponent {
   projectTypeFilter: ProjectType;
   facultyFilter: Faculty;
   companyFilter: Company;
+  startDate: Date | null = null;
+  endDate: Date | null = null;
 
   constructor(public projectService: ProjectService,
               public projectTypeService: ProjectTypeService,
