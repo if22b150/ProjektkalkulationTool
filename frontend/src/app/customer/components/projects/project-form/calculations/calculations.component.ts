@@ -2,6 +2,7 @@ import {Component, Input, OnInit} from '@angular/core';
 import {ProjectExpense} from "../../../../../models/project-expense.model";
 import {ProjectLecturer} from "../../../../../models/project-lecturer.model";
 import {OtherExpense} from "../../../../../models/other-expense.model";
+import { GroupSpecificExpense } from 'src/app/models/group-specific-expense.model';
 import Utils from "../../../../../shared/utils";
 import {CurrencyPipe, DecimalPipe, NgForOf, NgIf} from "@angular/common";
 
@@ -21,6 +22,7 @@ export class CalculationsComponent {
   @Input() projectExpenses: ProjectExpense[];
   @Input() projectLecturers: ProjectLecturer[];
   @Input() otherExpenses: OtherExpense[];
+  @Input() groupSpecificExpenses: GroupSpecificExpense[];
   @Input() participants: number;
   @Input() duration: number;
   @Input() priceForCoursePerDay: number;
@@ -45,6 +47,30 @@ export class CalculationsComponent {
   get fixOtherExpensesCosts(): number {
     let c = 0
     this.fixOtherExpenses.forEach(oe => {
+      c += oe.costs ?? 0
+    })
+    return c
+  }
+
+  get variableGroupSpecificExpenses(): OtherExpense[] {
+    return this.groupSpecificExpenses.filter(ge => ge.perParticipant)
+  }
+
+  get variableGroupSpecificExpensesCosts(): number {
+    let c = 0
+    this.variableGroupSpecificExpenses.forEach(ge => {
+      c += ge.costs ?? 0
+    })
+    return c
+  }
+
+  get fixGroupSpecificExpenses(): OtherExpense[] {
+    return this.groupSpecificExpenses.filter(ge => !ge.perParticipant)
+  }
+
+  get fixGroupSpecificExpensesCosts(): number {
+    let c = 0
+    this.fixGroupSpecificExpenses.forEach(oe => {
       c += oe.costs ?? 0
     })
     return c

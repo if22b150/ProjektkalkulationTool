@@ -37,6 +37,7 @@ import {Faculty} from "../../../../models/faculty.model";
 import {InputNumberModule} from "primeng/inputnumber";
 import {ProjectOtherExpensesComponent} from "./project-other-expenses/project-other-expenses.component";
 import {CalculationsComponent} from "./calculations/calculations.component";
+import { ProjectGroupSpecificExpensesComponent } from './project-group-specific-expenses/project-group-specific-expenses.component';
 
 @Component({
   selector: 'app-project-form',
@@ -61,6 +62,7 @@ import {CalculationsComponent} from "./calculations/calculations.component";
     Ripple,
     InputNumberModule,
     ProjectOtherExpensesComponent,
+    ProjectGroupSpecificExpensesComponent,
     CalculationsComponent,
     DatePipe
   ],
@@ -125,6 +127,7 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
       crossFaculties: [this.project ? this.getCrossFacultiesValue() : []],
       priceForCoursePerDayOverride: [this.project ? (this.project.priceForCoursePerDayOverride ?? this.project.faculty.priceForCoursePerDay) : this.faculty.priceForCoursePerDay],
       otherExpenses: this.formBuilder.array([]),
+      groupSpecificExpenses: this.formBuilder.array([])
     });
 
     this.setLecturers()
@@ -198,8 +201,9 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
     }
 
     let otherExpenses = this.authService.user.role == ERole.ADMIN ? this.otherExpenses.value : (this.project ? this.project.otherExpenses : null)
-    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value, otherExpenses, this.participants.value);
+    let groupSpecificExpenses = this.authService.user.role == ERole.ADMIN ? this.groupSpecificExpenses.value : (this.project ? this.project.groupSpecificExpenses : null)
 
+    this.totalCost = Utils.calculateProjectCosts(this.projectLecturers.value, this.projectExpenses.value, otherExpenses, this.participants.value, groupSpecificExpenses);
     if(!this.isCourse)
       return;
 
@@ -289,6 +293,10 @@ export class ProjectFormComponent implements OnInit, AfterViewInit {
 
   get otherExpenses(): FormArray {
     return this.projectForm.get("otherExpenses") as FormArray;
+  }
+
+  get groupSpecificExpenses(): FormArray {
+    return this.projectForm.get("groupSpecificExpenses") as FormArray;
   }
 
   protected readonly ERole = ERole;

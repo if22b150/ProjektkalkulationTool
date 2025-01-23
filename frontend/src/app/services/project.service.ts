@@ -11,6 +11,7 @@ import {ProjectType} from "../models/project-type.model";
 import {AResourceService} from "./a-resource.service";
 import {finalizeLoading} from "../shared/operators/finalize-loading.operator";
 import { Company } from '../models/company.model';
+import { GroupSpecificExpense } from '../models/group-specific-expense.model';
 
 
 @Injectable({
@@ -140,7 +141,8 @@ export class ProjectService extends AResourceService<Project> {
     ects: number,
     crossFaculties: Faculty[],
     priceForCoursePerDayOverride: number | null,
-    otherExpenses: OtherExpense[]
+    otherExpenses: OtherExpense[],
+    groupSpecificExpenses: GroupSpecificExpense[]
   ): Observable<Project> {
 
     return this.http.put<Project>(
@@ -167,6 +169,7 @@ export class ProjectService extends AResourceService<Project> {
         crossFaculties: crossFaculties.map(c => ({id: c.id})),
         priceForCoursePerDayOverride: priceForCoursePerDayOverride * 100,
         otherExpenses: otherExpenses.map(oe =>({id: oe.id, name: oe.name, perParticipant: oe.perParticipant, costs: oe.costs * 100})),
+        groupSpecificExpenses: groupSpecificExpenses.map(ge =>({id: ge.id, name: ge.name, perParticipant: ge.perParticipant, costs: ge.costs * 100}))
       })
       .pipe(
         tap((model) => {

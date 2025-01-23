@@ -115,7 +115,8 @@ export class EditProjectComponent implements OnInit {
       this.ects.value,
       this.crossFaculties.value,
       this.priceForCoursePerDayOverride.value,
-      this.otherExpenses.value
+      this.otherExpenses.value,
+      this.groupSpecificExpenses.value
     )
       .pipe(
         finalize(() => this.updateLoading = false)
@@ -213,4 +214,8 @@ export class EditProjectComponent implements OnInit {
   get otherExpenses(): FormArray {
     return this.editProjectForm.get("otherExpenses") as FormArray;
   }
+
+  get groupSpecificExpenses(): FormArray {
+    return this.editProjectForm.get("groupSpecificExpenses") as FormArray;
+  } 
 }

@@ -209,6 +209,12 @@
                                   [submitted]="submitted"></app-project-other-expenses>
     </div>
 
+    <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
+      <p class="m-0 mt-1 mb-4 font-bold">Projektgruppenspezifische Aufwände</p>
+      <app-project-group-specific-expenses [project]="project" [projectForm]="projectForm"
+                                  [submitted]="submitted"></app-project-group-specific-expenses>
+    </div>
+
     <div *ngIf="!showDetailedCalculations || (showDetailedCalculations && !projectType.value.isCourse)"
          class="flex justify-content-end">
       <div class="font-light text-right flex gap-5">
@@ -233,6 +239,9 @@
             <div>Zusätzliche Aufwände<span
               class="ml-3">{{ Utils.getOtherExpenseCosts(otherExpenses.value, participants.value) | currency: "EUR" }}</span>
             </div>
+            <div>Projektgruppenspezifische Aufwände<span
+              class="ml-3">{{ Utils.getGroupSpecificExpenseCosts(groupSpecificExpenses.value, participants.value) | currency: "EUR" }}</span>
+            </div>
           </div>
         </div>
       </div>
@@ -242,6 +251,7 @@
       <app-calculations [projectExpenses]="projectExpenses.value"
                         [projectLecturers]="projectLecturers.value"
                         [otherExpenses]="otherExpenses.value"
+                        [groupSpecificExpenses]="groupSpecificExpenses.value"
                         [participants]="participants.value"
                         [duration]="duration.value"
                         [priceForCoursePerDay]="priceForCoursePerDayOverride.value"></app-calculations>

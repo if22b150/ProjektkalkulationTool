@@ -6,6 +6,7 @@ import {Faculty} from "./faculty.model";
 import {OtherExpense} from "./other-expense.model";
 import { ProjectCategory } from "./project-category.model";
 import { Company } from "./company.model";
+import { GroupSpecificExpense } from "./group-specific-expense.model";
 
 export interface Project extends AModel {
   name: string;
@@ -30,6 +31,7 @@ export interface Project extends AModel {
   crossFaculties: Faculty[];
   priceForCoursePerDayOverride?: number;
   otherExpenses: OtherExpense[];
+  groupSpecificExpenses: GroupSpecificExpense[];
   state: EProjectState;
   stateChangedAt?: Date;
   createdAt: Date;
