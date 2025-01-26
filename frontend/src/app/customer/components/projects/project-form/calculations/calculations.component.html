@@ -39,6 +39,22 @@
   </div>
 
   <div class="font-light text-right flex flex-column align-items-end">
+    <strong>KProj. spezifisch</strong>
+    <div *ngFor="let groupSpecificExpense of fixGroupSpecificExpenses"
+         class="flex gap-3 text-sm">
+      <span>{{ groupSpecificExpense.name }}</span>
+      <span>{{ groupSpecificExpense.costs | currency: "EUR" }}</span>
+    </div>
+    <div *ngFor="let groupSpecificExpense of variableGroupSpecificExpenses"
+         class="flex gap-3 text-sm">
+      <span>{{ groupSpecificExpense.name }}</span>
+      <span>{{ groupSpecificExpense.costs * participants | currency: "EUR" }}</span>
+    </div>
+    <hr class="w-full">
+    <span>{{ totalGroupSpecificCosts| currency: "EUR" }}</span>
+  </div>
+
+  <div class="font-light text-right flex flex-column align-items-end">
     <strong>Kalkulation</strong>
     <div class="text-sm text-right flex flex-column align-items-end">
       <div class="flex gap-3">
