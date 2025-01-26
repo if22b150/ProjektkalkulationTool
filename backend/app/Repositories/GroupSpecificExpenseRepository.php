@@ -2,72 +2,73 @@
 
 namespace App\Repositories;
 
-use App\Models\OtherExpense;
-use App\Repositories\Interfaces\IOtherExpenseRepository;
+use App\Models\GroupSpecificExpense;
+use App\Repositories\Interfaces\IGroupSpecificExpenseRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-class OtherExpenseRepository implements IOtherExpenseRepository
+class GroupSpecificExpenseRepository implements IGroupSpecificExpenseRepository
 {
     public function __construct()
     {}
 
-    public function getOne(int $id): ?OtherExpense
+    public function getOne(int $id): ?GroupSpecificExpense
     {
-        return $this->exists($id) ? OtherExpense::find($id) : null;
+        return $this->exists($id) ? GroupSpecificExpense::find($id) : null;
     }
 
     public function getAll(): Collection
     {
-        return OtherExpense::all();
+        return GroupSpecificExpense::all();
     }
 
     public function getWhere($column, $value, array $related = null): Collection
     {
         if($related)
-            return OtherExpense::where($column, $value)->where([$related])->get();
-        return OtherExpense::where($column, $value)->get();
+            return GroupSpecificExpense::where($column, $value)->where([$related])->get();
+        return GroupSpecificExpense::where($column, $value)->get();
     }
 
     public function delete(int $id): bool
     {
-        return OtherExpense::destroy($id) == 1;
+        return GroupSpecificExpense::destroy($id) == 1;
     }
 
     public function exists(int $id): bool
     {
-        return OtherExpense::where('id', $id)->exists();
+        return GroupSpecificExpense::where('id', $id)->exists();
     }
 
-    public function save(OtherExpense $otherExpense): ?OtherExpense
+    public function save(GroupSpecificExpense $groupSpecificExpense): ?GroupSpecificExpense
     {
-        return $otherExpense->save() ? $otherExpense : null;
+        return $groupSpecificExpense->save() ? $groupSpecificExpense : null;
     }
 
     public function create(string $name,
                            int $costs,
                            bool $perParticipant,
-                           int $projectId): ?OtherExpense
+                           int $projectId): ?GroupSpecificExpense
     {
-        $otherExpense = new OtherExpense([
+        $groupSpecificExpense = new GroupSpecificExpense([
             'name' => $name,
             'costs' => $costs,
             'per_participant' => $perParticipant,
             'project_id' => $projectId
         ]);
-        return $this->save($otherExpense);
+        error_log('ADDING: ' . print_r($groupSpecificExpense, true));
+        return $this->save($groupSpecificExpense);
     }
 
-    public function getOtherExpenseIdsByProjectId(int $projectId): array
+    public function getGroupSpecificExpenseIdsByProjectId(int $projectId): array
     {
-        return OtherExpense::where('project_id', $projectId)->pluck('id')->toArray();
+        return GroupSpecificExpense::where('project_id', $projectId)->pluck('id')->toArray();
     }
 
     public function update(int      $id,
                            string   $name,
                            int      $costs,
-                           bool     $perParticipant): ?OtherExpense
+                           bool     $perParticipant): ?GroupSpecificExpense
     {
-        $updated = OtherExpense::where('id', $id)
+        $updated = GroupSpecificExpense::where('id', $id)
             ->update([
                 'costs' => $costs,
                 'name' => $name,

@@ -28,6 +28,10 @@ export class CalculationsComponent {
   @Input() priceForCoursePerDay: number;
   protected readonly Utils = Utils;
 
+   constructor() {
+    console.log(this.groupSpecificExpenses)
+   }
+
   get variableOtherExpenses(): OtherExpense[] {
     return this.otherExpenses.filter(oe => oe.perParticipant)
   }
@@ -47,7 +51,7 @@ export class CalculationsComponent {
   get fixOtherExpensesCosts(): number {
     let c = 0
     this.fixOtherExpenses.forEach(oe => {
-      c += oe.costs ?? 0
+      c += oe.costs ?? 0 
     })
     return c
   }
@@ -84,6 +88,12 @@ export class CalculationsComponent {
     return Utils.getLecturersCosts(this.projectLecturers) + Utils.getExpenseCosts(this.projectExpenses) + this.fixOtherExpensesCosts
   }
 
+  get totalGroupSpecificCosts(): number {
+  const variableCosts = this.variableGroupSpecificExpensesCosts * this.participants;
+  const fixCosts = this.fixGroupSpecificExpensesCosts;
+  return variableCosts + fixCosts;
+  }
+
   get db1(): number {
     return this.revenue - this.variableOtherExpensesCosts
   }
@@ -98,5 +108,13 @@ export class CalculationsComponent {
 
   get dbU2(): number {
     return this.db2 / this.revenue * 100
+  }
+
+  get db3(): number {
+    return this.db2 - this.totalGroupSpecificCosts
+  }
+
+  get dbU3(): number {
+    return this.db3 / this.revenue * 100
   }
 }

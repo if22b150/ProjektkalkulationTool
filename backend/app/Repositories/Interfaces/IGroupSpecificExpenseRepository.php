@@ -2,12 +2,12 @@
 
 namespace App\Repositories\Interfaces;
 
-use App\Models\OtherExpense;
+use App\Models\GroupSpecificExpense;
 use Illuminate\Database\Eloquent\Collection;
 
-interface IOtherExpenseRepository
+interface IGroupSpecificExpenseRepository
 {
-    public function getOne(int $id): ?OtherExpense;
+    public function getOne(int $id): ?GroupSpecificExpense;
 
     public function getAll(): Collection;
 
@@ -17,19 +17,19 @@ interface IOtherExpenseRepository
 
     public function exists(int $id): bool;
 
-    public function save(OtherExpense $otherExpense): ?OtherExpense;
+    public function save(GroupSpecificExpense $groupSpecificExpense): ?GroupSpecificExpense;
 
     public function create(
         string $name,
         int $costs,
         bool $perParticipant,
         int $projectId
-    ): ?OtherExpense;
+    ): ?GroupSpecificExpense;
 
-    public function getOtherExpenseIdsByProjectId(int $projectId): array;
+    public function getGroupSpecificExpenseIdsByProjectId(int $projectId): array;
 
     public function update(int      $id,
                            string   $name,
                            int      $costs,
-                           bool     $perParticipant): ?OtherExpense;
+                           bool     $perParticipant): ?GroupSpecificExpense;
 }

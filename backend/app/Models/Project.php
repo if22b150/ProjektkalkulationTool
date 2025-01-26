@@ -74,4 +74,8 @@ class Project extends Model
     {
         return $this->hasMany(OtherExpense::class);
     }
+    public function groupSpecificExpenses()
+    {
+        return $this->hasMany(GroupSpecificExpense::class);
+    }
 }

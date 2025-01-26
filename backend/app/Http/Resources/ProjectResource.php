@@ -37,7 +37,8 @@ class ProjectResource extends JsonResource
                 return $item->faculty;
             }),
             'priceForCoursePerDayOverride' => $this->price_for_course_per_day_override ? $this->price_for_course_per_day_override / 100 : null,
-            'otherExpenses' => OtherExpenseResource::collection($this->otherExpenses)
+            'otherExpenses' => OtherExpenseResource::collection($this->otherExpenses),
+            'groupSpecificExpenses' => GroupSpecificExpenseResource::collection($this->groupSpecificExpenses)
         ];
     }
 }

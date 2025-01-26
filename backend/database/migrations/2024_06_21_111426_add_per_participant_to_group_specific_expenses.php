@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('other_expenses', function (Blueprint $table) {
+        Schema::table('group_specific_expenses', function (Blueprint $table) {
             $table->boolean('per_participant')->default(false);
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('other_expenses', function (Blueprint $table) {
+        Schema::table('group_specific_expenses', function (Blueprint $table) {
             $table->dropColumn('per_participant');
         });
     }

@@ -175,6 +175,31 @@
     </div>
     @endif
 
+    @if($forAdmin)
+    <!-- Other Expenses -->
+    <div class="section">
+        <div class="sub-title">Projektgruppenspezifische Aufwände</div>
+        <table>
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Pro Teilnehmer</th>
+                <th>Kosten</th>
+            </tr>
+            </thead>
+            <tbody>
+            @foreach($project->groupSpecificExpenses as $groupSpecificExpenses)
+                <tr>
+                    <td>{{ $groupSpecificExpenses->name }}</td>
+                    <td>{{ $groupSpecificExpenses->per_participant ? 'Ja' : 'Nein' }}</td>
+                    <td>{{ number_format($groupSpecificExpenses->costs / 100, 2, ',', '.') }} €</td>
+                </tr>
+            @endforeach
+            </tbody>
+        </table>
+    </div>
+    @endif
+
     @if(count($project->faculties) > 0)
     <!-- Faculties -->
     <div class="section">

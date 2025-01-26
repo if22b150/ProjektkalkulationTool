@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class OtherExpenseResource extends JsonResource
+class GroupSpecificExpenseResource extends JsonResource
 {
 
     public function toArray($request)

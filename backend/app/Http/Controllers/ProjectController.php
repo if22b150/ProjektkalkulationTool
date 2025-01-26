@@ -8,6 +8,7 @@ use App\Http\Resources\ProjectResource;
 use App\Mail\NewProjectMail;
 use App\Repositories\Interfaces\ICompanyRepository;
 use App\Repositories\Interfaces\IFacultyRepository;
+use App\Repositories\Interfaces\IGroupSpecificExpenseRepository;
 use App\Repositories\Interfaces\INotificationRepository;
 use App\Repositories\Interfaces\IOtherExpenseRepository;
 use App\Repositories\Interfaces\IProjectExpenseRepository;
@@ -35,7 +36,8 @@ class ProjectController extends Controller
                                 protected INotificationRepository   $notificationRepository,
                                 protected IProjectTypeRepository     $projectTypeRepository,
                                 protected ICompanyRepository       $companyRepository,
-                                protected IFacultyRepository        $facultyRepository)
+                                protected IFacultyRepository        $facultyRepository,
+                                protected IGroupSpecificExpenseRepository $groupSpecificExpenseRepository)
     {
     }
 
@@ -55,7 +57,7 @@ class ProjectController extends Controller
 
         $project = $this->projectRepository->getOne($projectId);
         if (!$project || ($project->faculty_id != $facultyId && !$request->user()->role == ERole::ADMIN))
-            return response('Not found', 404);
+            return response('No projects found', 200);
 
         if($request->user()->role == ERole::ADMIN && !$project->is_opened)
             $this->projectRepository->updateIsOpened($projectId, true);
@@ -66,7 +68,7 @@ class ProjectController extends Controller
     public function getProjectsByCompanyId(Request $request, int $companyId) {
         $company = $this->companyRepository->getOne($companyId);
         if (!$company)
-            return response('Not found', 404);
+            return response('No projects with this company', 200);
 
         return ProjectResource::collection($this->projectRepository->getAllByCompanyId($companyId));
     }
@@ -74,7 +76,7 @@ class ProjectController extends Controller
     public function getFacultiesByCompanyId(Request $request, int $facultyId) {
         $faculty = $this->facultyRepository->getOne($facultyId);
         if (!$faculty)
-            return response('Not found', 404);
+            return response('No projects in this faculty', 200);
 
         return ProjectResource::collection($this->projectRepository->getAllByFacultiesId($facultyId));
     }
@@ -170,6 +172,7 @@ class ProjectController extends Controller
             $this->_updateExpenses($request->expenses, $projectId);
             $this->_updateCrossFaculties($request->crossFaculties, $projectId);
             $this->_updateOtherExpenses($request->otherExpenses, $projectId);
+            $this->_updateGroupSpecificExpenses($request->groupSpecificExpenses, $projectId);
 
             DB::commit();
         } catch (\Exception $e) {
@@ -299,6 +302,31 @@ class ProjectController extends Controller
             } else {
                 // Neue Expense hinzufügen
                 $this->otherExpenseRepository->create($expense['name'], $expense['costs'], $expense['perParticipant'], $projectId);
+            }
+        }
+    }
+
+    private function _updateGroupSpecificExpenses(array $groupSpecificExpenses, $projectId)
+    {
+        $currentGroupSpecificExpenseIds = $this->groupSpecificExpenseRepository->getGroupSpecificExpenseIdsByProjectId($projectId);
+        $newGroupSpecificExpenseIds = array_map(function ($ge) {
+            return $ge['id'];
+        }, $groupSpecificExpenses);
+
+        // Löschen von nicht mehr existierenden Expenses
+        $expensesToDelete = array_diff($currentGroupSpecificExpenseIds, $newGroupSpecificExpenseIds);
+        foreach ($expensesToDelete as $expenseId) {
+            $this->groupSpecificExpenseRepository->delete($expenseId);
+        }
+
+        // Hinzufügen oder Aktualisieren von Expenses
+        foreach ($groupSpecificExpenses as $expense) {
+            if (in_array($expense['id'], $currentGroupSpecificExpenseIds)) {
+                // Existierende Expense aktualisieren
+                $this->groupSpecificExpenseRepository->update($expense['id'],$expense['name'], $expense['costs'], $expense['perParticipant']);
+            } else {
+                // Neue Expense hinzufügen
+                $this->groupSpecificExpenseRepository->create($expense['name'], $expense['costs'], $expense['perParticipant'], $projectId);
             }
         }
     }
