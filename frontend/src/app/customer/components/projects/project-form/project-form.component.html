@@ -205,13 +205,13 @@
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
       <p class="m-0 mt-1 mb-4 font-bold">Zusätzliche Aufwände</p>
       <app-project-other-expenses [project]="project" [projectForm]="projectForm"
-                                  [submitted]="submitted"></app-project-other-expenses>
+                                  [submitted]="submitted" [isCourse]="isCourse"></app-project-other-expenses>
     </div>
 
     <div class="mb-4 px-2 pb-2 border-1 border-300 border-round">
       <p class="m-0 mt-1 mb-4 font-bold">Projektgruppenspezifische Aufwände</p>
       <app-project-group-specific-expenses [project]="project" [projectForm]="projectForm"
-                                  [submitted]="submitted"></app-project-group-specific-expenses>
+                                  [submitted]="submitted" [isCourse]="isCourse"></app-project-group-specific-expenses>
     </div>
 
     <div *ngIf="!showDetailedCalculations || (showDetailedCalculations && !projectType.value.isCourse)"

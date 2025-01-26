@@ -36,6 +36,8 @@ export class ProjectGroupSpecificExpensesComponent {
   @Input() projectForm: FormGroup;
   @Input() submitted: boolean;
 
+  @Input() isCourse: boolean;
+
   constructor(private formBuilder: FormBuilder,
     public authService: AuthService) {
 }

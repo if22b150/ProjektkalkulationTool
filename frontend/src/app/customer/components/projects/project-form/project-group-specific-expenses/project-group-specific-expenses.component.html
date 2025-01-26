@@ -1,43 +1,51 @@
 <div [formGroup]="projectForm">
-    <div formArrayName="groupSpecificExpenses">
-  
-      <div *ngFor="let groupSpecificExpenses of groupSpecificExpenses.controls; let i=index" class="flex align-items-start mb-4" [formGroupName]="i">
-  
-        <div class="flex align-items-center flex-wrap gap-4 mb-1 w-full">
-  
-          <input type="hidden" [value]="i" formControlName="id">
-  
-          <p-floatLabel>
-            <input pInputText [id]="!project ? 'new-group-specific-expense-name-' + i : 'project-' + project.id + '-' + 'group-specific-expense-name-' + i"
-                   formControlName="name" />
-            <label [for]="!project ? 'new-group-specific-expense-name-' + i : 'project-' + project.id + '-' + 'group-specific-expense-name-' + i">Bezeichnung</label>
-          </p-floatLabel>
-  
-          <p-floatLabel>
-            <p-inputNumber [inputId]="!project ? 'new-group-specific-expense-costs-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-costs-' + i"
-                           formControlName="costs" mode="currency" currency="EUR"
-                           locale="de-DE" />
-            <label [for]="!project ? 'new-group-specific-expense-costs-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-costs-' + i">Kosten</label>
-          </p-floatLabel>
-  
-          <p-checkbox
-            formControlName="perParticipant"
-            [binary]="true"
-            [inputId]="!project ? 'new-group-specific-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-per-participant-' + i" />
-          <label [for]="!project ? 'new-group-specific-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-per-participant-' + i">Pro Teilnehmer</label>
-  
-          <button pButton pRipple type="button" icon="pi pi-trash"
-                  class="p-button-rounded p-button-danger p-button-outlined" (click)="removeGroupSpecificExpenses(i)"></button>
-  
-        </div>
-  
+  <div formArrayName="groupSpecificExpenses">
+
+    <div *ngFor="let groupSpecificExpenses of groupSpecificExpenses.controls; let i=index"
+         class="flex align-items-start mb-4" [formGroupName]="i">
+
+      <div class="flex align-items-center flex-wrap gap-4 mb-1 w-full">
+
+        <input type="hidden" [value]="i" formControlName="id">
+
+        <p-floatLabel>
+          <input pInputText
+                 [id]="!project ? 'new-group-specific-expense-name-' + i : 'project-' + project.id + '-' + 'group-specific-expense-name-' + i"
+                 formControlName="name"/>
+          <label
+            [for]="!project ? 'new-group-specific-expense-name-' + i : 'project-' + project.id + '-' + 'group-specific-expense-name-' + i">Bezeichnung</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <p-inputNumber
+            [inputId]="!project ? 'new-group-specific-expense-costs-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-costs-' + i"
+            formControlName="costs" mode="currency" currency="EUR"
+            locale="de-DE"/>
+          <label
+            [for]="!project ? 'new-group-specific-expense-costs-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-costs-' + i">Kosten</label>
+        </p-floatLabel>
+
+        <p-checkbox *ngIf="isCourse"
+                    formControlName="perParticipant"
+                    [binary]="true"
+                    [inputId]="!project ? 'new-group-specific-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-per-participant-' + i"/>
+        <label *ngIf="isCourse"
+               [for]="!project ? 'new-group-specific-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'group-specific-expense-per-participant-' + i">Pro
+          Teilnehmer</label>
+
+        <button pButton pRipple type="button" icon="pi pi-trash"
+                class="p-button-rounded p-button-danger p-button-outlined"
+                (click)="removeGroupSpecificExpenses(i)"></button>
+
       </div>
-  
+
     </div>
+
   </div>
-  
-  <div class="flex justify-content-start mt-2">
-    <button pButton pRipple class="p-button-sm p-button-outlined p-button-raised p-button-rounded" (click)="addGroupSpecificExpense()">
-      Gruppenspezifische Aufwände hinzufügen<i class="pi pi-plus-circle ml-1"></i></button>
-  </div>
-  
+</div>
+
+<div class="flex justify-content-start mt-2">
+  <button pButton pRipple class="p-button-sm p-button-outlined p-button-raised p-button-rounded"
+          (click)="addGroupSpecificExpense()">
+    Gruppenspezifische Aufwände hinzufügen<i class="pi pi-plus-circle ml-1"></i></button>
+</div>

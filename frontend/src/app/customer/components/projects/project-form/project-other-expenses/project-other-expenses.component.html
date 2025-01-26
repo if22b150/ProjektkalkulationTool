@@ -20,11 +20,11 @@
           <label [for]="!project ? 'new-other-expense-costs-' + i : 'new-project-' + project.id + '-' + 'other-expense-costs-' + i">Kosten</label>
         </p-floatLabel>
 
-        <p-checkbox
+        <p-checkbox *ngIf="isCourse"
           formControlName="perParticipant"
           [binary]="true"
           [inputId]="!project ? 'new-other-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'other-expense-per-participant-' + i" />
-        <label [for]="!project ? 'new-other-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'other-expense-per-participant-' + i">Pro Teilnehmer</label>
+        <label *ngIf="isCourse" [for]="!project ? 'new-other-expense-per-participant-' + i : 'new-project-' + project.id + '-' + 'other-expense-per-participant-' + i">Pro Teilnehmer</label>
 
         <button pButton pRipple type="button" icon="pi pi-trash"
                 class="p-button-rounded p-button-danger p-button-outlined" (click)="removeOtherExpense(i)"></button>
