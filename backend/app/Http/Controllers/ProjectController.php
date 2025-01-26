@@ -16,6 +16,7 @@ use App\Repositories\Interfaces\IProjectFacultyRepository;
 use App\Repositories\Interfaces\IProjectLecturerRepository;
 use App\Repositories\Interfaces\IProjectRepository;
 use App\Repositories\Interfaces\IProjectTypeRepository;
+use App\Utils\ProjectsReportCSV;
 use App\Utils\ProjectToCSV;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -221,6 +222,31 @@ class ProjectController extends Controller
         $pdf->loadHTML($view);
 
         return $pdf->download('project.pdf');
+    }
+
+    public function report(Request $request)
+    {
+        if(!$request->has('ids'))
+            return response(null, 404);
+
+        $projectIds = explode(',', $request->query('ids'));
+        if(empty($projectIds) || count($projectIds) == 0)
+            return response(null, 404);
+
+        $projects = $this->projectRepository->getWhereIdIn($projectIds);
+        if($projects->count() == 0)
+            return response(null, 404);
+
+        if($request->user()->role == ERole::FACULTY) {
+            foreach ($projects as $project) {
+                if ($project->faculty_id != $request->user()->faculty_id) {
+                    return response(null, 405);
+                }
+            }
+        }
+
+        $response['csv_string'] = ProjectsReportCSV::getProjectsReportCSVString($projects, $request->user()->role == ERole::ADMIN);
+        return $response;
     }
 
 

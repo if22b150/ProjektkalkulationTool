@@ -15,7 +15,7 @@
       </ng-template>
       <ng-template pTemplate="body" let-company>
         <tr (click)="navigateToDetails(company)" style="cursor: pointer;">
-            <td><img src="{{company.image_url}}" alt="Company Image" width="100" height="100"></td>
+            <td><img src="{{company.image_url}}" alt="Company Image" style="max-height: 100px; max-width: 100%"></td>
           <td>{{company.name}}</td>
           <td >
             <app-update-company style="display: flex !important;" [company]="company" (click)="$event.stopPropagation()"></app-update-company>

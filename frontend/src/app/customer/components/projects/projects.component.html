@@ -7,12 +7,13 @@
 
 <div>
 
-  <div class="mt-4 flex gap-4">
+  <div class="mt-4 flex gap-4 flex-wrap">
 
     <p-floatLabel *ngIf="(authService.user$|async).role == ERole.ADMIN">
       <p-dropdown
         [(ngModel)]="facultyFilter"
         [options]="facultyService.models$|async" optionLabel="name"
+        showClear="true"
         inputId="facultyFilter">
         <ng-template let-faculty pTemplate="item">
           <div class="flex align-items-center gap-2">
@@ -23,10 +24,11 @@
       <label for="facultyFilter">Fakultät</label>
     </p-floatLabel>
 
-    <p-floatLabel>
+    <p-floatLabel *ngIf="!company()">
       <p-dropdown
         [(ngModel)]="companyFilter"
         [options]="companyService.models$|async" optionLabel="name"
+        showClear="true"
         inputId="companyFilter">
         <ng-template let-company pTemplate="item">
           <div class="flex align-items-center gap-2">
@@ -40,6 +42,7 @@
     <p-floatLabel>
       <p-dropdown
         [(ngModel)]="projectTypeFilter"
+        showClear="true"
         [options]="projectTypeService.models$|async" optionLabel="name"
         inputId="projectTypeFilter">
         <ng-template let-projectType pTemplate="item">
@@ -50,94 +53,122 @@
       </p-dropdown>
       <label for="projectTypeFilter">Projektart</label>
     </p-floatLabel>
-  
+
     <p-floatLabel>
-      <p-calendar 
-        [(ngModel)]="dateUntil" 
+      <p-calendar
+        [(ngModel)]="dateUntil"
         firstDayOfWeek="1"
-        dateFormat="dd.mm.yy" 
+        dateFormat="dd.mm.yy"
         inputId="dateUntil"
+        showClear="true"
         showIcon="true">
       </p-calendar>
       <label for="dateUntil">Projektstart ab</label>
     </p-floatLabel>
-  
+
     <p-floatLabel>
-      <p-calendar 
-        [(ngModel)]="dateFrom" 
+      <p-calendar
+        [(ngModel)]="dateFrom"
         firstDayOfWeek="1"
-        dateFormat="dd.mm.yy" 
+        dateFormat="dd.mm.yy"
         inputId="dateFrom"
+        showClear="true"
         showIcon="true">
       </p-calendar>
       <label for="dateFrom">Projektstart bis</label>
     </p-floatLabel>
 
-    <p-button [outlined]="true" label="Filter zurücksetzen" (click)="projectTypeFilter = null; facultyFilter = null; companyFilter = null; dateUntil = null; dateFrom = null" />
+    <p-floatLabel>
+      <p-calendar
+        [(ngModel)]="dateCreatedUntil"
+        firstDayOfWeek="1"
+        dateFormat="dd.mm.yy"
+        inputId="dateCreatedUntil"
+        showClear="true"
+        showIcon="true">
+      </p-calendar>
+      <label for="dateCreatedUntil">Projekt erstellt ab</label>
+    </p-floatLabel>
 
-    <p-button [outlined]="true" label="CSV Export"/>
+    <p-floatLabel>
+      <p-calendar
+        [(ngModel)]="dateCreatedFrom"
+        firstDayOfWeek="1"
+        dateFormat="dd.mm.yy"
+        inputId="dateCreatedFrom"
+        showClear="true"
+        showIcon="true">
+      </p-calendar>
+      <label for="dateCreatedFrom">Projekt erstellt bis</label>
+    </p-floatLabel>
+
+    <p-button [outlined]="true" label="Filter zurücksetzen"
+              (click)="clearFilters()"/>
   </div>
 
 </div>
 
-<div style="margin-top: 2em;" class="grid"
-     *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
-  <div *ngIf="(projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter, dateUntil, dateFrom)|async).length == 0">Keine Projekte vorhanden.</div>
-  <div *ngFor="let project of projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter, dateUntil, dateFrom)|async"
-       class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
-
-    <div *ngIf="!project.isOpened && authService.user.role == ERole.ADMIN;"
-         pBadge
-         value="neu"
-         severity="success"
-         style="right: 10px; top: 5px;"></div>
-
-    <div *ngIf="project.isOpened && authService.user.role != ERole.ADMIN;"
-         style="position: absolute; right: 12px; top: 12px;"
-         class="text-primary"
-         pTooltip="Wurde schon angesehen">
-      <i class="pi pi-eye" style="font-size: 1.25rem"></i>
+<ng-container *ngIf="(projectService.models$|async) && !(projectService.loading$|async); else loadingSpinner">
+  <div
+    *ngIf="projectService.filteredProjects$(projectTypeFilter, facultyFilter, companyFilter, dateUntil, dateFrom, dateCreatedUntil, dateCreatedFrom) | async as filteredProjects">
+    <div class="mt-4 flex align-items-center gap-4">
+      <span>{{ filteredProjects.length == 0 ? 'Keine Projekte vorhanden.' : (filteredProjects.length) + ' Projekte' }}</span>
+      <p-button *ngIf="filteredProjects.length > 0" [outlined]="false" label="CSV Export" [loading]="exportLoading" (click)="exportCSV(filteredProjects)" />
     </div>
-    <div *ngIf="!project.isOpened && authService.user.role != ERole.ADMIN;"
-         style="position: absolute; right: 12px; top: 12px;"
-         class="text-orange-400"
-         pTooltip="Wurde nicht angesehen">
-      <i class="pi pi-eye-slash" style="font-size: 1.25rem"></i>
-    </div>
+    <div class="grid mt-3">
+      <div
+        *ngFor="let project of filteredProjects"
+        class="col-12 md:col-6 lg:col-3 xl:col-2" style="position: relative">
 
+        <div *ngIf="!project.isOpened && authService.user.role == ERole.ADMIN;"
+             pBadge
+             value="neu"
+             severity="success"
+             style="right: 10px; top: 5px;"></div>
 
-    <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">
-
-      <a [routerLink]="'' + project.id" style="text-decoration: none">
-        <div *ngIf="authService.user.role == ERole.ADMIN; else notAdminContent"
-             class="flex align-items-center flex-column mb-2">
-          <span class="block text-500 text-center font-medium mb-2">
-            {{ project.faculty.name }}
-          </span>
-          <p-badge [value]="project.projectType.name" severity="info"/>
-          <img src="{{project.company.image_url}}" alt="Company Image" width="100" height="100" style="margin-top:1vh">
+        <div *ngIf="project.isOpened && authService.user.role != ERole.ADMIN;"
+             style="position: absolute; right: 12px; top: 12px;"
+             class="text-primary"
+             pTooltip="Wurde schon angesehen">
+          <i class="pi pi-eye" style="font-size: 1.25rem"></i>
+        </div>
+        <div *ngIf="!project.isOpened && authService.user.role != ERole.ADMIN;"
+             style="position: absolute; right: 12px; top: 12px;"
+             class="text-orange-400"
+             pTooltip="Wurde nicht angesehen">
+          <i class="pi pi-eye-slash" style="font-size: 1.25rem"></i>
         </div>
 
 
-        <ng-template #notAdminContent>
-          <img src="{{project.company.image_url}}" alt="Company Image" width="100" height="100">
-          <span class="block text-500 text-center font-medium mb-2">{{ project.projectType.name }}</span>
-        </ng-template>
-        <span class="block text-900 text-center font-medium text-xl mb-2">{{ project.name }}</span>
-        <span class="block text-center text-500">{{ project.costs|currency:"EUR" }}</span>
-      </a>
+        <div class="surface-card shadow-2 p-3 border-round flex flex-column align-items-center cursor-pointer">
 
-      <div class="flex mt-2 justify-content-center">
-        <strong
-          class="{{project.state == EProjectState.APPROVED ? 'text-primary' : (project.state == EProjectState.REJECTED ? 'text-red-500' : '') }}"><i
-          class="{{getProjectStateIconClass(project.state)}}"></i> {{ getProjectStateLabel(project.state) }}</strong>
+          <a [routerLink]="'' + project.id" style="text-decoration: none">
+            <div class="flex align-items-center flex-column mb-2">
+          <span *ngIf="authService.user.role == ERole.ADMIN" class="block text-500 text-center font-medium mb-2">
+            {{ project.faculty.name }}
+          </span>
+              <p-badge [value]="project.projectType.name" severity="info"/>
+              <img src="{{project.company.image_url}}" class="mt-1" alt="Company Image"
+                   style="max-height: 100px; max-width: 100%">
+            </div>
+
+            <span class="block text-900 text-center font-medium text-xl mb-2">{{ project.name }}</span>
+            <span class="block text-center text-500">{{ project.costs|currency:"EUR" }}</span>
+          </a>
+
+          <div class="flex mt-2 justify-content-center">
+            <strong
+              class="{{project.state == EProjectState.APPROVED ? 'text-primary' : (project.state == EProjectState.REJECTED ? 'text-red-500' : '') }}"><i
+              class="{{getProjectStateIconClass(project.state)}}"></i> {{ getProjectStateLabel(project.state) }}</strong>
+          </div>
+
+          <app-export-buttons [project]="project" class="mt-2" [faculty]="project.faculty"></app-export-buttons>
+
+        </div>
       </div>
-
-      <app-export-buttons [project]="project" class="mt-2" [faculty]="project.faculty"></app-export-buttons>
-
     </div>
   </div>
-</div>
+</ng-container>
 
 <ng-template #loadingSpinner>
   <app-loading-spinner></app-loading-spinner>

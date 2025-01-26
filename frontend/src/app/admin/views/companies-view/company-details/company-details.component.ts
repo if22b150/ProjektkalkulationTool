@@ -6,8 +6,6 @@ import { Company } from 'src/app/models/company.model';
 import { Project } from 'src/app/models/project.model';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import {ProjectTypeService} from "src/app/services/project-type.service";
-import {ProjectType} from "src/app/models/project-type.model";
-import {Faculty} from "src/app/models/faculty.model";
 import {FacultyService} from "src/app/services/faculty.service";
 
 @Component({
@@ -18,10 +16,6 @@ import {FacultyService} from "src/app/services/faculty.service";
 export class CompanyDetailsComponent {
   company: Company = null;
   projects: Project[];
-  projectTypeFilter: ProjectType;
-  facultyFilter: Faculty;
-  dateUntil: Date | null = null;
-  dateFrom: Date | null = null;
 
   constructor(public companiesService: CompanyService, private route: ActivatedRoute,
     public projectService: ProjectService,
@@ -35,7 +29,6 @@ export class CompanyDetailsComponent {
       if (companyData) {
         this.company = JSON.parse(companyData);  // Parse the JSON string back to an object
       }
-      this.projectService.getProjectsByCompanyId(this.company.id)
     });
   }
 }

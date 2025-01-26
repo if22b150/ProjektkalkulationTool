@@ -17,9 +17,9 @@ import {Faculty} from "../../../../models/faculty.model";
   template: `
     <div class="flex gap-2">
       <p-button pRipple label="CSV" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"
-                (click)="exportToCSV()"></p-button>
+                (click)="exportToCSV()" size="small"></p-button>
       <p-button pRipple label="PDF" icon="pi pi-file-export" iconPos="right" severity="secondary" [loading]="loading"
-                (click)="exportToPDF()"></p-button>
+                (click)="exportToPDF()" size="small"></p-button>
     </div>
   `
 })

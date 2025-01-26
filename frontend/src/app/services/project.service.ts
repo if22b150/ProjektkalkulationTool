@@ -23,7 +23,9 @@ export class ProjectService extends AResourceService<Project> {
     faculty: Faculty,
     company: Company,
     dateFrom: Date, // Startdatum ab
-    dateUntil: Date // Startdatum bis
+    dateUntil: Date, // Startdatum bis
+    dateCreatedFrom: Date, // Erstelldatum ab
+    dateCreatedUntil: Date // Erstelldatum bis
   ): Observable<Project[]> {
     return this._models.asObservable().pipe(
       map(projects =>
@@ -31,16 +33,24 @@ export class ProjectService extends AResourceService<Project> {
           const matchesProjectType = projectType == null || project.projectType.id === projectType.id;
           const matchesFaculty = faculty == null || project.faculty.id === faculty.id;
           const matchesCompany = company == null || project.company.id === company.id;
-  
+
           // Entferne den Zeitanteil vom Datum für Vergleich
           const projectStartDate = new Date(new Date(project.start).toDateString());
           const fromDate = dateFrom ? new Date(dateFrom.toDateString()) : null;
           const untilDate = dateUntil ? new Date(dateUntil.toDateString()) : null;
-  
+
           const matchesStartDateFrom = fromDate == null || projectStartDate >= fromDate;
           const matchesStartDateUntil = untilDate == null || projectStartDate <= untilDate;
-  
-          return matchesProjectType && matchesFaculty && matchesCompany && matchesStartDateFrom && matchesStartDateUntil;
+
+          // Entferne den Zeitanteil vom Datum für Vergleich
+          const projectCreatedDate = new Date(new Date(project.createdAt).toDateString());
+          const fromCreatedDate = dateCreatedFrom ? new Date(dateCreatedFrom.toDateString()) : null;
+          const untilCreatedDate = dateCreatedUntil ? new Date(dateCreatedUntil.toDateString()) : null;
+
+          const matchesCreatedDateFrom = fromCreatedDate == null || projectCreatedDate >= fromCreatedDate;
+          const matchesCreatedDateUntil = untilCreatedDate == null || projectCreatedDate <= untilCreatedDate;
+
+          return matchesProjectType && matchesFaculty && matchesCompany && matchesStartDateFrom && matchesStartDateUntil && matchesCreatedDateFrom && matchesCreatedDateUntil;
         })
       )
     );
@@ -195,6 +205,10 @@ export class ProjectService extends AResourceService<Project> {
     return this.http.get(environment.apiUrl + `faculties/${facultyId}/projects/${project.id}/pdf`, {
       responseType: 'blob' // Important to set the response type to 'blob'
     });
+  }
+
+  reportExport(ids: number[]): Observable<any> {
+    return this.http.get(environment.apiUrl + `projects/report?ids=${ids.join(',')}`);
   }
 
   getProjectsByCompanyId(id: number): void {

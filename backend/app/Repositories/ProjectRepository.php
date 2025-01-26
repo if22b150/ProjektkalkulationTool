@@ -148,4 +148,9 @@ class ProjectRepository implements IProjectRepository
         $project->state_changed_at = Carbon::now()->toDateTimeString();
         return $this->save($project);
     }
+
+    public function getWhereIdIn(array $ids): Collection
+    {
+        return Project::whereIn('id', $ids)->get();
+    }
 }

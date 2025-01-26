@@ -4,8 +4,7 @@
      style="max-width: 1000px">
 
   <div class="form-title">
-    <img *ngIf="project?.company?.image_url" [src]="project.company.image_url" alt="Company Image" width="100"
-         height="100">
+    <img *ngIf="project?.company?.image_url" [src]="project.company.image_url" alt="Company Image" style="max-height: 100px; max-width: 100%">
     <h1>{{ title }}</h1>
   </div>
   <p *ngIf="project">Erstelldatum: {{ project.createdAt | date : 'dd.MM.YYYY H:m' }}</p>

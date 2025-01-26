@@ -10,7 +10,7 @@ class ProjectToCSV {
         $csv = fopen('php://temp', 'w+');
 
         if ($csv === false) {
-            throw new Exception('Failed to open php://temp');
+            throw new \Exception('Failed to open php://temp');
         }
 
         $separator = ';';
@@ -111,6 +111,6 @@ class ProjectToCSV {
 
     private static function convertDateTime($value)
     {
-        return (new \DateTime($value))->format('Y-m-d');
+        return (new \DateTime($value))->format('d.m.Y');
     }
 }

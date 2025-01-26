@@ -65,4 +65,6 @@ interface IProjectRepository
     public function updateIsOpened(int $id, bool $isOpened): ?Project;
 
     public function updateState(int $id, string $state): ?Project;
+
+    public function getWhereIdIn(array $ids): Collection;
 }

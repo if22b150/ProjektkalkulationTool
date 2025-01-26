@@ -29,6 +29,7 @@ const routes: Routes = [
       { path: 'companies', component: CompaniesViewComponent},
       { path: 'company-details/:id', component: CompanyDetailsComponent},
       { path: 'faculty-details/:id', component: FacultyDetailsComponent},
+      { path: '', redirectTo: 'projects', pathMatch: 'prefix'},
     ]
   }
 ];
