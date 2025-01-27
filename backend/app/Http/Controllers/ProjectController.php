@@ -208,20 +208,24 @@ class ProjectController extends Controller
         $project = $this->projectRepository->getOne($projectId);
         if (!$project || $project->faculty_id != $facultyId)
             return response('Not found', 404);
+        $isAdmin = $request->user()->role == ERole::ADMIN;
 
         $pdf = App::make('dompdf.wrapper');
 
         $costs = number_format($project->costs / 100, 2, ',', '.');
+        $pricePerDay = $isAdmin ? number_format(($project->price_for_course_per_day_override ?? $project->faculty->price_for_course_per_day) / 100, 2, ',', '.') : null;
 
         $view = view('pdf.project-pdf', [
             'project' => $project,
             'costs' => $costs,
-            'forAdmin' => $request->user()->role == ERole::ADMIN
+            'pricePerDay' => $pricePerDay,
+            'isAdmin' => $isAdmin,
         ]);
+
         $view->render();
         $pdf->loadHTML($view);
 
-        return $pdf->download('project.pdf');
+        return $pdf->download($project->name . '.pdf');
     }
 
     public function report(Request $request)

@@ -224,7 +224,7 @@ class ProjectToCSV {
         ];
     }
 
-    private static function calculateProjectLecturerCosts($projectLecturer): int
+    public static function calculateProjectLecturerCosts($projectLecturer): int
     {
         return $projectLecturer->hours * ($projectLecturer->daily ? ($projectLecturer->daily_rate_override ?? $projectLecturer->lecturer->daily_rate) : ($projectLecturer->hourly_rate_override ?? $projectLecturer->lecturer->hourly_rate)) / 100;
     }

@@ -80,8 +80,8 @@
                 <p><strong>Teilnehmeranzahl:</strong> {{ $project->participants }}</p>
                 <p><strong>Dauer:</strong> {{ $project->duration }} Tage</p>
                 <p><strong>ECTS:</strong> {{ $project->ects }}</p>
-                @if($forAdmin)
-                    <p><strong>Preis für Teilnehmer pro Tag:</strong> {{ number_format(($project->price_for_course_per_day_override ?? $project->faculyt->price_for_course_per_day) / 100, 2, ',', '.') }} €</p>
+                @if($isAdmin)
+                    <p><strong>Preis für Teilnehmer pro Tag:</strong> {{ $pricePerDay }} €</p>
                 @endif
             @endif
             <p><strong>Anmerkungen:</strong> {{ $project->notes }}</p>
@@ -97,7 +97,7 @@
             <tr>
                 <th>Name</th>
                 <th>Fakultät</th>
-                @if( $forAdmin )
+                @if($isAdmin)
                     <th>Stundensatz</th>
                     <th>Tagessatz</th>
                 @endif
@@ -111,18 +111,13 @@
                 <tr>
                     <td>{{ $projectLecturer->lecturer->name }}</td>
                     <td>{{ $projectLecturer->lecturer->faculty->name }}</td>
-                    @if($forAdmin)
+                    @if($isAdmin)
                         <td>{{ number_format(($projectLecturer->hourly_rate_override ?? $projectLecturer->lecturer->hourly_rate) / 100, 2, ',', '.') }} €</td>
                         <td>{{ number_format(($projectLecturer->daily_rate_override ?? $projectLecturer->lecturer->daily_rate) / 100, 2, ',', '.') }} €</td>
                     @endif
                     <td>{{ $projectLecturer->daily ? '-' : $projectLecturer->hours }}</td>
                     <td>{{ $projectLecturer->daily ? $projectLecturer->hours : '-' }}</td>
-                    @if(!$projectLecturer->daily)
-                        <td>{{ number_format($projectLecturer->hours * ($projectLecturer->hourly_rate_override ?? $projectLecturer->lecturer->hourly_rate) / 100, 2, ',', '.') }} €</td>
-                    @endif
-                    @if($projectLecturer->daily)
-                        <td>{{ number_format($projectLecturer->hours * ($projectLecturer->daily_rate_override ?? $projectLecturer->lecturer->daily_rate) / 100, 2, ',', '.') }} €</td>
-                    @endif
+                    <td>{{ number_format($projectLecturer->hours * ($projectLecturer->daily ? ($projectLecturer->daily_rate_override ?? $projectLecturer->lecturer->daily_rate) : ($projectLecturer->hourly_rate_override ?? $projectLecturer->lecturer->hourly_rate)) / 100, 2, ',', '.') }} €</td>
                 </tr>
             @endforeach
             </tbody>
@@ -150,75 +145,52 @@
         </table>
     </div>
 
-    @if($forAdmin)
-    <!-- Other Expenses -->
-    <div class="section">
-        <div class="sub-title">Zusätzliche Aufwände</div>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Pro Teilnehmer</th>
-                <th>Kosten</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($project->otherExpenses as $otherExpense)
+    @if($isAdmin)
+        <!-- Other Expenses -->
+        <div class="section">
+            <div class="sub-title">Zusätzliche Aufwände</div>
+            <table>
+                <thead>
                 <tr>
-                    <td>{{ $otherExpense->name }}</td>
-                    <td>{{ $otherExpense->per_participant ? 'Ja' : 'Nein' }}</td>
-                    <td>{{ number_format($otherExpense->costs / 100, 2, ',', '.') }} €</td>
+                    <th>Name</th>
+                    <th>Pro Teilnehmer</th>
+                    <th>Kosten</th>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-    @endif
+                </thead>
+                <tbody>
+                @foreach($project->otherExpenses as $otherExpense)
+                    <tr>
+                        <td>{{ $otherExpense->name }}</td>
+                        <td>{{ $otherExpense->per_participant ? 'Ja' : 'Nein' }}</td>
+                        <td>{{ number_format($otherExpense->costs * ($otherExpense->per_participant ? $project->participants : 1) / 100, 2, ',', '.') }} €</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
 
-    @if($forAdmin)
-    <!-- Other Expenses -->
-    <div class="section">
-        <div class="sub-title">Projektgruppenspezifische Aufwände</div>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Pro Teilnehmer</th>
-                <th>Kosten</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($project->groupSpecificExpenses as $groupSpecificExpenses)
+        <!-- Group-Specific Expenses -->
+        <div class="section">
+            <div class="sub-title">Projektgruppenspezifische Aufwände</div>
+            <table>
+                <thead>
                 <tr>
-                    <td>{{ $groupSpecificExpenses->name }}</td>
-                    <td>{{ $groupSpecificExpenses->per_participant ? 'Ja' : 'Nein' }}</td>
-                    <td>{{ number_format($groupSpecificExpenses->costs / 100, 2, ',', '.') }} €</td>
+                    <th>Name</th>
+                    <th>Pro Teilnehmer</th>
+                    <th>Kosten</th>
                 </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
-    @endif
-
-    @if(count($project->faculties) > 0)
-    <!-- Faculties -->
-    <div class="section">
-        <div class="sub-title">Involvierte Fakultäten</div>
-        <table>
-            <thead>
-            <tr>
-                <th>Name</th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($project->faculties as $projectFaculty)
-                <tr>
-                    <td>{{ $projectFaculty->faculty->name }}</td>
-                </tr>
-            @endforeach
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                @foreach($project->groupSpecificExpenses as $groupSpecificExpense)
+                    <tr>
+                        <td>{{ $groupSpecificExpense->name }}</td>
+                        <td>{{ $groupSpecificExpense->per_participant ? 'Ja' : 'Nein' }}</td>
+                        <td>{{ number_format($groupSpecificExpense->costs * ($groupSpecificExpense->per_participant ? $project->participants : 1) / 100, 2, ',', '.') }} €</td>
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
     @endif
 </div>
 
