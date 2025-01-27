@@ -194,12 +194,12 @@ class ProjectController extends Controller
         return response(null, 204);
     }
 
-    public function exportToCSV(int $facultyId, int $projectId)
+    public function exportToCSV(Request $request, int $facultyId, int $projectId)
     {
         $project = $this->projectRepository->getOne($projectId);
         if (!$project || $project->faculty_id != $facultyId)
             return response('Not found', 404);
-        $response['csv_string'] = ProjectToCSV::getProjectCSVString($this->projectRepository->getOne($project->id));
+        $response['csv_string'] = ProjectToCSV::getProjectCSVString($this->projectRepository->getOne($project->id), $request->user()->role == ERole::ADMIN);
         return $response;
     }
 
