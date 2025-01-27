@@ -74,6 +74,8 @@ export class ProjectsComponent implements OnInit {
   ngOnInit() {
     this.companyFilter = this.company()
     this.facultyFilter = this.faculty()
+    if (this.authService.user.role == ERole.ADMIN)
+      this.projectService.getAll()
   }
 
   exportLoading: boolean = false;
