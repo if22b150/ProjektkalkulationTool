@@ -58,15 +58,12 @@
 </head>
 <body>
 
-<div class="header">
-    <h1>{{ $project->name }}</h1>
-</div>
-
 <div class="footer">
     <p>PDF erstellt am {{ now()->format('d.m.Y') }}</p>
 </div>
 
 <div class="container">
+    <h1 style="text-align: center; width: 100%">{{ $project->name }}</h1>
     <!-- Project Details -->
     <div class="section">
         <div class="content">
