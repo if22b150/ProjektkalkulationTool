@@ -9,7 +9,7 @@
 
   <div class="mt-4 flex gap-4 flex-wrap">
 
-    <p-floatLabel *ngIf="(authService.user$|async).role == ERole.ADMIN">
+    <p-floatLabel *ngIf="(authService.user$|async).role == ERole.ADMIN && !faculty()">
       <p-dropdown
         [(ngModel)]="facultyFilter"
         [options]="facultyService.models$|async" optionLabel="name"

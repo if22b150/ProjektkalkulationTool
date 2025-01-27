@@ -25,7 +25,7 @@ export class FacultyViewComponent extends AResourceView<Faculty>{
   navigateToDetails(faculty: Faculty) {
     const navigationUrl = ['/admin/faculty-details', faculty.id];
     this.router.navigate(navigationUrl, {
-      queryParams: { company: JSON.stringify(faculty) }
+      queryParams: { faculty: JSON.stringify(faculty) }
     });
   }
 }

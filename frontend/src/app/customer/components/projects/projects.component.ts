@@ -54,6 +54,7 @@ import {finalize} from "rxjs";
 })
 export class ProjectsComponent implements OnInit {
   company = input<Company>()
+  faculty = input<Faculty>()
 
   projectTypeFilter: ProjectType;
   facultyFilter: Faculty;
@@ -72,6 +73,7 @@ export class ProjectsComponent implements OnInit {
 
   ngOnInit() {
     this.companyFilter = this.company()
+    this.facultyFilter = this.faculty()
   }
 
   exportLoading: boolean = false;
@@ -104,13 +106,14 @@ export class ProjectsComponent implements OnInit {
 
   clearFilters() {
     this.projectTypeFilter = null
-    this.facultyFilter = null
     this.dateUntil = null
     this.dateFrom = null
     this.dateCreatedFrom = null
     this.dateCreatedUntil = null
     if(!this.company())
       this.companyFilter = null
+    if(!this.faculty())
+      this.facultyFilter = null
   }
 
   protected readonly ERole = ERole;
